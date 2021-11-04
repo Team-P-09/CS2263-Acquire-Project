@@ -4,11 +4,49 @@
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
 public class App {
+    //Gameboard gameboard;
+
     public String getGreeting() {
         return "Hello World!";
     }
 
     public static void main(String[] args) {
         System.out.println(new App().getGreeting());
+    }
+
+    private void startGame(){
+        System.out.println("Start Game");
+    }
+
+    private void endGame(){
+        System.out.println("End Game");
+    }
+
+    private void initGame(int NumbPlayers){
+        System.out.println("initGame");
+    }
+
+    private void initScoreboard(){
+        System.out.println("initScoreboard");
+    }
+
+    private void initPlayers(){
+        System.out.println("initPlayers");
+    }
+
+    private void initTileStack(){
+        System.out.println("InitTStack");
+    }
+
+    private void displayGameboard(){
+        System.out.println("DisplayGameboard");
+    }
+
+    private void displayScoreboard(){
+        System.out.println("displayScoreboard");
+    }
+
+    private void displayHand(){
+        System.out.println("Displayhand");
     }
 }
