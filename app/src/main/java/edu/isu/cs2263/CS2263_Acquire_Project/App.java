@@ -6,12 +6,8 @@ package edu.isu.cs2263.CS2263_Acquire_Project;
 public class App {
     //Gameboard gameboard;
 
-    public String getGreeting() {
-        return "Hello World!";
-    }
-
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+
     }
 
     private void startGame(){
