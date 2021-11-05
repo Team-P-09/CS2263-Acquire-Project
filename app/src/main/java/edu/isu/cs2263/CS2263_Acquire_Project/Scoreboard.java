@@ -2,7 +2,13 @@ package edu.isu.cs2263.CS2263_Acquire_Project;
 
 public class Scoreboard {
     //List<Player> players;
-    Corporations corpInfo;
+    String[] corpNames = new String[]{"Worldwide", "Sackson", "Festival", "Imperial", "American", "Tower", "Continental"};
+    Corporations corporations;
+
+    public void initializeScoreboard() {
+        corporations.initializeCorps(corpNames);
+        //Initialize Players
+    }
 
     public void displayCorpInfo(){
         System.out.println("displayCorpInfo");

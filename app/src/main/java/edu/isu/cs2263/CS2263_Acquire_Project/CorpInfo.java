@@ -1,12 +1,20 @@
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
-public class Corporation {
+public class CorpInfo {
     int stockPrice;
     int availableStocks;
-    String corpName;
+//    String corpName;
     //List<Tiles> corpTiles;
     int corpSize;
     boolean status;
+
+    public CorpInfo(int stPrice, int avStocks, int coSize, boolean stat){
+        stockPrice = stPrice;
+        availableStocks = avStocks;
+        //corpTiles = coTiles;
+        corpSize = coSize;
+        status = stat;
+    }
 
     public int getStockPrice(){
         return stockPrice;
@@ -16,9 +24,9 @@ public class Corporation {
         return availableStocks;
     }
 
-    public String getCorpName(){
-        return corpName;
-    }
+//    public String getCorpName(){
+//        return corpName;
+//    }
 
 //    public List<Tiles> getCorpTiles(){
 //        return corpTiles;
@@ -40,9 +48,9 @@ public class Corporation {
         availableStocks = i;
     }
 
-    public void setCorpName(String s){
-        corpName = s;
-    }
+//    public void setCorpName(String s){
+//        corpName = s;
+//    }
 
 //    public void setCorpTiles(List<Tile> t){
 //        corpTiles = t;
