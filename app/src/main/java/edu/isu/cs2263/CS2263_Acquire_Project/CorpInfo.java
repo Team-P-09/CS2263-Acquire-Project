@@ -1,17 +1,19 @@
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CorpInfo {
     int stockPrice;
     int availableStocks;
-//    String corpName;
-    //List<Tiles> corpTiles;
+    ArrayList<Tile> corpTiles;
     int corpSize;
     boolean status;
 
-    public CorpInfo(int stPrice, int avStocks, int coSize, boolean stat){
+    public CorpInfo(int stPrice, int avStocks, ArrayList<Tile> coTiles, int coSize, boolean stat){
         stockPrice = stPrice;
         availableStocks = avStocks;
-        //corpTiles = coTiles;
+        corpTiles = coTiles;
         corpSize = coSize;
         status = stat;
     }
@@ -23,14 +25,6 @@ public class CorpInfo {
     public int getAvailableStocks() {
         return availableStocks;
     }
-
-//    public String getCorpName(){
-//        return corpName;
-//    }
-
-//    public List<Tiles> getCorpTiles(){
-//        return corpTiles;
-//    }
 
     public int getCorpSize(){
         return corpSize;
@@ -48,13 +42,9 @@ public class CorpInfo {
         availableStocks = i;
     }
 
-//    public void setCorpName(String s){
-//        corpName = s;
-//    }
-
-//    public void setCorpTiles(List<Tile> t){
-//        corpTiles = t;
-//    }
+    public void setCorpTiles(ArrayList<Tile> t){
+        corpTiles = t;
+    }
 
     public void setCorpSize(int i) {
         corpSize = i;

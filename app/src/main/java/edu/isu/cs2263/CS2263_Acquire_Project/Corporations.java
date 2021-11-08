@@ -1,5 +1,6 @@
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,11 +19,12 @@ public class Corporations {
         HashMap<String, CorpInfo> initCorp = new HashMap<>();
         int stPrice = 100;
         int avStocks = 25;
+        ArrayList<Tile> coTiles = new ArrayList<>();
         int coSize = 0;
         boolean stat = false;
 
         for(String corpName : corpNames){
-            initCorp.put(corpName, new CorpInfo(stPrice, avStocks, coSize, stat));
+            initCorp.put(corpName, new CorpInfo(stPrice, avStocks, coTiles, coSize, stat));
         }
         return initCorp;
     }
