@@ -10,6 +10,11 @@ public class Tile {
         return row;
     }
 
+    public Tile(char r, char c){
+        row = r;
+        col = c;
+    }
+
     public char getCol(){
         return col;
     }
