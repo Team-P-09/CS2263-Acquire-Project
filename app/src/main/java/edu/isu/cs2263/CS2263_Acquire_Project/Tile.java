@@ -1,40 +1,46 @@
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
-public class Tile {
-    char row;
-    char col;
-    String location;
-    String corpName;
+import java.util.Arrays;
+import java.util.List;
 
-    public char getRow(){
+public class Tile {
+    int row = 0;
+    int col = 0;
+    int corp = 0;
+    List<String> corpNames = Arrays.asList("No Corporation", "Festival", "Imperial", "World", "American", "Luxor", "Tower", "Continent");
+
+    public int getRow(){
         return row;
     }
 
-    public char getCol(){
+    public int getCol(){
         return col;
     }
 
     public String getLocation(){
+        String location = this.getCol() + ", " + this.getRow();
         return location;
     }
 
     public String getCorpName(){
-        return corpName;
+        return corpNames.get(corp);
     }
 
-    public void setRow(char c){
-        row = c;
+    public void setRow(int i){
+        row = i;
     }
 
-    public void setCol(char c){
-        col = c;
+    public void setCol(int i){
+        col = i;
     }
 
-    public void setLocation(){
-        location = String.valueOf(col) + String.valueOf(row);
+    public void setCorpName(int i){
+        this.corp = i;
     }
 
-    public void setCorpName(String name){
-        corpName = name;
+    public Tile(int row, int col, int corp) {
+        this.row = row;
+        this.col = col;
+        this.corp = corp;
     }
 }

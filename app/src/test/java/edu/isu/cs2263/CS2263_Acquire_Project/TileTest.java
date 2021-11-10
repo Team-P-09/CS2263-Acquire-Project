@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TileTest {
     @BeforeEach
     void setUp(){
-        Tile testTile = new Tile(1, 1, null);
+        Tile testTile = new Tile(1, 1, 0);
     }
 
     @Test
@@ -17,30 +17,36 @@ class TileTest {
 
     @Test
     void testSetRow(){
-        assertEquals("1, 3", testTile.setRow(3), "Should return string of changed coordinates");
-        assertEquals("invalid input", testTile.setRow(-1), "Should return error message");
-        assertEquals("invalid input", testTile.setRow(10), "Should return error message");
+        testTile.setRow(3);
+        assertTrue(testTile.getRow() == 3);
+
+        testTile.setRow(-1);
+        assertTrue(testTile.getRow() != -1);
+
+        testTile.setRow(10);
+        assertTrue(testTile.getRow() != 10);
     }
 
     @Test
     void testSetCol(){
-        assertEquals("1, 3", testTile.setCol(10), "Should return string of changed coordinates");
-        assertEquals("invalid input", testTile.setCol(-1), "Should return error message");
-        assertEquals("invalid input", testTile.setCol(13), "Should return error message");
-    }
+        testTile.setCol(10);
+        assertTrue(testTile.getCol() == 10);
 
-    @Test
-    void testSetLocation(){
-        assertEquals("3, 6", testTile.setLocation(3, 6), "Should return string of coordinates");
-        assertEquals("invalid input", testTile.setLocation(-1, 6), "Should return error message");
-        assertEquals("invalid input", testTile.setLocation(1, 13), "Should return error message");
+        testTile.setCol(-1);
+        assertTrue(testTile.getCol() != -1);
+
+        testTile.setCol(13);
+        assertTrue(testTile.getCol() != 13);
     }
 
     @Test
     void testSetCorp(){
-        assertEquals("Festival", testTile.setCorp(1), "Should return name of corporation");
-        assertEquals("invalid input", testTile.setCorp(-1, "Should return error message");
-        assertEquals("invalid input", testTile.setCorp(8), "Should return error message");
+        testTile.setCorp(1);
+        assertTrue(testTile.getCorp() == 1);
+        testTile.setCorp(-1);
+        assertTrue(testTile.getCorp() != -1);
+        testTile.setCorp(8);
+        assertTrue(testTile.getCorp() != 8);
     }
 
 
