@@ -1,69 +1,46 @@
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
+import lombok.Data;
+import lombok.Setter;
+import lombok.Getter;
+
+import java.util.ArrayList;
+
+@Getter @Setter
 public class CorpInfo {
     int stockPrice;
     int availableStocks;
-//    String corpName;
-    //List<Tiles> corpTiles;
-    int corpSize;
+    ArrayList<Tile> corpTiles;
     boolean status;
 
-    public CorpInfo(int stPrice, int avStocks, int coSize, boolean stat){
-        stockPrice = stPrice;
-        availableStocks = avStocks;
-        //corpTiles = coTiles;
-        corpSize = coSize;
-        status = stat;
+    public CorpInfo(){ //int stPrice, int avStocks, ArrayList<Tile> coTiles, int coSize, boolean stat
+        stockPrice = 100;
+        availableStocks = 25;
+        corpTiles = new ArrayList<>();
+        status = false;;
     }
 
-    public int getStockPrice(){
-        return stockPrice;
+    /**
+     * Retrieves the corpTiles and empties the corpTiles
+     * @return an ArrayList of the Tile class
+     */
+    public ArrayList<Tile> retrieveTiles(){
+        ArrayList<Tile> outTiles = this.corpTiles;
+        this.corpTiles = new ArrayList<Tile>();
+        return outTiles;
     }
 
-    public int getAvailableStocks() {
-        return availableStocks;
+    /**
+     * adds a single tile to the corpTiles variable
+     */
+    public void addCorpTile(Tile t){
+        this.corpTiles.add(t);
     }
 
-//    public String getCorpName(){
-//        return corpName;
-//    }
-
-//    public List<Tiles> getCorpTiles(){
-//        return corpTiles;
-//    }
-
+    /**
+     * returns the size of the corpTiles ArrayList
+     */
     public int getCorpSize(){
-        return corpSize;
+        return this.corpTiles.size();
     }
-
-    public boolean getCorpStatus(){
-        return status;
-    }
-
-    public void setStockPrice(int i){
-        stockPrice = i;
-    }
-
-    public void setAvailableStocks(int i){
-        availableStocks = i;
-    }
-
-//    public void setCorpName(String s){
-//        corpName = s;
-//    }
-
-//    public void setCorpTiles(List<Tile> t){
-//        corpTiles = t;
-//    }
-
-    public void setCorpSize(int i) {
-        corpSize = i;
-    }
-
-    public void setCorpStatus(boolean b){
-        status = b;
-    }
-
-
-
 }

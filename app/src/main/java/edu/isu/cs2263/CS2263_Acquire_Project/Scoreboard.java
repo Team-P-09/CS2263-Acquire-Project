@@ -6,7 +6,7 @@ public class Scoreboard {
     Corporations corporations;
 
     public void initializeScoreboard() {
-        corporations.initializeCorps(corpNames);
+        corporations = new Corporations(corpNames);
         //Initialize Players
     }
 
