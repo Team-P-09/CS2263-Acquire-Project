@@ -9,9 +9,15 @@ import java.util.Arrays;
 import java.util.List;
 
 public class TileStack {
-    int height = 9;
-    int width = 12;
-    ArrayList<Tile> tileStack = new ArrayList<>();
+    int height;
+    int width;
+    ArrayList<Tile> tileStack;
+
+    public TileStack(){
+        height = 9;
+        width  = 12;
+        tileStack = new ArrayList<>();
+    }
 
     public boolean isEmpty(){
         return tileStack.isEmpty();
@@ -20,7 +26,8 @@ public class TileStack {
     public void initializeTiles(){
         for (int i = 0; i < width; i++){
             for (int j = 0; j < height; j++){
-                Tile tile = new Tile(j, i, 0);
+                Tile tile = new Tile(j+1, i+1, null);
+                tileStack.add(tile);
             }
         }
         for (Tile tile : tileStack){
@@ -43,13 +50,8 @@ public class TileStack {
         }
     }
 
-//      Can't remember what this was intended to do
-//    public void readTiles(){
-//        System.out.println("readTiles");
-//    }
-
-    public Object popTile(){
-        Object current;
+    public Tile popTile(){
+        Tile current;
         current = tileStack.get(0);
         tileStack.remove(0);
         return  current;

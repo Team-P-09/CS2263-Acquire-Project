@@ -5,9 +5,14 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TileTest {
+
+    Tile testTile = new Tile(1, 1, null);
+
     @BeforeEach
     void setUp(){
-        Tile testTile = new Tile(1, 1, 0);
+        testTile.setRow(1);
+        testTile.setCol(1);
+        testTile.setCorp(null);
     }
 
     @Test
@@ -41,12 +46,10 @@ class TileTest {
 
     @Test
     void testSetCorp(){
-        testTile.setCorp(1);
-        assertTrue(testTile.getCorp() == 1);
-        testTile.setCorp(-1);
-        assertTrue(testTile.getCorp() != -1);
-        testTile.setCorp(8);
-        assertTrue(testTile.getCorp() != 8);
+        testTile.setCorp("American");
+        assertEquals( "American", testTile.getCorp());
+        testTile.setCorp("not a corp");
+        assertEquals( "not a corp", testTile.getCorp());
     }
 
 

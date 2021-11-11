@@ -6,8 +6,7 @@ import java.util.List;
 public class Tile {
     int row = 0;
     int col = 0;
-    int corp = 0;
-    List<String> corpNames = Arrays.asList("No Corporation", "Festival", "Imperial", "World", "American", "Luxor", "Tower", "Continent");
+    String corp;
 
     public int getRow(){
         return row;
@@ -22,23 +21,33 @@ public class Tile {
         return location;
     }
 
-    public String getCorpName(){
-        return corpNames.get(corp);
+    public String getCorp(){
+        return corp;
     }
 
-    public void setRow(int i){
-        row = i;
+    public void setRow(int y){
+        if (y >= 1 && y <= 9){
+            row = y - 1;
+        }
+        else{
+            row = row;
+        }
     }
 
-    public void setCol(int i){
-        col = i;
+    public void setCol(int x){
+        if (x >= 1 && x <= 12){
+            col = x - 1;
+        }
+        else{
+            col = col;
+        }
     }
 
-    public void setCorpName(int i){
-        this.corp = i;
+    public void setCorp(String name){
+        corp = name;
     }
 
-    public Tile(int row, int col, int corp) {
+    public Tile(int row, int col, String corp) {
         this.row = row;
         this.col = col;
         this.corp = corp;
