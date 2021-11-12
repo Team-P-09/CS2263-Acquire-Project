@@ -46,23 +46,26 @@ public class GameState {
 
 
     public void placeTile(int row, int col){
-//        Tile t = gameboard.getTile(row, col);
         HashMap<String, Tile[]> result = gameboard.recordTile(row, col);
         String action = (new ArrayList<String>(result.keySet())).get(0);
+        Tile[] tArry = result.get(action);
+        String cName = null;
+        Tile t = gameboard.getTile(row, col);
 
         if(action.equals("Add to Corp")){
-            //ADD THE TILE TO THE CORRECT CORP
-
-            //UPDATE TILE WITH CORRECT CORP
+            scoreboard.initCorpTileAdd(tArry);
+            cName = scoreboard.getCorpFromTile(t);
         }else if(action.equals("Merge")){
             //EXECUTE MERGE ACTION
+            //Check merge status
+            //scoreboard.initMerge(tArry); //Players isnt set up yet
             //UPDATE TILE WITH CORRECT CORP
         }else if(action.equals("Founding Tile")){
             //EXECUTE FOUNDING TILE FUNCTION
             //UPDATE TILE WITH CORRECT CORP
         }//The tag "Nothing" is not accounted for as nothing would change from the initialized tile object
-        //UPDATE TILE ON BOARD WITH t
-
+        gameboard.getTile(row, col).setCorp(cName);
 
     }
+
 }

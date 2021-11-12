@@ -14,19 +14,20 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ScoreboardTest {
 
     private HashMap<String, Integer[]> testDisplayInfo;
+    Scoreboard s;
 
     @BeforeEach
     void setUp(){
         String[] corpNames = new String[]{"Worldwide", "Sackson", "Festival", "Imperial", "American", "Tower", "Continental"};
 
-        Scoreboard s = new Scoreboard();
+        s = new Scoreboard();
 
         //Corporations tcorps = new Corporations(corpNames);
 
-        Tile tileA = new Tile('a', '1');
-        Tile tileB = new Tile('a', '2');
-        Tile tileC = new Tile('b', '3');
-        Tile tileD = new Tile('b', '2');
+        Tile tileA = new Tile(1, 1);
+        Tile tileB = new Tile(1, 2);
+        Tile tileC = new Tile(2, 3);
+        Tile tileD = new Tile(2, 2);
 
         s.corporations.addTileToCorp(corpNames[0], tileA);
         s.corporations.addTileToCorp(corpNames[0], tileB);
@@ -55,17 +56,24 @@ public class ScoreboardTest {
 
     }
 
-    @Test void testinitBuy(){
+    @Test void testinitBuyTakesStock(){
+        s.initBuy("Player1", "Worldwide", 13);
+        assertTrue(s.getCorporations().getCorp("Worldwide").getAvailableStocks() == 12);
+    }
+
+    @Test void testinitBuyAddsCash(){
 
     }
 
-    @Test void testinitMerge(){
+
+
+    @Test void testinitMergeSingleDom(){
 
     }
 
-    @Test void testFindDomCorp(){
-        //MAYBE PUT THIS IN CORPORATIONS???
-    }
+//    @Test void testFindDomCorp(){
+//
+//    }
 
     @Test void testinitPlayers(){
         //THIS WILL BE MOVED TO PLAYERS OBJECT

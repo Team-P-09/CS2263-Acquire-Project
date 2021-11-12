@@ -1,8 +1,12 @@
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.lang.reflect.Array;
 import java.util.*;
 
+@Getter @Setter
 public class Scoreboard {
     //List<Player> players;
     ArrayList<String> corpNames = new ArrayList<>(Arrays.asList("Worldwide", "Sackson", "Festival", "Imperial", "American", "Tower", "Continental"));
@@ -31,7 +35,7 @@ public class Scoreboard {
             domCorpName = domCorp.get(0);
         }
         mCorps.remove(domCorpName);
-        corporations.mergeCorps(domCorpName, mCorps);
+        getCorporations().mergeCorps(domCorpName, mCorps);
     }
 
     /**
@@ -44,7 +48,6 @@ public class Scoreboard {
         //METHOD FOR VALIDATING SALE QTY
         int stockVal = corporations.getCorp(corpName).getStockPrice();
         //METHOD FOR EXECUTING THE SALE IN THE PLAYERS WALLET
-        //METHOD FOR UPDATING THE STOCK QTY IN CORPINFO
         corporations.getCorp(corpName).addCorpStock(Qty);
     }
 
@@ -57,11 +60,11 @@ public class Scoreboard {
      * @param Qty
      */
     public void initBuy(String playerName, String corpName, Integer Qty){
-        boolean validQty = this.corporations.getCorp(corpName).getAvailableStocks() >= Qty;
+        boolean validQty = getCorporations().getCorp(corpName).getAvailableStocks() >= Qty;
         if(validQty){
-            int stockVal = corporations.getCorp(corpName).getStockPrice();
+            int stockVal = getCorporations().getCorp(corpName).getStockPrice();
             //METHOD FOR BUYING FROM PLAYER (VALIDATES SALE AMT AND EXECUTES IF ACCEPTABLE)
-            this.corporations.getCorp(corpName).removeCorpStock(Qty);
+            getCorporations().getCorp(corpName).removeCorpStock(Qty);
         }
     }
 
@@ -71,7 +74,7 @@ public class Scoreboard {
      * @param domList
      * @return
      */
-    private boolean checkMergeStatus(ArrayList<String> domList){
+    public boolean checkMergeStatus(ArrayList<String> domList){
         if(domList.size() > 1){
             return true;
         }
@@ -85,7 +88,7 @@ public class Scoreboard {
      * @param tArray
      * @return
      */
-    private ArrayList<String> findCorps(Tile[] tArray){
+    public ArrayList<String> findCorps(Tile[] tArray){
         ArrayList<String> cNames = new ArrayList<>();
         int cSize;
         for(Tile t : tArray){
@@ -105,12 +108,12 @@ public class Scoreboard {
      * @param mCorps
      * @return      Returns the dominate corp name(s)
      */
-    private ArrayList<String> findDomCorp(ArrayList<String> mCorps){
+    public ArrayList<String> findDomCorp(ArrayList<String> mCorps){
         int leadingCorpSize = 0;
         ArrayList<String> domCorpList = new ArrayList<>();
         int cSize;
         for(String s : mCorps){
-            cSize = this.corporations.getCorp(s).getCorpSize();
+            cSize = getCorporations().getCorp(s).getCorpSize();
             if(leadingCorpSize < cSize){
                 domCorpList = new ArrayList<>();
                 domCorpList.add(s);
@@ -170,11 +173,6 @@ public class Scoreboard {
         }
     }
 
-//        //THIS IS NOT NEEDED IT CAN BE REPLACED BY players.add(p)
-//    public void addPlayer(){
-//        System.out.println("AddPlayer");
-//    }
-
     public void getWinners(){
         System.out.println("Get winners");
         //for players in players object
@@ -183,7 +181,7 @@ public class Scoreboard {
     }
 
     /**
-     * Calls the lower tier methods
+     * Sorts through the array and returns the corp name and the tile to be added
      * Step 2/4
      * Method Order:
      *      1 - GameState : placeTile
@@ -191,8 +189,19 @@ public class Scoreboard {
      *      3 - Corporations : addTileToCorp
      *      4 - CorpInfo : addCorpTile
      */
-    public void initCorpTileAdd(String corpName, Tile t){
-        this.corporations.addTileToCorp(corpName, t);
+    public void initCorpTileAdd(Tile[] tArry){ //String corpName, Tile t
+        String corpName = "";
+        Tile tile = new Tile(-1,-1);
+        for(Tile t : tArry){
+            if(t.status && t.getCorp() != null){
+                corpName = t.getCorp();
+            }else if(t.status){tile = t;}
+        }
+        getCorporations().addTileToCorp(corpName, tile);
+    }
+
+    public String getCorpFromTile(Tile t){
+        return getCorporations().getTilesCorp(t);
     }
 
 }

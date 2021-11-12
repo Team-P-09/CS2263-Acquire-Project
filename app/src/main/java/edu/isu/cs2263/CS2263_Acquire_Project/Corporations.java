@@ -1,11 +1,14 @@
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
 import com.google.common.base.Strings;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@Getter @Setter
 public class Corporations {
     HashMap<String, CorpInfo> corps;
 
@@ -59,5 +62,14 @@ public class Corporations {
      */
     public void addTileToCorp(String corpName, Tile t){
         this.corps.get(corpName).addCorpTile(t);
+    }
+
+    public String getTilesCorp(Tile t){
+        for(String cName : getCorps().keySet()){
+            if(getCorp(cName).getCorpTiles().containsKey(t.getLocation())){
+                return cName;
+            }
+        }
+        return null; //CHANGE TO THROW EXCEPTION
     }
 }

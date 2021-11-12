@@ -30,8 +30,8 @@ public class Gameboard {
      * @return
      */
     public HashMap<String, Tile[]> recordTile(int r, int c){
-        Tile t = getTile(r, c);
         activateTile(r,c);
+        Tile t = getTile(r, c);
         String action = decideAction(t);
         Tile[] tMap = {this.getTile(r, c-1), this.getTile(r, c+1), this.getTile(r-1, c), this.getTile(r+1, c)};
         HashMap<String, Tile[]> actionMap = new HashMap<>();

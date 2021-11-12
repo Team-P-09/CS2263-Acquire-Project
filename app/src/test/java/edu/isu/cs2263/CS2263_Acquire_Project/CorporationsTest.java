@@ -71,4 +71,9 @@ public class CorporationsTest {
 //        Corporations tcorp = new Corporations(corpNames);
         assertTrue(tcorps.corps.size() == 7);
     }
+
+    @Test
+    void checkValidation(){
+
+    }
 }
