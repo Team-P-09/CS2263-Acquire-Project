@@ -21,7 +21,7 @@ public class WalletTest {
     void testCashVal(){
         HashMap<String, Integer> stocks = new HashMap<>();
         Wallet wallet = new Wallet(1, stocks);
-        assertEquals(1, wallet.cashValue(), "Cash value not equal.");
+        assertEquals(1, wallet.cashValue(), "Cash value is correct.");
     }
 
     @Test
