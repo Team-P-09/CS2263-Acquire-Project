@@ -5,6 +5,11 @@ import org.junit.jupiter.api.Test;
 public class PlayerTest {
 
     @Test
+    void setup(){
+      //  Player player = new Player("P1", , );
+    }
+
+    @Test
     void testPlayTile(){
 
     }
@@ -36,5 +41,4 @@ public class PlayerTest {
     void testGetScore(){
 
     }
-
 }
