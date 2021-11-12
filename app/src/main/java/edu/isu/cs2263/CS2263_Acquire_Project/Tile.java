@@ -12,7 +12,7 @@ public class Tile {
         return row;
     }
 
-    public int getCol(){
+    public char getCol(){
         return col;
     }
 

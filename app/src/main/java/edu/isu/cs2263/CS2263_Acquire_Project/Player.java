@@ -33,10 +33,11 @@ public class Player {
     public void merge(){
 
     }
-    private void orderBuy(Corporation corp, int amt){
+
+    private void orderBuy(Corporations corp, int amt){
 
     }
-    private void orderSell(Corporation corp, int amt){
+    private void orderSell(Corporations corp, int amt){
 
     }
     public int getScore(){
