@@ -6,7 +6,7 @@ import java.util.List;
 public class Tile {
     int row = 0;
     int col = 0;
-    String corp;
+    String corp= "";
 
     public int getRow(){
         return row;
