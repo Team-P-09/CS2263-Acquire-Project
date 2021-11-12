@@ -5,16 +5,21 @@ import org.junit.jupiter.api.Test;
 public class HandTest {
 
     @Test
-    void handInitTest(){
+    void setUp(){
 
     }
+
     @Test
     void testDrawTile(){
-
+        //
+    }
+    @Test
+    void testDrawHand(){
+        //size should equal 6
     }
     @Test
     void testRefreshHand(){
-
+        //size still 6
     }
 
 }
