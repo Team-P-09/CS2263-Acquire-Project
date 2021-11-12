@@ -5,15 +5,12 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestTileStack {
-    @BeforeEach
-    void setUp(){
-        TileStack testingTileStack = new TileStack();
-        testingTileStack.initializeTiles();
-    }
+
+    TileStack testTileStack = new TileStack();
 
     @Test
     void testPopTile(){
-        assertNotNull(testingTileStack.popTile());
+        testTileStack.initializeTiles();
+        assertNotNull(testTileStack.popTile());
     }
-
 }
