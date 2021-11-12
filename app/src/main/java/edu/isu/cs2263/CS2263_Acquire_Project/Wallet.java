@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 public class Wallet {
     //instance variables
-    int Cash;
-    HashMap<String, Integer> Stocks;
+    int cash;
+    HashMap<String, Integer> stocks;
     //******Use Integer instead of int here?
 
     //Constructor method

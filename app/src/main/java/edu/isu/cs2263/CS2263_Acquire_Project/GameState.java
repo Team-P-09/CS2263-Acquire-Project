@@ -1,7 +1,9 @@
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
+import java.util.*;
+
 public class GameState {
-    //Gameboard gameboard;
+    Gameboard gameboard;
 
     public static void main(String[] args) {
 
@@ -46,5 +48,29 @@ public class GameState {
 
     public void displayHand(){
         System.out.println("Displayhand");
+    }
+
+
+
+
+    public void placeTile(char row, char col){
+        //RECORD TILE WILL RETURN A TILE OBJECT
+        gameboard.recordTile();
+        Tile t = new Tile(row, col, null);
+        HashMap<String, Tile[]> result = new HashMap<>();
+        String action = (new ArrayList<String>(result.keySet())).get(0);
+
+        if(action.equals("Add to corp")){
+            //ADD THE TILE TO THE CORRECT CORP
+            //UPDATE TILE WITH CORRECT CORP
+        }else if(action.equals("Merge")){
+            //EXECUTE MERGE ACTION
+            //UPDATE TILE WITH CORRECT CORP
+        }else if(action.equals("Founding Tile")){
+            //EXECUTE FOUNDING TILE FUNCTION
+            //UPDATE TILE WITH CORRECT CORP
+        }//The tag "Nothing" is not accounted for as nothing would change from the initialized tile object
+        //UPDATE TILE ON BOARD WITH t
+
     }
 }

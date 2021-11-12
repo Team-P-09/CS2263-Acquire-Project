@@ -7,6 +7,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TestGameboard {
     @Test
     void testRecordTile(){
-        recordTile(Tile);
+        //recordTile(Tile);
     }
 }

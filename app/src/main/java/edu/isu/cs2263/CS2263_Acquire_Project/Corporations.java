@@ -9,24 +9,32 @@ import java.util.List;
 public class Corporations {
     HashMap<String, CorpInfo> corps;
 
-    public Corporations(String[] corpNames){
+    public Corporations(ArrayList<String> corpNames){
         corps = initializeCorps(corpNames);
     }
 
-    public void mergeCorps(String domCorpName, String[] subCorpNames){
+    public void mergeCorps(String domCorpName, ArrayList<String> subCorpNames){
         for(String corpName : subCorpNames){
-            this.getCorp(domCorpName).corpTiles.addAll(this.getCorp(corpName).retrieveTiles());
+            //this.getCorp(domCorpName).corpTiles.addAll(this.getCorp(corpName).retrieveTiles());
+            CorpInfo domCorp = this.getCorp(domCorpName);
+            HashMap<String, Tile> domTiles = domCorp.getCorpTiles();
+            CorpInfo subCorp = this.getCorp(corpName);
+            HashMap<String, Tile> subTiles = subCorp.retrieveTiles();
+            domTiles.putAll(subTiles);
+            this.getCorp(corpName).setCorpTiles(domTiles);
+//
+//            this.getCorp(domCorpName).setCorpTiles(this.getCorp(domCorpName).getCorpTiles().putAll(subTiles));
             this.getCorp(corpName).setStatus(false);
         }
     }
 
-    private HashMap<String, CorpInfo> initializeCorps(String[] corpNames){
+    private HashMap<String, CorpInfo> initializeCorps(ArrayList<String> corpNames){
         HashMap<String, CorpInfo> initCorp = new HashMap<>();
-        int stPrice = 100;
-        int avStocks = 25;
-        ArrayList<Tile> coTiles = new ArrayList<>();
-        int coSize = 0;
-        boolean stat = false;
+//        int stPrice = 100;
+//        int avStocks = 25;
+//        ArrayList<Tile> coTiles = new ArrayList<>();
+//        int coSize = 0;
+//        boolean stat = false;
 
         for(String corpName : corpNames){
             initCorp.put(corpName, new CorpInfo());
@@ -38,6 +46,17 @@ public class Corporations {
         return this.corps.get(corpName);
     }
 
+    /**
+     * Calls lower tier method
+     * Step 3/4
+     * Method Order:
+     *      1 - GameState : placeTile
+     *      2 - Scoreboard : initCorpTileAdd
+     *      3 - Corporations : addTileToCorp
+     *      4 - CorpInfo : addCorpTile
+     * @param corpName
+     * @param t
+     */
     public void addTileToCorp(String corpName, Tile t){
         this.corps.get(corpName).addCorpTile(t);
     }

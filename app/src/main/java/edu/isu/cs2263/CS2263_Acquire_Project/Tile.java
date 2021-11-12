@@ -10,9 +10,11 @@ public class Tile {
         return row;
     }
 
-    public Tile(char r, char c){
+    public Tile(char r, char c, String n){
         row = r;
         col = c;
+        location = String.valueOf(col) + String.valueOf(row);
+        corpName = n;
     }
 
     public char getCol(){
