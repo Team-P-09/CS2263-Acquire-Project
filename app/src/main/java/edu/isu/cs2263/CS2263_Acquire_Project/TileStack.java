@@ -26,7 +26,7 @@ public class TileStack {
     public void initializeTiles(){
         for (int i = 0; i < width; i++){
             for (int j = 0; j < height; j++){
-                Tile tile = new Tile(j+1, i+1, null);
+                Tile tile = new Tile(j, i);
                 tileStack.add(tile);
             }
         }

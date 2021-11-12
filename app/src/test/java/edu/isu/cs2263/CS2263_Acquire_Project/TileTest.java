@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TileTest {
 
-    Tile testTile = new Tile(1, 1, null);
+    Tile testTile = new Tile(1, 1);
 
     @BeforeEach
     void setUp(){
@@ -51,6 +51,5 @@ class TileTest {
         testTile.setCorp("not a corp");
         assertEquals( "not a corp", testTile.getCorp());
     }
-
 
 }
