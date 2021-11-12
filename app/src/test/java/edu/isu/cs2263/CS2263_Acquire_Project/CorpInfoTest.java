@@ -16,7 +16,7 @@ public class CorpInfoTest {
     @BeforeEach
     void setUp(){
         tcorp = new CorpInfo();
-        Tile t = new Tile('a', '1', null);
+        Tile t = new Tile(1, 1);
 
         HashMap<String, Tile> nT = new HashMap<>();
         nT.put(t.getLocation(), t);

@@ -1,5 +1,6 @@
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class Scoreboard {
@@ -17,7 +18,7 @@ public class Scoreboard {
      * tArray will be a size of 5, order of entry is unimportant, Array datatype is used for easy iteration
      * Calls mergeCorps from Corporations
      */
-    public void initMerge(Tile[] tArray){
+    public void initMerge(Tile[] tArray, ArrayList<String> mPlayers){
         ArrayList<String> mCorps = findCorps(tArray); //We will be used to identify the players who will need to take a merge action
         ArrayList<String> domCorp = findDomCorp(mCorps);
         String domCorpName;
@@ -33,6 +34,12 @@ public class Scoreboard {
         corporations.mergeCorps(domCorpName, mCorps);
     }
 
+    /**
+     * Initiates and controls the sell operation updating the available stocks for a corp and updating the sock and cash of a player
+     * @param playerName
+     * @param corpName
+     * @param Qty
+     */
     public void initSell(String playerName, String corpName, Integer Qty){
         //METHOD FOR VALIDATING SALE QTY
         int stockVal = corporations.getCorp(corpName).getStockPrice();
@@ -58,7 +65,13 @@ public class Scoreboard {
         }
     }
 
-    public boolean checkMergeStatus(ArrayList<String> domList){
+    /**
+     * Returns true if there are two or more corps tied for largest size
+     * Returns false if there is only one dominate corp
+     * @param domList
+     * @return
+     */
+    private boolean checkMergeStatus(ArrayList<String> domList){
         if(domList.size() > 1){
             return true;
         }

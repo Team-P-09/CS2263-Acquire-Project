@@ -24,14 +24,14 @@ public class CorporationsTest {
         corpNames.add("tcorpC");
 
         domCorpName = corpNames.get(0);
-        subCorpNames = new ArrayList(corpNames.subList(1, corpNames.size()));//Arrays.copyOfRange(corpNames, 1, corpNames.size());
+        subCorpNames = new ArrayList(corpNames.subList(1, corpNames.size()));
 
         tcorps = new Corporations(corpNames);
 
-        Tile tileA = new Tile('a', '1', null);
-        Tile tileB = new Tile('a', '2', null);
-        Tile tileC = new Tile('b', '3', null);
-        Tile tileD = new Tile('b', '2', null);
+        Tile tileA = new Tile(1, 1);
+        Tile tileB = new Tile(1, 2);
+        Tile tileC = new Tile(2, 3);
+        Tile tileD = new Tile(2, 2);
 
         tcorps.addTileToCorp(domCorpName, tileA);
         tcorps.addTileToCorp(domCorpName, tileB);

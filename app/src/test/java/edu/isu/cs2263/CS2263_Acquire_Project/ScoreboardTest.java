@@ -23,10 +23,10 @@ public class ScoreboardTest {
 
         //Corporations tcorps = new Corporations(corpNames);
 
-        Tile tileA = new Tile('a', '1', null);
-        Tile tileB = new Tile('a', '2', null);
-        Tile tileC = new Tile('b', '3', null);
-        Tile tileD = new Tile('b', '2', null);
+        Tile tileA = new Tile('a', '1');
+        Tile tileB = new Tile('a', '2');
+        Tile tileC = new Tile('b', '3');
+        Tile tileD = new Tile('b', '2');
 
         s.corporations.addTileToCorp(corpNames[0], tileA);
         s.corporations.addTileToCorp(corpNames[0], tileB);

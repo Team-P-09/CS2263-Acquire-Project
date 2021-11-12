@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1000.0" style="-fx-background-color: radial-gradient(center 50% 50%, radius 50%, rgb(191, 57, 60) 0%, rgb(104, 17, 17) 100%);" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Text layoutX="298.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Acquire">
+         <font>
+            <Font size="120.0" />
+         </font>
+      </Text>
+      <Text layoutX="502.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The board game">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Text>
+      <Button id="newGameButton" alignment="CENTER" layoutX="370.0" layoutY="298.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="262.0" text="Start New Game">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Button>
+      <Button id="loadGameButton" alignment="CENTER" layoutX="371.0" layoutY="357.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="262.0" text="Load Game">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Button>
+      <Button id="exitButton" alignment="CENTER" layoutX="415.0" layoutY="417.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="175.0" text="Exit Acquire">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+   </children>
+</Pane>
