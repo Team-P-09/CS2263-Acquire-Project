@@ -5,8 +5,20 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestGameboard {
+
+    Gameboard testGameboard = new Gameboard();
+    Tile testTile = new Tile(3, 3, null);
+    @BeforeEach
+    public void setUp(){
+        testTile.setRow(3);
+        testTile.setCol(3);
+        testTile.setCorp(null);
+    }
+
     @Test
-    void testRecordTile(){
-        recordTile(Tile);
+    public void testRecordTile(){
+        Tile tile = testTile;
+        testGameboard.recordTile(tile);
+        assertNotNull(testGameboard.gameboard[testTile.getRow()][testTile.getCol()]);
     }
 }
