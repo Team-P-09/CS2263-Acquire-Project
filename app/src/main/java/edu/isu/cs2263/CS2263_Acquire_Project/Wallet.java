@@ -3,6 +3,7 @@ package edu.isu.cs2263.CS2263_Acquire_Project;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 @Getter @Setter
@@ -13,18 +14,18 @@ public class Wallet {
     //contains corp name and quantity of stocks in that corp
 
     //Constructor method
-    public Wallet(int the_cash, HashMap<String, Integer> the_stocks){
-        cash = the_cash;
-        stocks = the_stocks;
+    public Wallet(ArrayList<String> corpNames){
+        cash = 6000;
+        stocks = initWallet(corpNames);
     }
-    //other methods
-//    public int cashValue(){return cash;}
-//
-//    public int stockValue(){
-//        int stockVal = 0;
-//        System.out.println(Stocks.keySet());
-//        return stockVal;
-//    }
+
+    public HashMap<String, Integer> initWallet(ArrayList<String> corpNames){
+        HashMap<String, Integer> newWallet = new HashMap<>();
+        for(String cName : corpNames){
+            newWallet.put(cName, 0);
+        }
+        return newWallet;
+    }
 
     private void trade(String corpName, int quant){
         //trade defunct stock for surviving corp if they are available

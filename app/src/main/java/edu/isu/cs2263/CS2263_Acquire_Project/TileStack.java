@@ -2,12 +2,16 @@ package edu.isu.cs2263.CS2263_Acquire_Project;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
+@Getter @Setter
 public class TileStack {
     int height;
     int width;
@@ -16,23 +20,31 @@ public class TileStack {
     public TileStack(){
         height = 9;
         width  = 12;
-        tileStack = new ArrayList<>();
+        tileStack = initializeTiles();
     }
 
     public boolean isEmpty(){
         return tileStack.isEmpty();
     }
 
-    public void initializeTiles(){
+    public ArrayList<Tile> initializeTiles(){
+        ArrayList<Tile> newTStack = new ArrayList<>();
         for (int i = 0; i < width; i++){
             for (int j = 0; j < height; j++){
                 Tile tile = new Tile(j, i);
-                tileStack.add(tile);
+                newTStack.add(tile);
             }
         }
-        for (Tile tile : tileStack){
-            System.out.println(tile.getLocation());
+        Collections.shuffle(newTStack);
+        return newTStack;
+    }
+
+    public ArrayList<Tile> pullTiles(Integer qty){
+        ArrayList<Tile> pulledTiles = new ArrayList<>();
+        for(int i = 0 ; i < qty ; i++){
+            pulledTiles.add(popTile());
         }
+        return pulledTiles;
     }
 
     public void saveTileStack(){

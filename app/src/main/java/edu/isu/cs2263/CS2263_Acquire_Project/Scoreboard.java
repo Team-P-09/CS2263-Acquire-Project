@@ -8,7 +8,7 @@ import java.util.*;
 
 @Getter @Setter
 public class Scoreboard {
-    //List<Player> players;
+    Players players;
     ArrayList<String> corpNames = new ArrayList<>(Arrays.asList("Worldwide", "Sackson", "Festival", "Imperial", "American", "Tower", "Continental"));
     Corporations corporations;
 
@@ -157,20 +157,6 @@ public class Scoreboard {
 
     public void displayPlayers(){
         System.out.println("displayPlayers");
-    }
-
-    /**
-     * Initializes a players list object
-     * @param playerNames
-     */
-    public void initPlayers(List<String> playerNames){
-        //create a new player instance
-        //WAITING FOR PLAYER CLASS TO BE FINISHED BEFORE IMPLEMENTATION
-        //PLAYERS CLASS MAY BE IMPLEMENTED AND PLAYER WILL BE RENAMED TO PLAYERINFO
-        //THIS WILL METHOD WILL BE MOVED TO THE PLAYERS CLASS IF CREATED
-        for(String s : playerNames){
-            System.out.println(s); //this will
-        }
     }
 
     public void getWinners(){
