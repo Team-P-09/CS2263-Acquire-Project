@@ -10,10 +10,6 @@ public class GameState {
     Gameboard gameboard;
     Scoreboard scoreboard;
 
-//    public static void main(String[] args) {
-//        startGame();
-//    }
-
     public GameState(Integer numberOfPlayers){
         gameboard = new Gameboard();
         scoreboard = new Scoreboard(numberOfPlayers);
@@ -48,16 +44,15 @@ public class GameState {
         System.out.println("Displayhand");
     }
 
-    public void placeTile(Tile pt){
-        HashMap<String, List<Tile>> result = getGameboard().recordTile(pt);
+    public void placeTile(Tile handTile){
+        HashMap<String, List<Tile>> result = getGameboard().recordTile(handTile);
         String action = (new ArrayList<>(result.keySet())).get(0);
         List<Tile> tList = result.get(action);
         String cName = null;
-        Tile t = gameboard.getTile(pt.getRow(), pt.getCol());
 
         if(action.equals("Add to Corp")){
-            scoreboard.initCorpTileAdd(tList);
-            cName = scoreboard.getCorpFromTile(t);
+            getScoreboard().initCorpTileAdd(tList);
+            cName = getScoreboard().getCorpFromTile(handTile);
         }else if(action.equals("Merge")){
             //EXECUTE MERGE ACTION
             //Check merge status
@@ -67,8 +62,7 @@ public class GameState {
             //EXECUTE FOUNDING TILE FUNCTION
             //UPDATE TILE WITH CORRECT CORP
         }//The tag "Nothing" is not accounted for as nothing would change from the initialized tile object
-        gameboard.getTile(pt.getRow(), pt.getCol()).setCorp(cName);
-
+        getGameboard().getTile(handTile.getRow(), handTile.getCol()).setCorp(cName); //Sets the corporation for the tile on the gameboard
     }
 
 }

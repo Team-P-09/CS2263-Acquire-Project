@@ -48,7 +48,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass = 'edu.isu.cs2263.CS2263_Acquire_Project.App'
+    mainClass = 'edu.isu.cs2263.CS2263_Acquire_Project.UI'
 }
 
 tasks.named('test') {

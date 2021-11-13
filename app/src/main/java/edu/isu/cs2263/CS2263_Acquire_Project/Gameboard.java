@@ -1,13 +1,15 @@
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@Getter
 public class Gameboard {
-    //public Tile tile;
     public String infoCard;
-    Tile[][] gameboard = new Tile[9][12];
+    Tile[][] gameboard;
 
     public Gameboard(){
         gameboard = initGameboard();
@@ -19,27 +21,24 @@ public class Gameboard {
      * @return
      */
     public HashMap<String, List<Tile>> recordTile(Tile t){
-        activateTile(t.getRow(), t.getCol());
-//        Tile t = getTile(r, c);
-        //Logic for getting adjacent tiles
+        activateTile(t);
         List<Tile> tList = getAdjacentTiles(t);
+        tList.add(t); //add the initial tile to the tile List
+        String action = decideAction(tList);
 
-        String action = decideAction(t);
-
-
-//        Tile[] tMap = {this.getTile(r, c-1), this.getTile(r, c+1), this.getTile(r-1, c), this.getTile(r+1, c)};
         HashMap<String, List<Tile>> actionMap = new HashMap<>();
         actionMap.put(action, tList);
         return actionMap;
     }
 
     public Tile[][] initGameboard(){
-        for(int r = 0 ; r < gameboard.length ; r++){
-            for(int c = 0 ; c < gameboard[r].length ; c ++){
-                gameboard[r][c] = new Tile(r, c);
+        Tile[][] gboard = new Tile[9][12];
+        for(int r = 0 ; r < gboard.length ; r++){
+            for(int c = 0 ; c < gboard[r].length ; c ++){
+                gboard[r][c] = new Tile(r, c);
             }
         }
-        return gameboard;
+        return gboard;
     }
 
     public List<Tile> getAdjacentTiles(Tile t){
@@ -76,22 +75,20 @@ public class Gameboard {
         return adjTList;
     }
 
-    public String decideAction(Tile tile){
-
-        //WRITE CODE TO VERIFY BOUNDS OF ARRAY LIST
-        String tileUp = gameboard[tile.getCol()][tile.getRow()+1].getCorp();
-        String tileDown = gameboard[tile.getCol()][tile.getRow()-1].getCorp();
-        String tileLeft = gameboard[tile.getCol()-1][tile.getRow()].getCorp();
-        String tileRight = gameboard[tile.getCol()+1][tile.getRow()].getCorp();
-
-        String[] adjCNames = new String[]{tileUp, tileDown, tileLeft, tileRight};
-
+    /**
+     * Decides the necissary action based on a list of adjacent tiles
+     * @param tList
+     * @return
+     */
+    public String decideAction(List<Tile> tList){
         String action;
         String aStat;
+        String cName;
 
         //Get data for all of the adjacent tiles
         HashMap<String, Integer> adjCorps = new HashMap<>();
-        for(String cName : adjCNames){
+        for(Tile t : tList){
+            cName = t.getCorp();
             if(adjCorps.containsKey(cName)){
                 adjCorps.put(cName, adjCorps.get(cName) + 1);
             }
@@ -115,15 +112,19 @@ public class Gameboard {
     }
 
     public Tile getTile(int r, int c){
-        return gameboard[r][c];
+        return getGameboard()[r][c];
     }
 
-    private void updateTileCorp(int r, int c, String cName){
-        gameboard[r][c].setCorp(cName);
+    private void updateTileCorp(Tile t, String cName){
+        int row = t.getRow();
+        int col = t.getCol();
+        getGameboard()[row][col].setCorp(cName);
     }
 
-    private void activateTile(int r, int c){
-        gameboard[r][c].activateTile();
+    private void activateTile(Tile t){
+        int row = t.getRow();
+        int col = t.getCol();
+        getGameboard()[row][col].activateTile();
     }
 
 

@@ -28,8 +28,8 @@ public class CorpInfo {
      */
     public HashMap<String, Tile> retrieveTiles(){
         //ArrayList<Tile> outTiles = this.corpTiles;
-        HashMap<String, Tile> outTiles = this.corpTiles;
-        this.corpTiles = new HashMap<String, Tile>();//ArrayList<Tile>();
+        HashMap<String, Tile> outTiles = getCorpTiles();
+        setCorpTiles(new HashMap<>());//ArrayList<Tile>();
         return outTiles;
     }
 
