@@ -10,10 +10,8 @@ import java.util.List;
 public class Gameboard {
     public String infoCard;
     Tile[][] gameboard;
-    TileStack tileStack;
 
     public Gameboard(){
-        tileStack = new TileStack();
         gameboard = initGameboard();
     }
 
