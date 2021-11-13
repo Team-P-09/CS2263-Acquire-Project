@@ -12,9 +12,9 @@ public class Scoreboard {
     ArrayList<String> corpNames = new ArrayList<>(Arrays.asList("Worldwide", "Sackson", "Festival", "Imperial", "American", "Tower", "Continental"));
     Corporations corporations;
 
-    public Scoreboard() {
-        corporations = new Corporations(corpNames);
-        //Initialize Players
+    public Scoreboard(Integer numberOfPlayers) {
+        corporations = new Corporations(getCorpNames());
+        players = new Players(numberOfPlayers, getCorpNames());
     }
 
     /**
@@ -175,10 +175,10 @@ public class Scoreboard {
      *      3 - Corporations : addTileToCorp
      *      4 - CorpInfo : addCorpTile
      */
-    public void initCorpTileAdd(Tile[] tArry){ //String corpName, Tile t
+    public void initCorpTileAdd(List<Tile> tList){ //String corpName, Tile t
         String corpName = "";
         Tile tile = new Tile(-1,-1);
-        for(Tile t : tArry){
+        for(Tile t : tList){
             if(t.status && t.getCorp() != null){
                 corpName = t.getCorp();
             }else if(t.status){tile = t;}

@@ -13,29 +13,23 @@ public class Gameboard {
         gameboard = initGameboard();
     }
 
-//    public void recordTile(Tile tile){
-//        int x = tile.getCol();
-//        int y = tile.getRow();
-//        String corp = tile.getCorp();
-//
-//        gameboard[x][y] = tile;
-//        assignTileCorp(tile);
-//    }
-
     /**
      * Activates the placed tile
      * Returns a HashMap for the action that will be taken after the tile is played
-     * @param r the row cords of the new tile
-     * @param c the col cords of the new tile
      * @return
      */
-    public HashMap<String, Tile[]> recordTile(int r, int c){
-        activateTile(r,c);
-        Tile t = getTile(r, c);
+    public HashMap<String, List<Tile>> recordTile(Tile t){
+        activateTile(t.getRow(), t.getCol());
+//        Tile t = getTile(r, c);
+        //Logic for getting adjacent tiles
+        List<Tile> tList = getAdjacentTiles(t);
+
         String action = decideAction(t);
-        Tile[] tMap = {this.getTile(r, c-1), this.getTile(r, c+1), this.getTile(r-1, c), this.getTile(r+1, c)};
-        HashMap<String, Tile[]> actionMap = new HashMap<>();
-        actionMap.put(action, tMap);
+
+
+//        Tile[] tMap = {this.getTile(r, c-1), this.getTile(r, c+1), this.getTile(r-1, c), this.getTile(r+1, c)};
+        HashMap<String, List<Tile>> actionMap = new HashMap<>();
+        actionMap.put(action, tList);
         return actionMap;
     }
 
@@ -48,8 +42,43 @@ public class Gameboard {
         return gameboard;
     }
 
+    public List<Tile> getAdjacentTiles(Tile t){
+        int row = t.getRow();
+        int col = t.getCol();
+        List<Tile> adjTiles = new ArrayList<>();
+        adjTiles = checkAdj(row, col, adjTiles, true);
+        adjTiles = checkAdj(col, row, adjTiles, false);
+        return adjTiles;
+    }
+
+    /**
+     * Validates that the dimensions will not exceed the max gameboard size
+     * @param dimA
+     * @param dimB
+     * @param adjTList
+     * @param isRow
+     * @return
+     */
+    private List<Tile> checkAdj(Integer dimA, Integer dimB, List<Tile> adjTList, Boolean isRow){
+        int dimAMax;
+        if(isRow){
+            dimAMax = 9;
+        }else{
+            dimAMax = 12;
+        }
+        for(int i = -1 ; i < 2 ; i+=2){
+            dimA = dimA + i;
+            if(dimA <= dimAMax || dimA >=0){
+                if(isRow){adjTList.add(getTile(dimA, dimB));}
+                else{adjTList.add(getTile(dimB, dimA));}
+            }
+        }
+        return adjTList;
+    }
 
     public String decideAction(Tile tile){
+
+        //WRITE CODE TO VERIFY BOUNDS OF ARRAY LIST
         String tileUp = gameboard[tile.getCol()][tile.getRow()+1].getCorp();
         String tileDown = gameboard[tile.getCol()][tile.getRow()-1].getCorp();
         String tileLeft = gameboard[tile.getCol()-1][tile.getRow()].getCorp();

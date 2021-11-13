@@ -8,44 +8,32 @@ import java.util.*;
 
 @Getter @Setter
 public class Players {
-    ArrayList<String> pNameOrder; //ORDER OF PLAYERS AND PLAYER NAMES
-    HashMap<String, PlayerInfo> activePlayers; //THIS WILL BE THE HASHMAP FOR PLAYERS AND THEIR INFO
+    ArrayList<PlayerInfo> activePlayers; //ORDER OF PLAYERS AND PLAYER NAMES
     TileStack tStack;
 
 
     public Players(Integer number, ArrayList<String> corpNames){
-        pNameOrder = orderPlayers(number);
-        activePlayers = initPlayers(pNameOrder, corpNames);
+        activePlayers = initPlayers(number, corpNames);
         tStack = new TileStack();
     }
 
     /**
-     * Initializes the HashMap for players
-     * Requires orderPlayers to be ran first
-     * @param pNames
+     *
+     * @param number
      * @param corpNames
      * @return
      */
-    public HashMap<String, PlayerInfo> initPlayers(ArrayList<String> pNames, ArrayList<String> corpNames){
-        HashMap<String, PlayerInfo> newPlayers = new HashMap<>();
+    public ArrayList<PlayerInfo> initPlayers(Integer number, ArrayList<String> corpNames){
+        ArrayList<PlayerInfo> newPlayers = new ArrayList<>();
+        ArrayList<String> playerList = namePlayers(number);
+        ArrayList<String> pNames = sortPlayers(playerList);
 
         for(int i = 0 ; i < pNames.size() ; i++){
             ArrayList<Tile> tArry = getTStack().pullTiles(6);
             PlayerInfo newP = new PlayerInfo(pNames.get(i), corpNames, tArry);
-            newPlayers.put(pNames.get(i), newP);
+            newPlayers.add(newP);
         }
         return newPlayers;
-    }
-
-    /**
-     * names and orders Players
-     * Must be ran before initPlayers
-     * @param number
-     * @return
-     */
-    public ArrayList<String> orderPlayers(Integer number){
-        ArrayList<String> playerList = namePlayers(number);
-        return sortPlayers(playerList);
     }
 
     /**
