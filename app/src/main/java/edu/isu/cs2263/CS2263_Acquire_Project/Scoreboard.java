@@ -1,5 +1,6 @@
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
+import javafx.scene.control.ChoiceDialog;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,14 +27,27 @@ public class Scoreboard {
         ArrayList<String> mCorps = findCorps(tArray); //We will be used to identify the players who will need to take a merge action
         ArrayList<String> domCorp = findDomCorp(mCorps);
         String domCorpName;
+
         if(checkMergeStatus(domCorp)){
-            //NOTIFY PLAYER THAT THEY NEED TO SELECT
-            //RUN CORP MERGE ON SELECTED CORP
-            int choiceIndex = 0; //THIS WILL BE DECIDED BY PLAYER INPUT
+            ArrayList<String> choices = new ArrayList<>();
+            for(String dCorpName : domCorp){
+                choices.add(dCorpName);
+            }
+
+            ChoiceDialog<String> dialog = new ChoiceDialog<>(domCorp.get(0), choices);
+            dialog.setTitle("Chose the dominate corporation");
+            dialog.setHeaderText("Corporation names?");
+
+
+            int choiceIndex = domCorp.indexOf(dialog); //THIS WILL BE DECIDED BY PLAYER INPUT
             domCorpName = domCorp.get(choiceIndex);
         }else{
             domCorpName = domCorp.get(0);
         }
+        //FIND ALL PLAYERS THAT WILL BE AFFECTED BY THIS MERGE
+        //LOOP THROUGH THEM GIVING THEM THE BUY/SELL/HOLD OPTIONS
+        //
+
         mCorps.remove(domCorpName);
         getCorporations().mergeCorps(domCorpName, mCorps);
     }
@@ -68,6 +82,8 @@ public class Scoreboard {
         }
     }
 
+
+
     /**
      * Returns true if there are two or more corps tied for largest size
      * Returns false if there is only one dominate corp
@@ -92,7 +108,7 @@ public class Scoreboard {
         ArrayList<String> cNames = new ArrayList<>();
         int cSize;
         for(Tile t : tArray){
-            for(Map.Entry<String, CorpInfo> c : corporations.corps.entrySet()){
+            for(Map.Entry<String, CorpInfo> c : getCorporations().getCorps().entrySet()){
                 if(c.getValue().getCorpTiles().containsKey(t)){
                     cNames.add(c.getKey());
                     break; //each tile can only appear once therefore we stop looking
@@ -138,7 +154,7 @@ public class Scoreboard {
         int cPrice;
         int cStocks;
 
-        for(Map.Entry<String, CorpInfo> c : this.corporations.corps.entrySet()){
+        for(Map.Entry<String, CorpInfo> c : getCorporations().getCorps().entrySet()){
             Integer[] infoArray = new Integer[3];
             String cName = c.getKey();
             cSize = c.getValue().getCorpSize();
