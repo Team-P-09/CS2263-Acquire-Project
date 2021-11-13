@@ -32,7 +32,7 @@ public class TestGameboard {
         Tile tile = testTile;
         int row = tile.getRow();
         int col = tile.getCol();
-        testGameboard.recordTile(row, col);
+        testGameboard.recordTile(tile);
         assertNotNull(testGameboard.gameboard[testTile.getRow()][testTile.getCol()]);
     }
 
