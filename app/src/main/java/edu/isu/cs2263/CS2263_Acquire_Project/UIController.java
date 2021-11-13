@@ -3,11 +3,14 @@ package edu.isu.cs2263.CS2263_Acquire_Project;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
@@ -47,13 +50,19 @@ public class UIController {
             Boolean check = false;
             for (int i = 0; i < 12; i++){
                 for (int j = 0; j < 9; j++){
-                    Pane pane = new Pane();
-                    pane.setId(i + "_" + j);
-                    pane.setPrefWidth(5.0);
-                    pane.setPrefHeight(5.0);
+                    StackPane stackPane = new StackPane();
+                    Text text = new Text();
 
-                    pane.setStyle("-fx-background-color: lightgray;-fx-border-color: darkgray;");
-                    gameboard.add(pane, i, j);
+                    stackPane.setId(i + "_" + j);
+                    stackPane.setPrefWidth(5.0);
+                    stackPane.setPrefHeight(5.0);
+
+                    text.setText(i + ", " + j);
+
+                    stackPane.setStyle("-fx-background-color: lightgray;-fx-border-color: darkgray;");
+                    stackPane.getChildren().add(text);
+                    stackPane.setAlignment(text, Pos.CENTER);
+                    gameboard.add(stackPane, i, j);
 
                 }
             }
