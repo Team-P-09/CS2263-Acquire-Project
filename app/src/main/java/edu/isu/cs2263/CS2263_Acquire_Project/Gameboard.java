@@ -34,12 +34,13 @@ public class Gameboard {
     }
 
     public Tile[][] initGameboard(){
-        for(int r = 0 ; r < gameboard.length ; r++){
-            for(int c = 0 ; c < gameboard[r].length ; c ++){
-                gameboard[r][c] = new Tile(r, c);
+        Tile[][] gboard = new Tile[9][12];
+        for(int r = 0 ; r < gboard.length ; r++){
+            for(int c = 0 ; c < gboard[r].length ; c ++){
+                gboard[r][c] = new Tile(r, c);
             }
         }
-        return gameboard;
+        return gboard;
     }
 
     public List<Tile> getAdjacentTiles(Tile t){

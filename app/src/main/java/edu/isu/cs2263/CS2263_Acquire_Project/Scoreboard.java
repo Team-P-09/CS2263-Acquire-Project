@@ -38,9 +38,13 @@ public class Scoreboard {
             dialog.setTitle("Chose the dominate corporation");
             dialog.setHeaderText("Corporation names?");
 
+            Optional<String> domChoice = dialog.showAndWait();
+            while(!domChoice.isPresent()){
+                domChoice = dialog.showAndWait();
+            }
 
-            int choiceIndex = domCorp.indexOf(dialog); //THIS WILL BE DECIDED BY PLAYER INPUT
-            domCorpName = domCorp.get(choiceIndex);
+            //int choiceIndex = domCorp.indexOf(dialog); //THIS WILL BE DECIDED BY PLAYER INPUT
+            domCorpName = dialog.getSelectedItem();//domCorp.get(choiceIndex);
         }else{
             domCorpName = domCorp.get(0);
         }
