@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.isu.cs2263.CS2263_Acquire_Project.UIController">
    <children>
       <GridPane prefHeight="680.0" prefWidth="1000.0">
         <columnConstraints>
@@ -46,6 +46,20 @@
                <padding>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </padding>
+               <children>
+                  <Pane fx:id="1_1" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: lightgray;" />
+                  <Pane fx:id="1_2" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" />
+                  <Pane fx:id="1_3" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" />
+                  <Pane fx:id="1_4" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" />
+                  <Pane fx:id="1_5" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" />
+                  <Pane fx:id="1_6" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" />
+                  <Pane fx:id="1_7" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" />
+                  <Pane fx:id="1_8" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" />
+                  <Pane fx:id="1_9" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8" />
+                  <Pane fx:id="1_10" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="9" />
+                  <Pane fx:id="1_11" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="10" />
+                  <Pane fx:id="1_12" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="11" />
+               </children>
             </GridPane>
             <GridPane id="PlayerContainer" gridLinesVisible="true" GridPane.rowIndex="1">
               <columnConstraints>
