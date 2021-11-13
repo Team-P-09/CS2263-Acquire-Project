@@ -24,7 +24,7 @@ public class TileStack {
     }
 
     public boolean isEmpty(){
-        return tileStack.isEmpty();
+        return getTileStack().isEmpty();
     }
 
     public ArrayList<Tile> initializeTiles(){
