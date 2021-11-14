@@ -27,27 +27,45 @@ public class Wallet {
         return newWallet;
     }
 
-    private void trade(String corpName, int quant){
-        //trade defunct stock for surviving corp if they are available
-        //process repeats for other corps affected
-    }
-    private void sell(String corpName, int quant, int stockVal){
-        int valueStock = stocks.get(corpName);
-        cash += (quant * valueStock);
-        System.out.println("$" + valueStock + " has been added to your wallet!");
+    public void addCash(Integer value){
+        setCash(getCash() + value);
     }
 
-    private void hold(String corpName, int quant){
-        //record stock to be held
-        //repeat for other corporations affected
+    public void removeCash(Integer value){
+        setCash(getCash() - value);
+    }
 
+    public void addStock(String cName, Integer qty){
+        Integer newQty = getStocks().get(cName) + qty;
+        getStocks().put(cName, newQty);
     }
-    private void buy(String corpName, int quant){
-        //up to 3 stock sold to player if chosen stock is available
-    }
-    private void getBonusStock(){
 
+    public void removeStock(String cName, Integer qty){
+        Integer newQty = getStocks().get(cName) - qty;
+        getStocks().put(cName, newQty);
     }
+
+//    private void trade(String corpName, int quant){
+//        //trade defunct stock for surviving corp if they are available
+//        //process repeats for other corps affected
+//    }
+//    private void sell(String corpName, int quant, int stockVal){
+//        int valueStock = stocks.get(corpName);
+//        cash += (quant * valueStock);
+//        System.out.println("$" + valueStock + " has been added to your wallet!");
+//    }
+
+//    private void hold(String corpName, int quant){
+//        //record stock to be held
+//        //repeat for other corporations affected
+//
+//    }
+//    private void buy(String corpName, int quant){
+//        //up to 3 stock sold to player if chosen stock is available
+//    }
+//    private void getBonusStock(){
+//
+//    }
 
 
 

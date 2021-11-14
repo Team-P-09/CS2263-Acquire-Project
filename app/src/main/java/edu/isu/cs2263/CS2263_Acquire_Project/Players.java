@@ -12,6 +12,7 @@ import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -66,49 +67,43 @@ public class Players {
      * @return
      */
     public ArrayList<String> sortPlayers(ArrayList<String> pSet){
-        SortedMap<String, Integer> playerOrderTM = new TreeMap<>();
+        HashMap<String, Integer> playerOrderTM = new HashMap<>();
         ArrayList<Tile> tilesForPosition = new ArrayList<>();
         Tile t;
         for(String s : pSet){
             t = getTStack().popTile();
             tilesForPosition.add(t);
-            playerOrderTM.put(s, t.col + t.row);
+            playerOrderTM.put(s, t.getCol() + t.getRow());
         }
         getTStack().getTileStack().addAll(tilesForPosition);
 
-        return new ArrayList<String>(playerOrderTM.keySet());
+        //THIS CODE WAS FOUND ON https://stackabuse.com/how-to-sort-a-hashmap-by-value-in-java/
+        Map<String, Integer> sortedPlayers = playerOrderTM.entrySet().stream()
+                .sorted(Comparator.comparingInt(e -> e.getValue()))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (a, b) -> { throw new AssertionError(); },
+                        LinkedHashMap::new
+                ));
+
+        return new ArrayList<>(sortedPlayers.keySet());
     }
 
-    public void startTurn(){
-        //allow player to select tile
-    }
-    public void endTurn(){
-        //check if tile pool is not empty
-        //system gives player one random tile from pool
-        //if player has unplayable tiles
-        //refresh the hand with as many tiles as they need
-        //or as many tiles as are left
-    }
-    public void doTurn(){
-        //allow player to play tile and
-        //choose between buy, sell, trade, hold
-
-    }
-    public void merge(){
-        //corporations are merged
+    public PlayerInfo getPlayerByName(String name){
+        Integer pindex = getActivePlayers().indexOf(name);
+        return getActivePlayers().get(pindex);
     }
 
-    private void orderBuy(Corporations corp, int amt){
-
+    public void buyStock(String pName, String cName, Integer qty, Integer stockVal){
+        getPlayerByName(pName).getPWallet().addStock(cName, qty);
+        getPlayerByName(pName).getPWallet().removeCash(qty * stockVal);
     }
-    private void orderSell(Corporations corp, int amt){
 
+    public void sellStock(String pName, String cName, Integer qty, Integer stockVal){
+        getPlayerByName(pName).getPWallet().removeStock(cName, qty);
+        getPlayerByName(pName).getPWallet().addCash(qty * stockVal);
     }
-//    public int getWalletInfo(String pName){
-//        //int cash = getActivePlayers().
-//        //HashMap<String, Integer> stocks = getPWallet().getStocks();
-//        //return score;
-//    }
 
     /**
      * @param jsonFile (string to become json file)
@@ -169,10 +164,5 @@ public class Players {
             ex.printStackTrace();
         }
         return null;
-    }
-
-    public PlayerInfo getCurrentPlayer(){
-        //todo:add logic to get the real current player
-        return activePlayers.get(0);
     }
 }

@@ -57,7 +57,7 @@ public class ScoreboardTest {
     }
 
     @Test void testinitBuyTakesStock(){
-        s.initBuy("Player1", "Worldwide", 13);
+        s.initBuy("Player1", "Worldwide");
         assertTrue(s.getCorporations().getCorp("Worldwide").getAvailableStocks() == 12);
     }
 
