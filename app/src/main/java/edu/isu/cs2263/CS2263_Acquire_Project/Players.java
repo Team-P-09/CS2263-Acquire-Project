@@ -170,4 +170,9 @@ public class Players {
         }
         return null;
     }
+
+    public PlayerInfo getCurrentPlayer(){
+        //todo:add logic to get the real current player
+        return activePlayers.get(0);
+    }
 }

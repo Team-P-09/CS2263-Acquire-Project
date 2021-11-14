@@ -30,6 +30,7 @@ public class Gameboard {
      * Returns a HashMap for the action that will be taken after the tile is played
      * @return
      */
+    //todo:actually take the actions and apply the changes to the tiles
     public HashMap<String, List<Tile>> recordTile(Tile t){
         activateTile(t);
         List<Tile> tList = getAdjacentTiles(t);
@@ -51,6 +52,7 @@ public class Gameboard {
         return gboard;
     }
 
+    //todo:handle outOfBounds response for tiles on the edge of the gameboard
     public List<Tile> getAdjacentTiles(Tile t){
         int row = t.getRow();
         int col = t.getCol();

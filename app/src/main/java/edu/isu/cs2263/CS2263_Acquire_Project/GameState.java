@@ -19,10 +19,22 @@ public class GameState {
     Gameboard gameboard;
     Scoreboard scoreboard;
 
-    public GameState(Integer numberOfPlayers){
+    private static GameState instance = null;
+    private GameState(Integer numberOfPlayers){
         gameboard = new Gameboard();
         scoreboard = new Scoreboard(numberOfPlayers);
     }
+    public static GameState getInstance(Integer nuberOfPlayers){
+        if (instance==null){
+            instance=new GameState(nuberOfPlayers);
+        }
+        return instance;
+    }
+
+//    public GameState(Integer numberOfPlayers){
+//        gameboard = new Gameboard();
+//        scoreboard = new Scoreboard(numberOfPlayers);
+//    }
 
     public static void startGame(){
         //PROMPT FOR PLAYER NAMES
