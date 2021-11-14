@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.isu.cs2263.CS2263_Acquire_Project.UIController">
+<Pane fx:id="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.isu.cs2263.CS2263_Acquire_Project.UIController">
    <children>
       <GridPane prefHeight="680.0" prefWidth="1000.0">
         <columnConstraints>
@@ -17,7 +17,7 @@
           <RowConstraints maxHeight="335.0" minHeight="10.0" prefHeight="137.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <GridPane fx:id="gameboard" id="gameboard" gridLinesVisible="true">
+            <GridPane id="gameboard" fx:id="gameboard" gridLinesVisible="true">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -77,12 +77,12 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="80.0" prefWidth="80.0" text="Button" />
-                        <Button mnemonicParsing="false" prefHeight="80.0" prefWidth="80.0" text="Button" GridPane.columnIndex="1" />
-                        <Button mnemonicParsing="false" prefHeight="80.0" prefWidth="80.0" text="Button" GridPane.columnIndex="2" />
-                        <Button mnemonicParsing="false" prefHeight="80.0" prefWidth="80.0" text="Button" GridPane.columnIndex="3" />
-                        <Button mnemonicParsing="false" prefHeight="80.0" prefWidth="80.0" text="Button" GridPane.columnIndex="4" />
-                        <Button mnemonicParsing="false" prefHeight="80.0" prefWidth="80.0" text="Button" GridPane.columnIndex="5" />
+                        <Button id="Tile0" mnemonicParsing="false" onAction="#playTile" prefHeight="80.0" prefWidth="80.0" text="Button" />
+                        <Button id="Tile1" mnemonicParsing="false" onAction="#playTile" prefHeight="80.0" prefWidth="80.0" text="Button" GridPane.columnIndex="1" />
+                        <Button id="Tile2" mnemonicParsing="false" onAction="#playTile" prefHeight="80.0" prefWidth="80.0" text="Button" GridPane.columnIndex="2" />
+                        <Button id="Tile3" mnemonicParsing="false" onAction="#playTile" prefHeight="80.0" prefWidth="80.0" text="Button" GridPane.columnIndex="3" />
+                        <Button id="Tile4" mnemonicParsing="false" onAction="#playTile" prefHeight="80.0" prefWidth="80.0" text="Button" GridPane.columnIndex="4" />
+                        <Button id="Tile5" mnemonicParsing="false" onAction="#playTile" prefHeight="80.0" prefWidth="80.0" text="Button" GridPane.columnIndex="5" />
                      </children>
                   </GridPane>
                   <GridPane id="Menu" gridLinesVisible="true" GridPane.columnIndex="1">
@@ -99,7 +99,7 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
                      <children>
-                        <Button id="BuyButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Buy" />
+                        <Button id="BuyButton" mnemonicParsing="false" onAction="#buyButton" prefHeight="25.0" prefWidth="150.0" text="Buy" />
                         <Button id="SellButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Sell" GridPane.rowIndex="1" />
                         <Button id="EndTurnButton" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="End Turn" GridPane.rowIndex="2" />
                         <CheckBox id="ShowRulesRadio" alignment="CENTER" mnemonicParsing="false" prefHeight="17.0" prefWidth="128.0" text="Show Rules" GridPane.rowIndex="3" />
@@ -171,9 +171,9 @@
                         </Pane>
                         <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: brown;" GridPane.rowIndex="4">
                            <children>
-                              <Text fill="WHITE" layoutX="11.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="World">
+                              <Text fill="WHITE" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WorldWide">
                                <font>
-                                   <Font name="System Bold" size="12.0" />
+                                   <Font name="System Bold" size="10.0" />
                                </font>
                               </Text>
                            </children>
@@ -189,7 +189,7 @@
                         </Pane>
                         <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: red;" GridPane.rowIndex="6">
                            <children>
-                              <Text fill="WHITE" layoutX="12.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Luxor">
+                              <Text fill="WHITE" layoutX="4.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sackson">
                                   <font>
                                       <Font name="System Bold" size="12.0" />
                                   </font>
