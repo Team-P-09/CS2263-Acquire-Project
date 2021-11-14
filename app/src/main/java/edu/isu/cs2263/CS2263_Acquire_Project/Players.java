@@ -13,8 +13,8 @@ public class Players {
 
 
     public Players(Integer number, ArrayList<String> corpNames){
-        activePlayers = initPlayers(number, corpNames);
         tStack = new TileStack();
+        activePlayers = initPlayers(number, corpNames);
     }
 
     /**
@@ -61,11 +61,11 @@ public class Players {
         ArrayList<Tile> tilesForPosition = new ArrayList<>();
         Tile t;
         for(String s : pSet){
-            t = tStack.popTile();
+            t = getTStack().popTile();
             tilesForPosition.add(t);
             playerOrderTM.put(s, t.col + t.row);
         }
-        tStack.getTileStack().addAll(tilesForPosition);
+        getTStack().getTileStack().addAll(tilesForPosition);
 
         return new ArrayList<String>(playerOrderTM.keySet());
     }

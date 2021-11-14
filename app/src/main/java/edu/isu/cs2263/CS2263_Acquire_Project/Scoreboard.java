@@ -23,28 +23,13 @@ public class Scoreboard {
      * tArray will be a size of 5, order of entry is unimportant, Array datatype is used for easy iteration
      * Calls mergeCorps from Corporations
      */
-    public void initMerge(Tile[] tArray, ArrayList<String> mPlayers){
+    public void initMerge(Tile[] tArray){
         ArrayList<String> mCorps = findCorps(tArray); //We will be used to identify the players who will need to take a merge action
         ArrayList<String> domCorp = findDomCorp(mCorps);
         String domCorpName;
 
         if(checkMergeStatus(domCorp)){
-            ArrayList<String> choices = new ArrayList<>();
-            for(String dCorpName : domCorp){
-                choices.add(dCorpName);
-            }
-
-            ChoiceDialog<String> dialog = new ChoiceDialog<>(domCorp.get(0), choices);
-            dialog.setTitle("Chose the dominate corporation");
-            dialog.setHeaderText("Corporation names?");
-
-            Optional<String> domChoice = dialog.showAndWait();
-            while(!domChoice.isPresent()){
-                domChoice = dialog.showAndWait();
-            }
-
-            //int choiceIndex = domCorp.indexOf(dialog); //THIS WILL BE DECIDED BY PLAYER INPUT
-            domCorpName = dialog.getSelectedItem();//domCorp.get(choiceIndex);
+            domCorpName = getMergeDecision(domCorp);//domCorp.get(choiceIndex);
         }else{
             domCorpName = domCorp.get(0);
         }
@@ -54,6 +39,35 @@ public class Scoreboard {
 
         mCorps.remove(domCorpName);
         getCorporations().mergeCorps(domCorpName, mCorps);
+    }
+
+    private List<String> findAffectedPlayers(ArrayList<String> mCorps){
+        List<String> affectedPlayers = new ArrayList<>();
+        for(String cName : mCorps){
+            for(PlayerInfo player : getPlayers().getActivePlayers()){
+                if(player.getPWallet().getStocks().containsKey(cName)){
+                    affectedPlayers.add(player.getPName());
+                }
+            }
+        }
+        return affectedPlayers;
+    }
+
+    private String getMergeDecision(ArrayList<String> domCorp){
+        ArrayList<String> choices = new ArrayList<>();
+        for(String dCorpName : domCorp){
+            choices.add(dCorpName);
+        }
+
+        ChoiceDialog<String> dialog = new ChoiceDialog<>(domCorp.get(0), choices);
+        dialog.setTitle("Chose the dominate corporation");
+        dialog.setHeaderText("Corporation names?");
+
+        Optional<String> domChoice = dialog.showAndWait();
+        while(!domChoice.isPresent()){
+            domChoice = dialog.showAndWait();
+        }
+        return dialog.getSelectedItem();
     }
 
     /**

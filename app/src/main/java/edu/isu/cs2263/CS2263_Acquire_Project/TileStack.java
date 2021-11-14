@@ -64,8 +64,8 @@ public class TileStack {
 
     public Tile popTile(){
         Tile current;
-        current = tileStack.get(0);
-        tileStack.remove(0);
+        current = getTileStack().get(0);
+        getTileStack().remove(0);
         return  current;
     }
 }
