@@ -95,35 +95,4 @@ public class Players {
         getPlayerByName(pName).getPWallet().removeStock(cName, qty);
         getPlayerByName(pName).getPWallet().addCash(qty * stockVal);
     }
-
-//    public void startTurn(){
-//        //allow player to select tile
-//    }
-//    public void endTurn(){
-//        //check if tile pool is not empty
-//        //system gives player one random tile from pool
-//        //if player has unplayable tiles
-//        //refresh the hand with as many tiles as they need
-//        //or as many tiles as are left
-//    }
-//    public void doTurn(){
-//        //allow player to play tile and
-//        //choose between buy, sell, trade, hold
-//
-//    }
-//    public void merge(){
-//        //corporations are merged
-//    }
-//
-//    private void orderBuy(Corporations corp, int amt){
-//
-//    }
-//    private void orderSell(Corporations corp, int amt){
-//
-//    }
-//    public int getWalletInfo(String pName){
-//        //int cash = getActivePlayers().
-//        //HashMap<String, Integer> stocks = getPWallet().getStocks();
-//        //return score;
-//    }
 }

@@ -49,11 +49,11 @@ public class Wallet {
 //        //trade defunct stock for surviving corp if they are available
 //        //process repeats for other corps affected
 //    }
-    private void sell(String corpName, int quant, int stockVal){
-        int valueStock = stocks.get(corpName);
-        cash += (quant * valueStock);
-        System.out.println("$" + valueStock + " has been added to your wallet!");
-    }
+//    private void sell(String corpName, int quant, int stockVal){
+//        int valueStock = stocks.get(corpName);
+//        cash += (quant * valueStock);
+//        System.out.println("$" + valueStock + " has been added to your wallet!");
+//    }
 
 //    private void hold(String corpName, int quant){
 //        //record stock to be held

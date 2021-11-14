@@ -15,6 +15,7 @@ public class CorpInfo {
     private HashMap<String, Tile> corpTiles; //HashMap gives us a faster implementation for merging corporations
     private boolean status;
     private boolean isSafe;
+    private boolean hasBeenFounded;
 
     public CorpInfo(){ //int stPrice, int avStocks, ArrayList<Tile> coTiles, int coSize, boolean stat
         stockPrice = 100;
@@ -22,6 +23,7 @@ public class CorpInfo {
         corpTiles = new HashMap<>();//new ArrayList<>();
         status = false;
         isSafe = false;
+        hasBeenFounded = false;
     }
 
     /**

@@ -19,7 +19,7 @@ public class GameState {
 
     public void loadGame() { System.out.println("Loadgame");}
 
-    public void placeTile(Tile handTile){
+    public void placeTile(Tile handTile, String playerName){
         HashMap<String, List<Tile>> result = getGameboard().recordTile(handTile);
         String action = (new ArrayList<>(result.keySet())).get(0);
         List<Tile> tList = result.get(action);
@@ -29,13 +29,11 @@ public class GameState {
             getScoreboard().initCorpTileAdd(tList);
             cName = getScoreboard().getCorpFromTile(handTile);
         }else if(action.equals("Merge")){
-            //EXECUTE MERGE ACTION
-            //Check merge status
-            //scoreboard.initMerge(tArry); //Players isnt set up yet
-            //UPDATE TILE WITH CORRECT CORP
+            getScoreboard().initMerge(tList);
+            cName = getScoreboard().getCorpFromTile(handTile);
         }else if(action.equals("Founding Tile")){
-            //EXECUTE FOUNDING TILE FUNCTION
-            //UPDATE TILE WITH CORRECT CORP
+            getScoreboard().initFounding(tList, playerName);
+            cName = getScoreboard().getCorpFromTile(handTile);
         }//The tag "Nothing" is not accounted for as nothing would change from the initialized tile object
         getGameboard().getTile(handTile.getRow(), handTile.getCol()).setCorp(cName); //Sets the corporation for the tile on the gameboard
     }

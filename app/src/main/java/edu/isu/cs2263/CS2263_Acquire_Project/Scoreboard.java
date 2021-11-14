@@ -20,12 +20,54 @@ public class Scoreboard {
         players = new Players(numberOfPlayers, getCorpNames());
     }
 
+    public void initFounding(List<Tile> tiles, String playerName){
+        ArrayList<String> availableCorps = getAvailableCorps();
+        String unfoundedCorps = getUnfoundedCorps();
+        String title = "Chose a corporation to start";
+        String header = "Unfounded Corporations:";
+        String corpName = getDecision(availableCorps, title, header);
+
+        for(Tile t : tiles){
+            if(t.isStatus() && t.getCorp().equals(null)){
+                getCorporations().addTileToCorp(corpName, t);
+            }
+        }
+
+        if(unfoundedCorps.contains(corpName)){
+            getPlayers().getPlayerByName(playerName).getPWallet().addStock(corpName, 1);
+            getCorporations().getCorp(corpName).setHasBeenFounded(true);
+        }
+    }
+
+    public ArrayList<String> getAvailableCorps(){
+        ArrayList<String> availableCorps = new ArrayList<>();
+        for(String cName : getCorpNames()){
+            if(!getCorporations().getCorp(cName).isStatus()){
+                availableCorps.add(cName);
+            }
+        }
+        return availableCorps;
+    }
+
+    public String getUnfoundedCorps(){
+        String unfoundedCorps = "";
+        String newCorp;
+        for(String cName : getCorpNames()){
+            if(!getCorporations().getCorp(cName).isStatus()){
+                newCorp = cName + "\n";
+                unfoundedCorps += cName;
+            }
+        }
+
+        return unfoundedCorps;
+    }
+
     /**
      * Merges the corporations on the tiles from the given tile array
      * tArray will be a size of 5, order of entry is unimportant, Array datatype is used for easy iteration
      * Calls mergeCorps from Corporations
      */
-    public void initMerge(Tile[] tArray){
+    public void initMerge(List<Tile> tArray){
         ArrayList<String> mCorps = findCorps(tArray); //We will be used to identify the players who will need to take a merge action
         ArrayList<String> domCorp = findDomCorp(mCorps);
         String domCorpName;
@@ -45,6 +87,12 @@ public class Scoreboard {
             }
             getCorporations().clearStockValues(mCorps);
             getCorporations().mergeCorps(domCorpName, mCorps);
+        }
+
+        for(Tile t : tArray){
+            if(t.isStatus() && t.getCorp().equals(null)){
+                getCorporations().addTileToCorp(domCorpName, t);
+            }
         }
     }
 
@@ -233,7 +281,7 @@ public class Scoreboard {
      * @param tArray
      * @return
      */
-    public ArrayList<String> findCorps(Tile[] tArray){
+    public ArrayList<String> findCorps(List<Tile> tArray){
         ArrayList<String> cNames = new ArrayList<>();
         int cSize;
         for(Tile t : tArray){
@@ -364,7 +412,7 @@ public class Scoreboard {
         return getCorporations().getTilesCorp(t);
     }
 
-    private Integer getPlayerScore(String playerName){
+    public Integer getPlayerScore(String playerName){
         Integer pScore = getPlayers().getPlayerByName(playerName).getPWallet().getCash();
         HashMap<String, Integer> pStocks = getPlayers().getPlayerByName(playerName).getPWallet().getStocks();
         Integer stockPrice;
@@ -376,5 +424,4 @@ public class Scoreboard {
         }
         return pScore;
     }
-
 }
