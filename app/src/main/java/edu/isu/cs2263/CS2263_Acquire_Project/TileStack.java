@@ -29,9 +29,9 @@ public class TileStack {
 
     public ArrayList<Tile> initializeTiles(){
         ArrayList<Tile> newTStack = new ArrayList<>();
-        for (int i = 0; i < width; i++){
-            for (int j = 0; j < height; j++){
-                Tile tile = new Tile(j, i);
+        for (int r = 0; r < height; r++){
+            for (int c = 0; c < width; c++){
+                Tile tile = new Tile(r, c);
                 newTStack.add(tile);
             }
         }

@@ -29,15 +29,16 @@ public class Scoreboard {
         String domCorpName;
 
         if(checkMergeStatus(domCorp)){
-            domCorpName = getMergeDecision(domCorp);//domCorp.get(choiceIndex);
+            domCorpName = getDecision(domCorp, "Chose the dominate corporation", "Corporation names?");//domCorp.get(choiceIndex);
         }else{
             domCorpName = domCorp.get(0);
         }
-        //FIND ALL PLAYERS THAT WILL BE AFFECTED BY THIS MERGE
-        //LOOP THROUGH THEM GIVING THEM THE BUY/SELL/HOLD OPTIONS
-        //
-
         mCorps.remove(domCorpName);
+        List<String> affectedPlayers = findAffectedPlayers(mCorps);
+        for(String player : affectedPlayers){
+            mergeTurn(player, domCorpName, mCorps);
+        }
+        getCorporations().clearStockValues(mCorps);
         getCorporations().mergeCorps(domCorpName, mCorps);
     }
 
@@ -53,17 +54,67 @@ public class Scoreboard {
         return affectedPlayers;
     }
 
-    private String getMergeDecision(ArrayList<String> domCorp){
-        ArrayList<String> choices = new ArrayList<>();
-        for(String dCorpName : domCorp){
-            choices.add(dCorpName);
+    private void mergeTurn(String playerName, String domCorpName, ArrayList<String> subCorps){
+        PlayerInfo affectedPlayer = getPlayers().getPlayerByName(playerName);
+        ArrayList<String> choiceList = new ArrayList<>(Arrays.asList("Sell", "Trade", "Hold"));
+        String choiceTitle = "Merge Turn";
+        String choiceHeader;
+        String decision;
+        for(String subCorpName : subCorps){
+            choiceHeader = "For corporation " + subCorpName + " choose an action, when you are finished press Hold";
+            decision = getDecision(choiceList, choiceTitle, choiceHeader);
+            while(decision != choiceList.get(2)){
+                if(decision.equals(choiceList.get(0))){
+                    initSell(playerName, subCorpName,true);
+                }else if(decision.equals(choiceList.get(1))){
+                    mergeTrade(playerName, subCorpName, domCorpName);
+                }else if(affectedPlayer.getPWallet().getStocks().get(subCorpName) == 0){ //happens after a player doesnt have any more stocks for the corporation
+                    break; //removes the need for the player to click "Next Corp" when they have no more stocks
+                }//hold is the absence of action
+            }
+        }
+    }
+
+    private void mergeTrade(String playerName, String subCorpName, String domCorpName){
+        Integer maxGetQty = maxMerge(playerName, subCorpName, domCorpName);
+        Integer domQty = getQty(playerName, subCorpName, maxGetQty);
+        Integer adjSubQty = maxGetQty * 2;
+
+        getPlayers().getPlayerByName(playerName).getPWallet().removeStock(subCorpName, adjSubQty);
+        getCorporations().getCorp(subCorpName).addCorpStock(adjSubQty);
+
+        getPlayers().getPlayerByName(playerName).getPWallet().addStock(domCorpName, domQty);
+        getCorporations().getCorp(domCorpName).removeCorpStock(domQty);
+    }
+
+    private Integer maxMerge(String playerName, String subCorpName, String domCorpName){
+        Integer maxSubSell = maxSell(playerName, subCorpName);
+        Integer tradeQty = maxSubSell/2;
+        Integer availableStock = getCorporations().getCorp(domCorpName).getAvailableStocks();
+        if(tradeQty > availableStock){
+            return availableStock;
+        }else{
+            return tradeQty;
+        }
+    }
+
+    private Integer getQty(String playerName, String corpName, Integer maxVal){
+        //CREATE A DIALOG BOX THAT ACCEPTS USER INPUT (ONLY ALLOWS INTEGERS)
+        //DOESNT ALLOW USER TO INPUT MORE STOCK THAN THEY OWN
+        //RETURNS QTY AS INTEGER
+    }
+
+    private <T> T getDecision(ArrayList<T> choiceList, String title, String header){
+        ArrayList<T> choices = new ArrayList<>();
+        for(T choice : choiceList){
+            choices.add(choice);
         }
 
-        ChoiceDialog<String> dialog = new ChoiceDialog<>(domCorp.get(0), choices);
-        dialog.setTitle("Chose the dominate corporation");
-        dialog.setHeaderText("Corporation names?");
+        ChoiceDialog<T> dialog = new ChoiceDialog<>(choiceList.get(0), choices);
+        dialog.setTitle(title);
+        dialog.setHeaderText(header);
 
-        Optional<String> domChoice = dialog.showAndWait();
+        Optional<T> domChoice = dialog.showAndWait();
         while(!domChoice.isPresent()){
             domChoice = dialog.showAndWait();
         }
@@ -74,13 +125,18 @@ public class Scoreboard {
      * Initiates and controls the sell operation updating the available stocks for a corp and updating the sock and cash of a player
      * @param playerName
      * @param corpName
-     * @param Qty
      */
-    public void initSell(String playerName, String corpName, Integer Qty){
-        //METHOD FOR VALIDATING SALE QTY
-        int stockVal = corporations.getCorp(corpName).getStockPrice();
-        //METHOD FOR EXECUTING THE SALE IN THE PLAYERS WALLET
-        corporations.getCorp(corpName).addCorpStock(Qty);
+    public void initSell(String playerName, String corpName, Boolean isMerge){
+        Integer maxStock = maxSell(playerName, corpName);
+        Integer qty = getQty(playerName, corpName, maxStock);
+        int stockVal = getCorporations().getCorp(corpName).getStockPrice();
+        if(isMerge){stockVal = stockVal/2;}
+        getPlayers().sellStock(playerName, corpName, qty, stockVal);
+        getCorporations().getCorp(corpName).addCorpStock(qty);
+    }
+
+    private Integer maxSell(String  playerName, String corpName){
+        return getPlayers().getPlayerByName(playerName).getPWallet().getStocks().get(corpName);
     }
 
     /**
@@ -89,18 +145,25 @@ public class Scoreboard {
      * Adds stock value to specific player
      * @param playerName
      * @param corpName
-     * @param Qty
      */
-    public void initBuy(String playerName, String corpName, Integer Qty){
-        boolean validQty = getCorporations().getCorp(corpName).getAvailableStocks() >= Qty;
-        if(validQty){
-            int stockVal = getCorporations().getCorp(corpName).getStockPrice();
-            //METHOD FOR BUYING FROM PLAYER (VALIDATES SALE AMT AND EXECUTES IF ACCEPTABLE)
-            getCorporations().getCorp(corpName).removeCorpStock(Qty);
-        }
+    public void initBuy(String playerName, String corpName){
+        Integer maxQty = maxBuy(playerName, corpName);
+        Integer qty = getQty(playerName, corpName, maxQty);
+        int stockVal = getCorporations().getCorp(corpName).getStockPrice();
+        getPlayers().buyStock(playerName,corpName, qty, stockVal);
+        getCorporations().getCorp(corpName).removeCorpStock(qty);
     }
 
-
+    private Integer maxBuy(String playerName, String corpName){
+        Integer stockPrice = getCorporations().getCorp(corpName).getStockPrice();
+        Integer availableStock = getCorporations().getCorp(corpName).getAvailableStocks();
+        Integer pCash = getPlayers().getPlayerByName(playerName).getPWallet().getCash();
+        if(pCash/stockPrice > availableStock){
+            return availableStock;
+        }else{
+            return pCash/stockPrice;
+        }
+    }
 
     /**
      * Returns true if there are two or more corps tied for largest size
@@ -187,10 +250,6 @@ public class Scoreboard {
             displayInfo.put(cName, infoArray);
         }
         return displayInfo;
-    }
-
-    public void displayPlayers(){
-        System.out.println("displayPlayers");
     }
 
     public void getWinners(){

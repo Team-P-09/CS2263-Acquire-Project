@@ -16,6 +16,11 @@ public class Corporations {
         corps = initializeCorps(corpNames);
     }
 
+    /**
+     * Removes all tiles from sub corps and adds them to the dominate corp in the merge
+     * @param domCorpName
+     * @param subCorpNames
+     */
     public void mergeCorps(String domCorpName, ArrayList<String> subCorpNames){
         for(String corpName : subCorpNames){
             //this.getCorp(domCorpName).corpTiles.addAll(this.getCorp(corpName).retrieveTiles());
@@ -71,5 +76,16 @@ public class Corporations {
             }
         }
         return null; //CHANGE TO THROW EXCEPTION
+    }
+
+    /**
+     * Sets the value of all corporation stocks in the array list to 0
+     * Used after a merge in Scoreboard
+     * @param subCorps
+     */
+    public void clearStockValues(ArrayList<String> subCorps){
+        for(String cName : subCorps){
+            getCorp(cName).setStockPrice(0);
+        }
     }
 }

@@ -15,34 +15,9 @@ public class GameState {
         scoreboard = new Scoreboard(numberOfPlayers);
     }
 
-    public static void startGame(){
-        //PROMPT FOR PLAYER NAMES
-    }
-
-    public void endGame(){
-        scoreboard.getWinners();
-        //EXIT APP
-    }
-
     public void saveGame() { System.out.println("Savegame");}
 
     public void loadGame() { System.out.println("Loadgame");}
-
-    public void initTileStack(){
-        System.out.println("InitTStack");
-    }
-
-    public void displayGameboard(){
-        System.out.println("DisplayGameboard");
-    }
-
-    public void displayScoreboard(){
-        System.out.println("displayScoreboard");
-    }
-
-    public void displayHand(){
-        System.out.println("Displayhand");
-    }
 
     public void placeTile(Tile handTile){
         HashMap<String, List<Tile>> result = getGameboard().recordTile(handTile);
