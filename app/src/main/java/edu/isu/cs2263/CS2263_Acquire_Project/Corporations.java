@@ -1,12 +1,20 @@
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
-import com.google.common.base.Strings;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 @Getter @Setter
 public class Corporations {
@@ -71,5 +79,55 @@ public class Corporations {
             }
         }
         return null; //CHANGE TO THROW EXCEPTION
+    }
+    public File saveCorporations(String jsonFile, Corporations corps) throws IOException {
+        //create Gson instance
+        Gson gson = new Gson();
+        //create json string to hold data
+        String jsonString = gson.toJson(corps);
+
+        try {
+            //create the jsonFile
+            File file = new File(jsonFile);
+            // file.createNewFile();
+
+            //write the json string into the json file
+            FileWriter fileWriter = new FileWriter(file);
+            fileWriter.write(jsonString);
+
+            //close the file
+            fileWriter.flush();
+            fileWriter.close();
+
+            return file;
+
+        } catch(IOException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Corporations loadCorporations(String jsonFile){
+        try {
+            //create Gson instance
+            Gson gson = new Gson();
+
+            //create a reader
+            Reader reader = Files.newBufferedReader(Paths.get(jsonFile));
+
+            //set type for corporations
+            Type corporationsType = new TypeToken<Corporations>(){}.getType();
+
+            //convert JSON string to Corporations obj
+            Corporations corporations_obj = gson.fromJson(reader, corporationsType);
+
+            //close reader
+            reader.close();
+
+            return corporations_obj;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 }

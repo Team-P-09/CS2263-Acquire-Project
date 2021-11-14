@@ -3,8 +3,17 @@ package edu.isu.cs2263.CS2263_Acquire_Project;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
 import java.lang.reflect.Array;
+import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 @Getter @Setter
 public class Players {
@@ -103,4 +112,55 @@ public class Players {
 //        HashMap<String, Integer> stocks = getPWallet().getStocks();
 //        return score;
 //    }
+
+    public static File savePlayers(String jsonFile, Players players) throws IOException {
+        //create Gson instance
+        Gson gson = new Gson();
+        //create json string to hold data
+        String jsonString = gson.toJson(players);
+
+        try {
+            //create the jsonFile
+            File file = new File(jsonFile);
+            // file.createNewFile();
+
+            //write the json string into the json file
+            FileWriter fileWriter = new FileWriter(file);
+            fileWriter.write(jsonString);
+
+            //close the file
+            fileWriter.flush();
+            fileWriter.close();
+
+            return file;
+
+        } catch(IOException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Players loadPlayers(String jsonFile){
+        try {
+            //create Gson instance
+            Gson gson = new Gson();
+
+            //create a reader
+            Reader reader = Files.newBufferedReader(Paths.get(jsonFile));
+
+            //set type for players
+            Type playersType = new TypeToken<Players>(){}.getType();
+
+            //convert JSON string to players obj
+            Players players_obj = gson.fromJson(reader, playersType);
+
+            //close reader
+            reader.close();
+
+            return players_obj;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
 }

@@ -5,7 +5,13 @@ import com.google.gson.reflect.TypeToken;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
 import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -46,21 +52,56 @@ public class TileStack {
         }
         return pulledTiles;
     }
+    public static File saveTileStack(String jsonFile, TileStack tilePool) throws IOException {
+        //create Gson instance
+        Gson gson = new Gson();
+        //create json string to hold data
+        String jsonString = gson.toJson(tilePool);
 
-    public void saveTileStack(){
-        String gsonWrite = new Gson().toJson(tileStack);
-    }
+        try {
+            //create the jsonFile
+            File file = new File(jsonFile);
+            // file.createNewFile();
 
-    public void loadTileStack(String filename, Type Tile){
-        Gson gsonRead = new Gson();
+            //write the json string into the json file
+            FileWriter fileWriter = new FileWriter(file);
+            fileWriter.write(jsonString);
 
-        Type tileListType = new TypeToken<ArrayList<Tile>>(){}.getType();
-        tileStack = gsonRead.fromJson(filename, tileListType);
+            //close the file
+            fileWriter.flush();
+            fileWriter.close();
 
-        for (Tile tile : tileStack){
-            System.out.println(tile.getLocation());
+            return file;
+
+        } catch(IOException e){
+            e.printStackTrace();
         }
+        return null;
     }
+    public TileStack loadTileStack(String jsonFile){
+        try {
+            //create Gson instance
+            Gson gson = new Gson();
+
+            //create a reader
+            Reader reader = Files.newBufferedReader(Paths.get(jsonFile));
+
+            //set type for players
+            Type tileStackType = new TypeToken<TileStack>(){}.getType();
+
+            //convert JSON string to players obj
+            TileStack tileStack_obj = gson.fromJson(reader, tileStackType);
+
+            //close reader
+            reader.close();
+
+            return tileStack_obj;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
 
     public Tile popTile(){
         Tile current;
