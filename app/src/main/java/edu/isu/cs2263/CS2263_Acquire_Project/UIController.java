@@ -38,15 +38,15 @@ public class UIController {
         GameState gameState = GameState.getInstance(null);
 
         //updates the current players hand
-        PlayerInfo playerInfo = gameState.scoreboard.players.getCurrentPlayer();
-        int i = 0;
-        for (Tile tile : playerInfo.pHand.playersTiles){
-            String id = "#Tile"+i;
-            Button button = (Button) scene.lookup(id);
-
-            button.setText(tile.getLocation());
-            i++;
-        }
+//        PlayerInfo playerInfo = gameState.scoreboard.players.getCurrentPlayer();
+//        int i = 0;
+//        for (Tile tile : playerInfo.pHand.playersTiles){
+//            String id = "#Tile"+i;
+//            Button button = (Button) scene.lookup(id);
+//
+//            button.setText(tile.getLocation());
+//            i++;
+//        }
 
         //update the gameboard
         Tile[][] gameboard = gameState.gameboard.gameboard;
@@ -195,14 +195,14 @@ public class UIController {
 
     @FXML
     public void playTile(ActionEvent event) throws IOException {
-        scene = ((Node)event.getSource()).getScene();
-        GameState gameState = GameState.getInstance(null);
-        Button button = (Button) event.getSource();
-        String id = button.getId();
-        id = id.replace("Tile","");
-        Tile playTile = gameState.scoreboard.players.getCurrentPlayer().pHand.playersTiles.get(Integer.parseInt(id));
-        System.out.println("tile corpval " + playTile.getCorp());
-        gameState.gameboard.recordTile(playTile);
-        render(event);
+//        scene = ((Node)event.getSource()).getScene();
+//        GameState gameState = GameState.getInstance(null);
+//        Button button = (Button) event.getSource();
+//        String id = button.getId();
+//        id = id.replace("Tile","");
+//        Tile playTile = gameState.scoreboard.players.getCurrentPlayer().pHand.playersTiles.get(Integer.parseInt(id));
+//        System.out.println("tile corpval " + playTile.getCorp());
+//        gameState.gameboard.recordTile(playTile);
+//        render(event);
     }
 }
