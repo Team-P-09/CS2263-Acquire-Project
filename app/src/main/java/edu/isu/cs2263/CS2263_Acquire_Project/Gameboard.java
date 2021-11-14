@@ -30,7 +30,6 @@ public class Gameboard {
      * Returns a HashMap for the action that will be taken after the tile is played
      * @return
      */
-    //todo:actually take the actions and apply the changes to the tiles
     public HashMap<String, List<Tile>> recordTile(Tile t){
         activateTile(t);
         List<Tile> tList = getAdjacentTiles(t);
@@ -63,6 +62,23 @@ public class Gameboard {
     }
 
     /**
+     * returns a List of Strings for the active and not null corporations
+     * @param tiles
+     * @return
+     */
+    public List<String> getAdjTileCorpNames(List<Tile> tiles){
+        List<String> adjCorpNames = new ArrayList<>();
+        String corpName;
+        for(Tile t : tiles){
+            corpName = t.getCorp();
+            if(t.isStatus() && !corpName.equals(null)){
+                adjCorpNames.add(corpName);
+            }
+        }
+        return adjCorpNames;
+    }
+
+    /**
      * Validates that the dimensions will not exceed the max gameboard size
      * @param dimA
      * @param dimB
@@ -73,9 +89,9 @@ public class Gameboard {
     private List<Tile> checkAdj(Integer dimA, Integer dimB, List<Tile> adjTList, Boolean isRow){
         int dimAMax;
         if(isRow){
-            dimAMax = 9;
+            dimAMax = 8;
         }else{
-            dimAMax = 12;
+            dimAMax = 11;
         }
         for(int i = -1 ; i < 2 ; i+=2){
             dimA = dimA + i;
@@ -89,23 +105,26 @@ public class Gameboard {
 
     /**
      * Decides the necissary action based on a list of adjacent tiles
-     * @param tList
+     * @param adjTileList
      * @return
      */
-    public String decideAction(List<Tile> tList){
+    public String decideAction(List<Tile> adjTileList){
         String action;
-        String aStat;
+        String actionStat;
+        String corpNameForAdding;
         String cName;
 
         //Get data for all of the adjacent tiles
-        HashMap<String, Integer> adjCorps = new HashMap<>();
-        for(Tile t : tList){
+        HashMap<String, Integer> adjCorps = new HashMap<>(); //This will be a hashmap with <CorpName, Number Of Tiles>
+        for(Tile t : adjTileList){
             cName = t.getCorp();
-            if(adjCorps.containsKey(cName)){
-                adjCorps.put(cName, adjCorps.get(cName) + 1);
-            }
-            else{
-                adjCorps.put(cName, 1);
+            if(t.isStatus()){
+                if(adjCorps.containsKey(cName)){
+                    adjCorps.put(cName, adjCorps.get(cName) + 1);
+                }
+                else{
+                    adjCorps.put(cName, 1);
+                }
             }
         }
 
@@ -114,8 +133,8 @@ public class Gameboard {
             action = "Merge";
         }else if(adjCorps.size() == 1){
             //ADD TO CORP OR FOUNDING
-            aStat = (new ArrayList<String>(adjCorps.keySet())).get(0);
-            if(aStat != null){
+            corpNameForAdding = (new ArrayList<>(adjCorps.keySet())).get(0); //Name of the corporation for the adjacent tile(s)
+            if(!corpNameForAdding.equals(null)){
                 action = "Add to Corp";
             }else{action = "Founding Tile";}
         }else{ action = "Nothing";}

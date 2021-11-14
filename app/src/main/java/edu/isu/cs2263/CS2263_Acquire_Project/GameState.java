@@ -105,6 +105,27 @@ public class GameState {
         return canEndBool;
     }
 
+    public void checkPlayerHandForRefresh(String playerName){
+        List<Tile> playerHand = getScoreboard().getPlayers().getPlayerByName(playerName).getPHand().getPlayersTiles();
+        List<String> corpsForRefreshCheck = getCorpsForRefreshTiles(playerHand);
+        if(!corpsForRefreshCheck.isEmpty()){
+            //REFRESH PLAYER HAND
+        }
+    }
+    public List<String> getCorpsForRefreshTiles(List<Tile> playerHand){
+        List<String> corpsForRefreshCheck = new ArrayList<>();
+        for(Tile t : playerHand){
+            List<Tile> adjtiles = getGameboard().getAdjacentTiles(t);
+            List<String> adjCorpNames = getGameboard().getAdjTileCorpNames(adjtiles);
+            for(String corpName : adjCorpNames){
+                if(!corpsForRefreshCheck.contains(corpName)){
+                    corpsForRefreshCheck.add(corpName);
+                }
+            }
+        }
+        return corpsForRefreshCheck;
+    }
+
     /**
      * @param currentScoreboard current scoreboard state to save
      * @param currentGameboard current gameboard state to save
