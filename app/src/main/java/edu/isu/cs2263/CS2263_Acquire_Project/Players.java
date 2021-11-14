@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Getter @Setter
 public class Players {
@@ -57,17 +58,27 @@ public class Players {
      * @return
      */
     public ArrayList<String> sortPlayers(ArrayList<String> pSet){
-        SortedMap<String, Integer> playerOrderTM = new TreeMap<>();
+        HashMap<String, Integer> playerOrderTM = new HashMap<>();
         ArrayList<Tile> tilesForPosition = new ArrayList<>();
         Tile t;
         for(String s : pSet){
             t = getTStack().popTile();
             tilesForPosition.add(t);
-            playerOrderTM.put(s, t.col + t.row);
+            playerOrderTM.put(s, t.getCol() + t.getRow());
         }
         getTStack().getTileStack().addAll(tilesForPosition);
 
-        return new ArrayList<String>(playerOrderTM.keySet());
+        //THIS CODE WAS FOUND ON https://stackabuse.com/how-to-sort-a-hashmap-by-value-in-java/
+        Map<String, Integer> sortedPlayers = playerOrderTM.entrySet().stream()
+                .sorted(Comparator.comparingInt(e -> e.getValue()))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (a, b) -> { throw new AssertionError(); },
+                        LinkedHashMap::new
+                ));
+
+        return new ArrayList<>(sortedPlayers.keySet());
     }
 
     public PlayerInfo getPlayerByName(String name){
