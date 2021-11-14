@@ -100,4 +100,9 @@ public class Players {
 //        //HashMap<String, Integer> stocks = getPWallet().getStocks();
 //        //return score;
 //    }
+
+    public PlayerInfo getCurrentPlayer(){
+        //todo:add logic to get the real current player
+        return activePlayers.get(0);
+    }
 }

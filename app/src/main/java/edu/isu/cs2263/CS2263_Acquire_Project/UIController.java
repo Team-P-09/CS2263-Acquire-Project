@@ -35,6 +35,67 @@ public class UIController {
         root = FXMLLoader.load(getClass().getClassLoader().getResource("MainGame.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
+
+        GameState gameState = GameState.getInstance(null);
+        PlayerInfo playerInfo = gameState.scoreboard.players.getCurrentPlayer();
+        int i = 0;
+        for (Tile tile : playerInfo.pHand.playersTiles){
+            String id = "#Tile"+i;
+            Button button = (Button) scene.lookup(id);
+
+            button.setText(tile.getLocation());
+            i++;
+        }
+        Tile[][] gameboard = gameState.gameboard.gameboard;
+        GridPane gridPane = (GridPane) scene.lookup("#gameboard");
+        gridPane.getChildren().clear();
+        for (int y = 0; y < gameboard.length; y++){
+            for (int x = 0; x < gameboard[y].length; x++){
+                Tile tile = gameboard[y][x];
+                StackPane pane = new StackPane();
+                Text text = new Text();
+                text.setText(tile.getLocation());
+                pane.getChildren().add(text);
+                String corpVal = tile.getCorp() != null ? tile.getCorp() : "empty";
+                System.out.println("corpval: " + corpVal);
+                switch (corpVal){
+                    case "Festival":
+                        pane.setStyle("-fx-background-color: green; -fx-border-color: darkgray");
+                        text.setStyle("-fx-fill: white");
+                        break;
+                    case "Imperial":
+                        pane.setStyle("-fx-background-color: magenta; -fx-border-color: darkgray");
+                        text.setStyle("-fx-fill: white");
+                        break;
+                    case "WorldWide":
+                        pane.setStyle("-fx-background-color: brown; -fx-border-color: darkgray");
+                        text.setStyle("-fx-fill: white");
+                        break;
+                    case "American":
+                        pane.setStyle("-fx-background-color: navy; -fx-border-color: darkgray");
+                        text.setStyle("-fx-fill: white");
+                        break;
+                    case "Luxor":
+                        pane.setStyle("-fx-background-color: red; -fx-border-color: darkgray");
+                        text.setStyle("-fx-fill: white");
+                        break;
+                    case "Tower":
+                        pane.setStyle("-fx-background-color: yellow; -fx-border-color: darkgray");
+                        text.setStyle("-fx-fill: black");
+                        break;
+                    case "Continental":
+                        pane.setStyle("-fx-background-color: cyan; -fx-border-color: darkgray");
+                        text.setStyle("-fx-fill: black");
+                        break;
+                    default:
+                        pane.setStyle("-fx-background-color: lightgray; -fx-border-color: darkgray");
+                        text.setStyle("-fx-fill: black");
+                        break;
+                }
+                gridPane.add(pane, x, y);
+            }
+        }
+
         stage.setScene(scene);
         stage.show();
     }
@@ -83,10 +144,16 @@ public class UIController {
     }
 
     @FXML
-    public void playTile1(ActionEvent event){
+    public void playTile(ActionEvent event) throws IOException {
         scene = ((Node)event.getSource()).getScene();
         GameState gameState = GameState.getInstance(null);
-
-
+        Button button = (Button) event.getSource();
+        String id = button.getId();
+        id = id.replace("Tile","");
+        Tile playTile = gameState.scoreboard.players.getCurrentPlayer().pHand.playersTiles.get(Integer.parseInt(id));
+        System.out.println("tile corpval " + playTile.getCorp());
+        gameState.gameboard.recordTile(playTile);
+        render(event);
     }
+
 }
