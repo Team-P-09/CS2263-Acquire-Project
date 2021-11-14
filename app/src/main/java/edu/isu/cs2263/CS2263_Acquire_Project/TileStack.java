@@ -52,6 +52,13 @@ public class TileStack {
         }
         return pulledTiles;
     }
+
+    /**
+     * @param jsonFile (String to become json file)
+     * @param tilePool (tileStack object to save)
+     * @return File (json File to be later deserialized)
+     * @throws IOException
+     */
     public static File saveTileStack(String jsonFile, TileStack tilePool) throws IOException {
         //create Gson instance
         Gson gson = new Gson();
@@ -78,6 +85,11 @@ public class TileStack {
         }
         return null;
     }
+
+    /**
+     * @param jsonFile (jsonFile string that was created in saveTileStack)
+     * @return returns a TileStack object that was previously saved
+     */
     public TileStack loadTileStack(String jsonFile){
         try {
             //create Gson instance

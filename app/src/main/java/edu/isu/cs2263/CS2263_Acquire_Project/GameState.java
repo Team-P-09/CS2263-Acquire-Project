@@ -57,30 +57,16 @@ public class GameState {
         System.out.println("Displayhand");
     }
 
-<<<<<<< HEAD
-    public void placeTile(int row, int col) {
-        HashMap<String, Tile[]> result = gameboard.recordTile(row, col);
-        String action = (new ArrayList<String>(result.keySet())).get(0);
-        Tile[] tArry = result.get(action);
-=======
     public void placeTile(Tile handTile){
         HashMap<String, List<Tile>> result = getGameboard().recordTile(handTile);
         String action = (new ArrayList<>(result.keySet())).get(0);
         List<Tile> tList = result.get(action);
->>>>>>> c14026f92670fce939d7b24cf0909afa841b490b
         String cName = null;
 
-<<<<<<< HEAD
         if (action.equals("Add to Corp")) {
-            scoreboard.initCorpTileAdd(tArry);
-            cName = scoreboard.getCorpFromTile(t);
-        } else if (action.equals("Merge")) {
-=======
-        if(action.equals("Add to Corp")){
             getScoreboard().initCorpTileAdd(tList);
             cName = getScoreboard().getCorpFromTile(handTile);
         }else if(action.equals("Merge")){
->>>>>>> c14026f92670fce939d7b24cf0909afa841b490b
             //EXECUTE MERGE ACTION
             //Check merge status
             //scoreboard.initMerge(tArry); //Players isnt set up yet
@@ -92,28 +78,39 @@ public class GameState {
         getGameboard().getTile(handTile.getRow(), handTile.getCol()).setCorp(cName); //Sets the corporation for the tile on the gameboard
     }
 
-    public List<File> saveGameState(Players gPlayers, Corporations gCorps) {
+    /**
+     * @param currentScoreboard current scoreboard state to save
+     * @param currentGameboard current gameboard state to save
+     * @return returns a list of files that will need to be reloaded to get gamestate back
+     */
+    public List<File> saveGameState(Scoreboard currentScoreboard, Gameboard currentGameboard) {
         try {
+            //empty files that will be filled with saved data
             String jsonFileTileStack = null;
             String jsonFilePlayers = null;
             String jsonFileCorporations = null;
             String jsonFileGameboard = null;
             String jsonFileScoreboard = null;
-            List<File> savedGame = null;
+            List<File> savedGameFiles = null;
 
-            //File savedT = gTileStack.saveTileStack(jsonFileTilesStack, scoreboard.getTileStack());
-            File savedPlay = gPlayers.savePlayers(jsonFilePlayers, scoreboard.getPlayers());
-            File savedCorp = gCorps.saveCorporations(jsonFileCorporations, scoreboard.getCorporations());
-            File savedScoreB = Scoreboard.saveScoreboard(jsonFileScoreboard, scoreboard);
-            File savedGameB = Gameboard.saveGameboard(jsonFileGameboard, gameboard);
+            //getting data from scoreboard and gameboard to be saved
+            //tilestack, players, and corporations data come from scoreboard
+            File savedTileS = TileStack.saveTileStack(jsonFileTileStack, currentScoreboard.getPlayers().getTStack());
+            File savedPlay = Players.savePlayers(jsonFilePlayers, currentScoreboard.getPlayers());
+            File savedCorp = Corporations.saveCorporations(jsonFileCorporations, currentScoreboard.getCorporations());
 
-            //savedGame.add(savedT);
-            savedGame.add(savedPlay);
-            savedGame.add(savedCorp);
-            savedGame.add(savedScoreB);
-            savedGame.add(savedGameB);
+            File savedScoreB = Scoreboard.saveScoreboard(jsonFileScoreboard, currentScoreboard);
+            File savedGameB = Gameboard.saveGameboard(jsonFileGameboard, currentGameboard);
 
-            return savedGame;
+            //add saved json files to list to be deserialized later
+            savedGameFiles.add(savedTileS);
+            savedGameFiles.add(savedPlay);
+            savedGameFiles.add(savedCorp);
+            savedGameFiles.add(savedScoreB);
+            savedGameFiles.add(savedGameB);
+
+            //return the list of saved game files
+            return savedGameFiles;
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -121,22 +118,36 @@ public class GameState {
         return null;
     }
 
+    /**
+     * @param gameFiles list of files that need to be reloaded
+     * @return returns gamestate object that will reload previous games
+     */
     public GameState loadGameState(List<File> gameFiles) {
+        //create empty objects to hold saved data
         TileStack tileS = null;
-        tileS.loadTileStack(gameFiles.get(0).toString());
-
         Players play = null;
-        play.loadPlayers(gameFiles.get(1).toString());
-
         Corporations corp = null;
-        corp.loadCorporations(gameFiles.get(2).toString());
-
         Scoreboard scoreb = null;
-        scoreb.loadScoreboard(gameFiles.get(3).toString());
-
         Gameboard gameb = null;
+
+        //retrieving data from json files using load methods from each class
+        tileS.loadTileStack(gameFiles.get(0).toString());
+        play.loadPlayers(gameFiles.get(1).toString());
+        corp.loadCorporations(gameFiles.get(2).toString());
+        scoreb.loadScoreboard(gameFiles.get(3).toString());
         gameb.loadGameboard(gameFiles.get(4).toString());
 
-        return null;
+        //save tilestack, players, and corps back into scoreboard
+        //MAYBE ADD TILESTACK TO SCOREBOARD PARAMS SO IT CAN BE RECALLED?
+        scoreb.setPlayers(play);
+        scoreb.setCorporations(corp);
+
+        //create new Gamestate object with the saved parameters
+        //ideally, should be able to pass the saved gameboard and scoreboard through here. ADD GAMEBOARD AND SCOREBOARD TO GAMESTATE CONSTRUCTOR PARAMS?
+        //ALSO, ISN'T NUMBER OF PLAYERS SAVED IN SCOREBOARD? WHY WOULD THAT PARAM NEED TO PASS INTO GAMESTATE AS WELL?
+        GameState previousGame = new GameState(0);
+
+        return previousGame;
     }
+
 }

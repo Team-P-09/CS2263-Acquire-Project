@@ -80,7 +80,14 @@ public class Corporations {
         }
         return null; //CHANGE TO THROW EXCEPTION
     }
-    public File saveCorporations(String jsonFile, Corporations corps) throws IOException {
+
+    /**
+     * @param jsonFile (String to become json file)
+     * @param corps (corporation object to save)
+     * @return File (json File to be later deserialized)
+     * @throws IOException
+     */
+    public static File saveCorporations(String jsonFile, Corporations corps) throws IOException {
         //create Gson instance
         Gson gson = new Gson();
         //create json string to hold data
@@ -107,6 +114,10 @@ public class Corporations {
         return null;
     }
 
+    /**
+     * @param jsonFile (jsonFile string that was created in saveCorporations)
+     * @return returns a Corporations object that was previously saved
+     */
     public Corporations loadCorporations(String jsonFile){
         try {
             //create Gson instance

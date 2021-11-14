@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
-import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -230,7 +229,12 @@ public class Scoreboard {
     }
 
 
-
+    /**
+     * @param jsonFile (string to become json file)
+     * @param scoreboard_obj (scoreboard obj to save)
+     * @return File (jsonFile to later be deserialized)
+     * @throws IOException
+     */
     //reference for reading JSON files to java: https://attacomsian.com/blog/gson-read-json-file
     public static File saveScoreboard(String jsonFile, Scoreboard scoreboard_obj) throws IOException {
         //create Gson instance
@@ -256,6 +260,10 @@ public class Scoreboard {
         return null;
     }
 
+    /**
+     * @param jsonFile (jsonFile string that was created in saveScoreboard)
+     * @return returns a scoreboard object that was previously saved
+     */
     public static Scoreboard loadScoreboard(String jsonFile) {
         try {
             //create Gson instance
@@ -278,5 +286,11 @@ public class Scoreboard {
             ex.printStackTrace();
         }
         return null;
+    }
+
+    //for the purpose of completing build (see method's use in GameState)
+    public String getCorpFromTile(Tile handTile){
+        return null;
+
     }
 }

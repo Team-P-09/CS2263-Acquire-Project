@@ -1,6 +1,5 @@
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
-<<<<<<< HEAD
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -8,10 +7,9 @@ import java.io.Reader;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-=======
+
 import lombok.Getter;
 
->>>>>>> c14026f92670fce939d7b24cf0909afa841b490b
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -140,6 +138,12 @@ public class Gameboard {
     }
 
 
+    /**
+     * @param jsonFile (string to become json file)
+     * @param gameboard_obj (scoreboard obj to save)
+     * @return File (jsonFile to later be deserialized)
+     * @throws IOException
+     */
     //reference for reading JSON files to java: https://attacomsian.com/blog/gson-read-json-file
     public static File saveGameboard(String jsonFile, Gameboard gameboard_obj) throws IOException {
         //create Gson instance
@@ -165,6 +169,10 @@ public class Gameboard {
         return null;
     }
 
+    /**
+     * @param jsonFile (jsonFile string that was created in saveGameboard)
+     * @return returns a Gameboard object that was previously saved
+     */
     public Gameboard loadGameboard(String jsonFile) {
         try {
             //create Gson instance
