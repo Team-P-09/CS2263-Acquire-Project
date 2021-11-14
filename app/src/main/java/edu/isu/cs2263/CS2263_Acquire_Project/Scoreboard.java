@@ -4,8 +4,16 @@ import javafx.scene.control.ChoiceDialog;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.lang.reflect.Array;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 @Getter @Setter
 public class Scoreboard {
@@ -220,8 +228,69 @@ public class Scoreboard {
         getCorporations().addTileToCorp(corpName, tile);
     }
 
-    public String getCorpFromTile(Tile t){
-        return getCorporations().getTilesCorp(t);
+
+    /**
+     * @param jsonFile (string to become json file)
+     * @param scoreboard_obj (scoreboard obj to save)
+     * @return File (jsonFile to later be deserialized)
+     * @throws IOException
+     */
+    //reference for reading JSON files to java: https://attacomsian.com/blog/gson-read-json-file
+    public static File saveScoreboard(String jsonFile, Scoreboard scoreboard_obj) throws IOException {
+        //create Gson instance
+        Gson gson = new Gson();
+        //create json string to hold data
+        String jsonString = gson.toJson(scoreboard_obj);
+
+        try {
+            //create the jsonFile
+            File file = new File(jsonFile);
+
+            //write the json string into the json file
+            FileWriter fileWriter = new FileWriter(file);
+            fileWriter.write(jsonString);
+
+            //close the file
+            fileWriter.flush();
+            fileWriter.close();
+
+        } catch(IOException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
+    /**
+     * @param jsonFile (jsonFile string that was created in saveScoreboard)
+     * @return returns a scoreboard object that was previously saved
+     */
+    public static Scoreboard loadScoreboard(String jsonFile) {
+        try {
+            //create Gson instance
+            Gson gson = new Gson();
+
+            //create a reader
+            Reader reader = Files.newBufferedReader(Paths.get(jsonFile));
+
+            //set type for scoreboard
+            Type scoreboardType = new TypeToken<Scoreboard>(){}.getType();
+
+            //convert JSON string to scoreboard obj
+            Scoreboard scoreboard_obj = gson.fromJson(reader, scoreboardType);
+
+            //close reader
+            reader.close();
+
+            return scoreboard_obj;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    //for the purpose of completing build (see method's use in GameState)
+    public String getCorpFromTile(Tile handTile){
+        return null;
+
+    }
 }
