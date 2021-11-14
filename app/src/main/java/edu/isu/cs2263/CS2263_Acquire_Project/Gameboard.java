@@ -1,10 +1,20 @@
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 @Getter
 public class Gameboard {
@@ -130,4 +140,62 @@ public class Gameboard {
     }
 
 
+    /**
+     * @param jsonFile (string to become json file)
+     * @param gameboard_obj (scoreboard obj to save)
+     * @return File (jsonFile to later be deserialized)
+     * @throws IOException
+     */
+    //reference for reading JSON files to java: https://attacomsian.com/blog/gson-read-json-file
+    public static File saveGameboard(String jsonFile, Gameboard gameboard_obj) throws IOException {
+        //create Gson instance
+        Gson gson = new Gson();
+        //create json string to hold scoreboard data
+        String jsonString = gson.toJson(gameboard_obj);
+
+        try {
+            //create the jsonFile
+            File file = new File(jsonFile);
+
+            //write the json string into the json file
+            FileWriter fileWriter = new FileWriter(file);
+            fileWriter.write(jsonString);
+
+            //close the file
+            fileWriter.flush();
+            fileWriter.close();
+
+        } catch(IOException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * @param jsonFile (jsonFile string that was created in saveGameboard)
+     * @return returns a Gameboard object that was previously saved
+     */
+    public Gameboard loadGameboard(String jsonFile) {
+        try {
+            //create Gson instance
+            Gson gson = new Gson();
+
+            //create a reader
+            Reader reader = Files.newBufferedReader(Paths.get(jsonFile));
+
+            //set type for gameboard
+            Type gameboardType = new TypeToken<Gameboard>(){}.getType();
+
+            //convert JSON string to gameboard object
+            Gameboard gameboard_obj = gson.fromJson(reader, gameboardType);
+
+            //close reader
+            reader.close();
+
+            return gameboard_obj;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
 }

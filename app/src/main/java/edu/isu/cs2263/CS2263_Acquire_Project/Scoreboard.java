@@ -1,11 +1,21 @@
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
 import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.TextInputDialog;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.lang.reflect.Array;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 @Getter @Setter
 public class Scoreboard {
@@ -18,27 +28,95 @@ public class Scoreboard {
         players = new Players(numberOfPlayers, getCorpNames());
     }
 
+    public void initFounding(List<Tile> tiles, String playerName){
+        ArrayList<String> availableCorps = getAvailableCorps();
+        String unfoundedCorps = getUnfoundedCorps();
+        String title = "Chose a corporation to start";
+        String header = "Unfounded Corporations:";
+        String corpName = getDecision(availableCorps, title, header);
+
+        for(Tile t : tiles){
+            if(t.isStatus() && t.getCorp().equals(null)){
+                getCorporations().addTileToCorp(corpName, t);
+            }
+        }
+
+        if(unfoundedCorps.contains(corpName)){
+            getPlayers().getPlayerByName(playerName).getPWallet().addStock(corpName, 1);
+            getCorporations().getCorp(corpName).setHasBeenFounded(true);
+        }
+    }
+
+    public ArrayList<String> getAvailableCorps(){
+        ArrayList<String> availableCorps = new ArrayList<>();
+        for(String cName : getCorpNames()){
+            if(!getCorporations().getCorp(cName).isStatus()){
+                availableCorps.add(cName);
+            }
+        }
+        return availableCorps;
+    }
+
+    public String getUnfoundedCorps(){
+        String unfoundedCorps = "";
+        String newCorp;
+        for(String cName : getCorpNames()){
+            if(!getCorporations().getCorp(cName).isStatus()){
+                newCorp = cName + "\n";
+                unfoundedCorps += cName;
+            }
+        }
+
+        return unfoundedCorps;
+    }
+
     /**
      * Merges the corporations on the tiles from the given tile array
      * tArray will be a size of 5, order of entry is unimportant, Array datatype is used for easy iteration
      * Calls mergeCorps from Corporations
      */
-    public void initMerge(Tile[] tArray){
+    public void initMerge(List<Tile> tArray){
         ArrayList<String> mCorps = findCorps(tArray); //We will be used to identify the players who will need to take a merge action
         ArrayList<String> domCorp = findDomCorp(mCorps);
         String domCorpName;
 
         if(checkMergeStatus(domCorp)){
-            domCorpName = getMergeDecision(domCorp);//domCorp.get(choiceIndex);
+            domCorpName = getDecision(domCorp, "Chose the dominate corporation", "Corporation names?");//domCorp.get(choiceIndex);
         }else{
             domCorpName = domCorp.get(0);
         }
-        //FIND ALL PLAYERS THAT WILL BE AFFECTED BY THIS MERGE
-        //LOOP THROUGH THEM GIVING THEM THE BUY/SELL/HOLD OPTIONS
-        //
-
         mCorps.remove(domCorpName);
-        getCorporations().mergeCorps(domCorpName, mCorps);
+        mCorps = removeSafeCorps(mCorps);
+        //only runs the merge turn if there are sub corps to merge into the dom corp
+        if(mCorps.size() > 0){
+            List<String> affectedPlayers = findAffectedPlayers(mCorps);
+            for(String player : affectedPlayers){
+                mergeTurn(player, domCorpName, mCorps);
+            }
+            getCorporations().clearStockValues(mCorps);
+            getCorporations().mergeCorps(domCorpName, mCorps);
+        }
+
+        for(Tile t : tArray){
+            if(t.isStatus() && t.getCorp().equals(null)){
+                getCorporations().addTileToCorp(domCorpName, t);
+            }
+        }
+    }
+
+    /**
+     * removes all corp names for corporations that have sizes equal to or over 11
+     * @param mCorps
+     * @return ArrayList of Strings containing the names of unsafe corporations
+     */
+    private ArrayList<String> removeSafeCorps(ArrayList<String> mCorps){
+        ArrayList<String> unsafeCorps = new ArrayList<>();
+        for(String corpName : mCorps){
+            if(!getCorporations().getCorp(corpName).isSafe()){
+                unsafeCorps.add(corpName);
+            }
+        }
+        return unsafeCorps;
     }
 
     private List<String> findAffectedPlayers(ArrayList<String> mCorps){
@@ -53,17 +131,94 @@ public class Scoreboard {
         return affectedPlayers;
     }
 
-    private String getMergeDecision(ArrayList<String> domCorp){
-        ArrayList<String> choices = new ArrayList<>();
-        for(String dCorpName : domCorp){
-            choices.add(dCorpName);
+    private void mergeTurn(String playerName, String domCorpName, ArrayList<String> subCorps){
+        PlayerInfo affectedPlayer = getPlayers().getPlayerByName(playerName);
+        ArrayList<String> choiceList = new ArrayList<>(Arrays.asList("Sell", "Trade", "Hold"));
+        String choiceTitle = "Merge Turn";
+        String choiceHeader;
+        String decision;
+        for(String subCorpName : subCorps){
+            choiceHeader = "For corporation " + subCorpName + " choose an action, when you are finished press Hold";
+            decision = getDecision(choiceList, choiceTitle, choiceHeader);
+            while(decision != choiceList.get(2)){
+                if(decision.equals(choiceList.get(0))){
+                    initSell(playerName, subCorpName,true);
+                }else if(decision.equals(choiceList.get(1))){
+                    mergeTrade(playerName, subCorpName, domCorpName);
+                }else if(affectedPlayer.getPWallet().getStocks().get(subCorpName) == 0){ //happens after a player doesnt have any more stocks for the corporation
+                    break; //removes the need for the player to click "Next Corp" when they have no more stocks
+                }//hold is the absence of action
+            }
+        }
+    }
+
+    private void mergeTrade(String playerName, String subCorpName, String domCorpName){
+        Integer maxGetQty = maxMerge(playerName, subCorpName, domCorpName);
+        Integer domQty = getQty(subCorpName, maxGetQty, "Trade");
+        Integer adjSubQty = maxGetQty * 2;
+
+        getPlayers().getPlayerByName(playerName).getPWallet().removeStock(subCorpName, adjSubQty);
+        getCorporations().getCorp(subCorpName).addCorpStock(adjSubQty);
+
+        getPlayers().getPlayerByName(playerName).getPWallet().addStock(domCorpName, domQty);
+        getCorporations().getCorp(domCorpName).removeCorpStock(domQty);
+    }
+
+    private Integer maxMerge(String playerName, String subCorpName, String domCorpName){
+        Integer maxSubSell = maxSell(playerName, subCorpName);
+        Integer tradeQty = maxSubSell/2;
+        Integer availableStock = getCorporations().getCorp(domCorpName).getAvailableStocks();
+        if(tradeQty > availableStock){
+            return availableStock;
+        }else{
+            return tradeQty;
+        }
+    }
+
+    private Integer getQty(String corpName, Integer maxVal, String operation){
+        //CREATE A DIALOG BOX THAT ACCEPTS USER INPUT (ONLY ALLOWS INTEGERS)
+        //DOESNT ALLOW USER TO INPUT MORE STOCK THAN THEY OWN
+        //RETURNS QTY AS INTEGER
+        Integer qty = 0;
+        Integer newQty = 0;
+
+        TextInputDialog dialog = new TextInputDialog("0");
+        dialog.setTitle(operation + " operation for " + corpName);
+        dialog.setHeaderText("Maximum " + operation + " value of " + String.valueOf(maxVal));
+        dialog.setContentText("Please enter a value:");
+
+        boolean canBeInt = false;
+
+        while(!canBeInt){
+            Optional<String> result = dialog.showAndWait();
+            if (result.isPresent()){
+                try{
+                    newQty = Integer.parseInt(result.get());
+                    if(newQty <= maxVal){
+                        qty = newQty;
+                        canBeInt = true;
+                    }
+                }catch(Exception e){
+                    canBeInt = false;
+                }
+            }
         }
 
-        ChoiceDialog<String> dialog = new ChoiceDialog<>(domCorp.get(0), choices);
-        dialog.setTitle("Chose the dominate corporation");
-        dialog.setHeaderText("Corporation names?");
+        return qty;
 
-        Optional<String> domChoice = dialog.showAndWait();
+    }
+
+    private <T> T getDecision(ArrayList<T> choiceList, String title, String header){
+        ArrayList<T> choices = new ArrayList<>();
+        for(T choice : choiceList){
+            choices.add(choice);
+        }
+
+        ChoiceDialog<T> dialog = new ChoiceDialog<>(choiceList.get(0), choices);
+        dialog.setTitle(title);
+        dialog.setHeaderText(header);
+
+        Optional<T> domChoice = dialog.showAndWait();
         while(!domChoice.isPresent()){
             domChoice = dialog.showAndWait();
         }
@@ -74,13 +229,18 @@ public class Scoreboard {
      * Initiates and controls the sell operation updating the available stocks for a corp and updating the sock and cash of a player
      * @param playerName
      * @param corpName
-     * @param Qty
      */
-    public void initSell(String playerName, String corpName, Integer Qty){
-        //METHOD FOR VALIDATING SALE QTY
-        int stockVal = corporations.getCorp(corpName).getStockPrice();
-        //METHOD FOR EXECUTING THE SALE IN THE PLAYERS WALLET
-        corporations.getCorp(corpName).addCorpStock(Qty);
+    public void initSell(String playerName, String corpName, Boolean isMerge){
+        Integer maxStock = maxSell(playerName, corpName);
+        Integer qty = getQty(corpName, maxStock, "Sell");
+        int stockVal = getCorporations().getCorp(corpName).getStockPrice();
+        if(isMerge){stockVal = stockVal/2;}
+        getPlayers().sellStock(playerName, corpName, qty, stockVal);
+        getCorporations().getCorp(corpName).addCorpStock(qty);
+    }
+
+    private Integer maxSell(String  playerName, String corpName){
+        return getPlayers().getPlayerByName(playerName).getPWallet().getStocks().get(corpName);
     }
 
     /**
@@ -89,18 +249,25 @@ public class Scoreboard {
      * Adds stock value to specific player
      * @param playerName
      * @param corpName
-     * @param Qty
      */
-    public void initBuy(String playerName, String corpName, Integer Qty){
-        boolean validQty = getCorporations().getCorp(corpName).getAvailableStocks() >= Qty;
-        if(validQty){
-            int stockVal = getCorporations().getCorp(corpName).getStockPrice();
-            //METHOD FOR BUYING FROM PLAYER (VALIDATES SALE AMT AND EXECUTES IF ACCEPTABLE)
-            getCorporations().getCorp(corpName).removeCorpStock(Qty);
-        }
+    public void initBuy(String playerName, String corpName){
+        Integer maxQty = maxBuy(playerName, corpName);
+        Integer qty = getQty(corpName, maxQty, "Buy");
+        int stockVal = getCorporations().getCorp(corpName).getStockPrice();
+        getPlayers().buyStock(playerName,corpName, qty, stockVal);
+        getCorporations().getCorp(corpName).removeCorpStock(qty);
     }
 
-
+    private Integer maxBuy(String playerName, String corpName){
+        Integer stockPrice = getCorporations().getCorp(corpName).getStockPrice();
+        Integer availableStock = getCorporations().getCorp(corpName).getAvailableStocks();
+        Integer pCash = getPlayers().getPlayerByName(playerName).getPWallet().getCash();
+        if(pCash/stockPrice > availableStock){
+            return availableStock;
+        }else{
+            return pCash/stockPrice;
+        }
+    }
 
     /**
      * Returns true if there are two or more corps tied for largest size
@@ -122,7 +289,7 @@ public class Scoreboard {
      * @param tArray
      * @return
      */
-    public ArrayList<String> findCorps(Tile[] tArray){
+    public ArrayList<String> findCorps(List<Tile> tArray){
         ArrayList<String> cNames = new ArrayList<>();
         int cSize;
         for(Tile t : tArray){
@@ -189,15 +356,44 @@ public class Scoreboard {
         return displayInfo;
     }
 
-    public void displayPlayers(){
-        System.out.println("displayPlayers");
-    }
+    public HashMap<String, Integer> getWinners(){
+        Integer playerScore;
+        String playerName;
+        HashMap<String, Integer> scoreResults = new HashMap<>();
+        HashMap<String, Integer> playerPlaces = new HashMap<>();
 
-    public void getWinners(){
-        System.out.println("Get winners");
-        //for players in players object
-        //get the score of each player
-        //return a sorted list of HashMaps(PlayerName : Score) highest to lowest
+        for(PlayerInfo player : getPlayers().getActivePlayers()){
+            playerName = player.getPName();
+            playerScore = getPlayerScore(playerName);
+            scoreResults.put(playerName, playerScore);
+        }
+
+        //THIS CODE WAS FOUND AT https://stackabuse.com/how-to-sort-a-hashmap-by-value-in-java/
+        Map<String, Integer> sortedScores = scoreResults.entrySet().stream()
+                .sorted(Comparator.comparingInt(e -> -e.getValue()))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (a, b) -> { throw new AssertionError(); },
+                        LinkedHashMap::new
+                ));
+
+        Integer currentPlace = 1;
+        Integer newPlace = currentPlace;
+        Integer lastValue = 0;
+        Integer pScore;
+        for(String pName : sortedScores.keySet()){
+            pScore = scoreResults.get(pName);
+            if(lastValue == 0 || pScore != lastValue){
+                currentPlace = newPlace;
+            }
+            playerPlaces.put(pName, currentPlace);
+
+            newPlace++;
+            lastValue = pScore;
+        }
+
+        return playerPlaces;
     }
 
     /**
@@ -220,8 +416,76 @@ public class Scoreboard {
         getCorporations().addTileToCorp(corpName, tile);
     }
 
-    public String getCorpFromTile(Tile t){
-        return getCorporations().getTilesCorp(t);
+
+    /**
+     * @param jsonFile (string to become json file)
+     * @param scoreboard_obj (scoreboard obj to save)
+     * @return File (jsonFile to later be deserialized)
+     * @throws IOException
+     */
+    //reference for reading JSON files to java: https://attacomsian.com/blog/gson-read-json-file
+    public static File saveScoreboard(String jsonFile, Scoreboard scoreboard_obj) throws IOException {
+        //create Gson instance
+        Gson gson = new Gson();
+        //create json string to hold data
+        String jsonString = gson.toJson(scoreboard_obj);
+
+        try {
+            //create the jsonFile
+            File file = new File(jsonFile);
+
+            //write the json string into the json file
+            FileWriter fileWriter = new FileWriter(file);
+            fileWriter.write(jsonString);
+
+            //close the file
+            fileWriter.flush();
+            fileWriter.close();
+
+        } catch(IOException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
+    /**
+     * @param jsonFile (jsonFile string that was created in saveScoreboard)
+     * @return returns a scoreboard object that was previously saved
+     */
+    public static Scoreboard loadScoreboard(String jsonFile) {
+        try {
+            //create Gson instance
+            Gson gson = new Gson();
+
+            //create a reader
+            Reader reader = Files.newBufferedReader(Paths.get(jsonFile));
+
+            //set type for scoreboard
+            Type scoreboardType = new TypeToken<Scoreboard>(){}.getType();
+
+            //convert JSON string to scoreboard obj
+            Scoreboard scoreboard_obj = gson.fromJson(reader, scoreboardType);
+
+            //close reader
+            reader.close();
+
+            return scoreboard_obj;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public Integer getPlayerScore(String playerName) {
+        Integer pScore = getPlayers().getPlayerByName(playerName).getPWallet().getCash();
+        HashMap<String, Integer> pStocks = getPlayers().getPlayerByName(playerName).getPWallet().getStocks();
+        Integer stockPrice;
+        Integer stockQty;
+        for (String stockCorp : pStocks.keySet()) {
+            stockPrice = getCorporations().getCorp(stockCorp).getStockPrice();
+            stockQty = getPlayers().getPlayerByName(playerName).getPWallet().getStocks().get(stockCorp);
+            pScore += stockQty * stockPrice;
+        }
+        return pScore;
+    }
 }
