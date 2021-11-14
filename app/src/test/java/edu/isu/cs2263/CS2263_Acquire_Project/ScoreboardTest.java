@@ -20,7 +20,7 @@ public class ScoreboardTest {
     void setUp(){
         String[] corpNames = new String[]{"Worldwide", "Sackson", "Festival", "Imperial", "American", "Tower", "Continental"};
 
-        s = new Scoreboard();
+        s = new Scoreboard(2);
 
         //Corporations tcorps = new Corporations(corpNames);
 

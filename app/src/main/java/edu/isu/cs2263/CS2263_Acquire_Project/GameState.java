@@ -9,20 +9,23 @@ import java.io.Reader;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.*;
 
+@Getter @Setter
 public class GameState {
-    static Gameboard gameboard;
-    static Scoreboard scoreboard;
+    Gameboard gameboard;
+    Scoreboard scoreboard;
 
-    public static void main(String[] args) {
-        startGame();
+    public GameState(Integer numberOfPlayers){
+        gameboard = new Gameboard();
+        scoreboard = new Scoreboard(numberOfPlayers);
     }
 
-    public static void startGame() {
+    public static void startGame(){
         //PROMPT FOR PLAYER NAMES
-        gameboard = new Gameboard();
-        scoreboard = new Scoreboard();
     }
 
     public void endGame() {
@@ -54,17 +57,30 @@ public class GameState {
         System.out.println("Displayhand");
     }
 
+<<<<<<< HEAD
     public void placeTile(int row, int col) {
         HashMap<String, Tile[]> result = gameboard.recordTile(row, col);
         String action = (new ArrayList<String>(result.keySet())).get(0);
         Tile[] tArry = result.get(action);
+=======
+    public void placeTile(Tile handTile){
+        HashMap<String, List<Tile>> result = getGameboard().recordTile(handTile);
+        String action = (new ArrayList<>(result.keySet())).get(0);
+        List<Tile> tList = result.get(action);
+>>>>>>> c14026f92670fce939d7b24cf0909afa841b490b
         String cName = null;
-        Tile t = gameboard.getTile(row, col);
 
+<<<<<<< HEAD
         if (action.equals("Add to Corp")) {
             scoreboard.initCorpTileAdd(tArry);
             cName = scoreboard.getCorpFromTile(t);
         } else if (action.equals("Merge")) {
+=======
+        if(action.equals("Add to Corp")){
+            getScoreboard().initCorpTileAdd(tList);
+            cName = getScoreboard().getCorpFromTile(handTile);
+        }else if(action.equals("Merge")){
+>>>>>>> c14026f92670fce939d7b24cf0909afa841b490b
             //EXECUTE MERGE ACTION
             //Check merge status
             //scoreboard.initMerge(tArry); //Players isnt set up yet
@@ -73,8 +89,7 @@ public class GameState {
             //EXECUTE FOUNDING TILE FUNCTION
             //UPDATE TILE WITH CORRECT CORP
         }//The tag "Nothing" is not accounted for as nothing would change from the initialized tile object
-        gameboard.getTile(row, col).setCorp(cName);
-
+        getGameboard().getTile(handTile.getRow(), handTile.getCol()).setCorp(cName); //Sets the corporation for the tile on the gameboard
     }
 
     public List<File> saveGameState(Players gPlayers, Corporations gCorps) {

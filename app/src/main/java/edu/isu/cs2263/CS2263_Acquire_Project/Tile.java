@@ -14,10 +14,6 @@ public class Tile {
     String location;
     boolean status;
 
-    public int getRow(){
-        return row;
-    }
-
     public Tile(int r, int c){
         row = r;
         col = c;

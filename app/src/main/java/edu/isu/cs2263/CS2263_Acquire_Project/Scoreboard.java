@@ -1,5 +1,6 @@
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
+import javafx.scene.control.ChoiceDialog;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,9 +22,9 @@ public class Scoreboard {
     ArrayList<String> corpNames = new ArrayList<>(Arrays.asList("Worldwide", "Sackson", "Festival", "Imperial", "American", "Tower", "Continental"));
     Corporations corporations;
 
-    public Scoreboard() {
-        corporations = new Corporations(corpNames);
-        //Initialize Players
+    public Scoreboard(Integer numberOfPlayers) {
+        corporations = new Corporations(getCorpNames());
+        players = new Players(numberOfPlayers, getCorpNames());
     }
 
     /**
@@ -31,20 +32,51 @@ public class Scoreboard {
      * tArray will be a size of 5, order of entry is unimportant, Array datatype is used for easy iteration
      * Calls mergeCorps from Corporations
      */
-    public void initMerge(Tile[] tArray, ArrayList<String> mPlayers){
+    public void initMerge(Tile[] tArray){
         ArrayList<String> mCorps = findCorps(tArray); //We will be used to identify the players who will need to take a merge action
         ArrayList<String> domCorp = findDomCorp(mCorps);
         String domCorpName;
+
         if(checkMergeStatus(domCorp)){
-            //NOTIFY PLAYER THAT THEY NEED TO SELECT
-            //RUN CORP MERGE ON SELECTED CORP
-            int choiceIndex = 0; //THIS WILL BE DECIDED BY PLAYER INPUT
-            domCorpName = domCorp.get(choiceIndex);
+            domCorpName = getMergeDecision(domCorp);//domCorp.get(choiceIndex);
         }else{
             domCorpName = domCorp.get(0);
         }
+        //FIND ALL PLAYERS THAT WILL BE AFFECTED BY THIS MERGE
+        //LOOP THROUGH THEM GIVING THEM THE BUY/SELL/HOLD OPTIONS
+        //
+
         mCorps.remove(domCorpName);
         getCorporations().mergeCorps(domCorpName, mCorps);
+    }
+
+    private List<String> findAffectedPlayers(ArrayList<String> mCorps){
+        List<String> affectedPlayers = new ArrayList<>();
+        for(String cName : mCorps){
+            for(PlayerInfo player : getPlayers().getActivePlayers()){
+                if(player.getPWallet().getStocks().containsKey(cName)){
+                    affectedPlayers.add(player.getPName());
+                }
+            }
+        }
+        return affectedPlayers;
+    }
+
+    private String getMergeDecision(ArrayList<String> domCorp){
+        ArrayList<String> choices = new ArrayList<>();
+        for(String dCorpName : domCorp){
+            choices.add(dCorpName);
+        }
+
+        ChoiceDialog<String> dialog = new ChoiceDialog<>(domCorp.get(0), choices);
+        dialog.setTitle("Chose the dominate corporation");
+        dialog.setHeaderText("Corporation names?");
+
+        Optional<String> domChoice = dialog.showAndWait();
+        while(!domChoice.isPresent()){
+            domChoice = dialog.showAndWait();
+        }
+        return dialog.getSelectedItem();
     }
 
     /**
@@ -77,6 +109,8 @@ public class Scoreboard {
         }
     }
 
+
+
     /**
      * Returns true if there are two or more corps tied for largest size
      * Returns false if there is only one dominate corp
@@ -101,7 +135,7 @@ public class Scoreboard {
         ArrayList<String> cNames = new ArrayList<>();
         int cSize;
         for(Tile t : tArray){
-            for(Map.Entry<String, CorpInfo> c : corporations.corps.entrySet()){
+            for(Map.Entry<String, CorpInfo> c : getCorporations().getCorps().entrySet()){
                 if(c.getValue().getCorpTiles().containsKey(t)){
                     cNames.add(c.getKey());
                     break; //each tile can only appear once therefore we stop looking
@@ -147,7 +181,7 @@ public class Scoreboard {
         int cPrice;
         int cStocks;
 
-        for(Map.Entry<String, CorpInfo> c : this.corporations.corps.entrySet()){
+        for(Map.Entry<String, CorpInfo> c : getCorporations().getCorps().entrySet()){
             Integer[] infoArray = new Integer[3];
             String cName = c.getKey();
             cSize = c.getValue().getCorpSize();
@@ -184,10 +218,10 @@ public class Scoreboard {
      *      3 - Corporations : addTileToCorp
      *      4 - CorpInfo : addCorpTile
      */
-    public void initCorpTileAdd(Tile[] tArry){ //String corpName, Tile t
+    public void initCorpTileAdd(List<Tile> tList){ //String corpName, Tile t
         String corpName = "";
         Tile tile = new Tile(-1,-1);
-        for(Tile t : tArry){
+        for(Tile t : tList){
             if(t.status && t.getCorp() != null){
                 corpName = t.getCorp();
             }else if(t.status){tile = t;}

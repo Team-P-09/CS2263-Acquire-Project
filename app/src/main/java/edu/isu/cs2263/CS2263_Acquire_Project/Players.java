@@ -17,13 +17,13 @@ import com.google.gson.reflect.TypeToken;
 
 @Getter @Setter
 public class Players {
-    ArrayList<PlayerInfo> activePlayers;
+    ArrayList<PlayerInfo> activePlayers; //ORDER OF PLAYERS AND PLAYER NAMES
     TileStack tStack;
 
 
     public Players(Integer number, ArrayList<String> corpNames){
-        activePlayers = initPlayers(number, corpNames);
         tStack = new TileStack();
+        activePlayers = initPlayers(number, corpNames);
     }
 
     /**
@@ -33,28 +33,25 @@ public class Players {
      * @return
      */
     public ArrayList<PlayerInfo> initPlayers(Integer number, ArrayList<String> corpNames){
-        //create a new player instance
-        //WAITING FOR PLAYER CLASS TO BE FINISHED BEFORE IMPLEMENTATION
-        //PLAYERS CLASS MAY BE IMPLEMENTED AND PLAYER WILL BE RENAMED TO PLAYERINFO
-        //THIS WILL METHOD WILL BE MOVED TO THE PLAYERS CLASS IF CREATED
         ArrayList<PlayerInfo> newPlayers = new ArrayList<>();
-
-        ArrayList<String> pNames;
-        pNames = setPlayers(number);
-        pNames = sortPlayers(pNames);
-
+        ArrayList<String> playerList = namePlayers(number);
+        ArrayList<String> pNames = sortPlayers(playerList);
 
         for(int i = 0 ; i < pNames.size() ; i++){
             ArrayList<Tile> tArry = getTStack().pullTiles(6);
             PlayerInfo newP = new PlayerInfo(pNames.get(i), corpNames, tArry);
             newPlayers.add(newP);
         }
-
         return newPlayers;
-
     }
 
-    public ArrayList<String> setPlayers(Integer number){
+    /**
+     * Takes an interger and names players based on their position
+     * Returns an ArrayList of player names as strings
+     * @param number
+     * @return
+     */
+    public ArrayList<String> namePlayers(Integer number){
         ArrayList<String> pSet = new ArrayList<>();
         String p = "Player ";
         for(int i = 1 ; i < number +1 ; i++){
@@ -73,11 +70,11 @@ public class Players {
         ArrayList<Tile> tilesForPosition = new ArrayList<>();
         Tile t;
         for(String s : pSet){
-            t = tStack.popTile();
+            t = getTStack().popTile();
             tilesForPosition.add(t);
             playerOrderTM.put(s, t.col + t.row);
         }
-        tStack.getTileStack().addAll(tilesForPosition);
+        getTStack().getTileStack().addAll(tilesForPosition);
 
         return new ArrayList<String>(playerOrderTM.keySet());
     }
@@ -107,10 +104,10 @@ public class Players {
     private void orderSell(Corporations corp, int amt){
 
     }
-//    public int getWalletInfo(){
-//        int cash = getPWallet().getCash();
-//        HashMap<String, Integer> stocks = getPWallet().getStocks();
-//        return score;
+//    public int getWalletInfo(String pName){
+//        //int cash = getActivePlayers().
+//        //HashMap<String, Integer> stocks = getPWallet().getStocks();
+//        //return score;
 //    }
 
     public static File savePlayers(String jsonFile, Players players) throws IOException {

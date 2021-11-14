@@ -10,12 +10,12 @@ import javafx.stage.Stage;
 
 public class UI extends Application {
 
-    Button button;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("GameStart.fxml"));
         primaryStage.setTitle("Acquire Game");
+
         primaryStage.setScene(new Scene(root, 1000, 680));
         primaryStage.show();
     }

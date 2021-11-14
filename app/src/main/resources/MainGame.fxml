@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.isu.cs2263.CS2263_Acquire_Project.UIController">
    <children>
       <GridPane prefHeight="680.0" prefWidth="1000.0">
         <columnConstraints>
@@ -17,7 +17,7 @@
           <RowConstraints maxHeight="335.0" minHeight="10.0" prefHeight="137.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <GridPane id="gameboard" gridLinesVisible="true">
+            <GridPane fx:id="gameboard" id="gameboard" gridLinesVisible="true">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -46,6 +46,8 @@
                <padding>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </padding>
+               <children>
+               </children>
             </GridPane>
             <GridPane id="PlayerContainer" gridLinesVisible="true" GridPane.rowIndex="1">
               <columnConstraints>
