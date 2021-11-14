@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.isu.cs2263.CS2263_Acquire_Project.UIController">
+<Pane fx:id="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.isu.cs2263.CS2263_Acquire_Project.UIController">
    <children>
       <GridPane prefHeight="680.0" prefWidth="1000.0">
         <columnConstraints>
@@ -17,7 +17,7 @@
           <RowConstraints maxHeight="335.0" minHeight="10.0" prefHeight="137.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <GridPane fx:id="gameboard" id="gameboard" gridLinesVisible="true">
+            <GridPane id="gameboard" fx:id="gameboard" gridLinesVisible="true">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -47,6 +47,439 @@
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </padding>
                <children>
+                   <Pane id="pane1_1" fx:id="pane1_1" prefWidth="200.0" GridPane.columnIndex="0">
+                     <children>
+                        <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1, 1" />
+                     </children></Pane>
+                   <Pane fx:id="pane2_1" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2, 1" />
+                       </children></Pane>
+                   <Pane fx:id="pane3_1" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3, 1" />
+                       </children></Pane>
+                   <Pane fx:id="pane4_1" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4, 1" />
+                       </children></Pane>
+                   <Pane fx:id="pane5_1" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5, 1" />
+                       </children></Pane>
+                   <Pane fx:id="pane6_1" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="6, 1" />
+                       </children></Pane>
+                   <Pane fx:id="pane7_1" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="7, 1" />
+                       </children></Pane>
+                   <Pane fx:id="pane8_1" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="8, 1" />
+                       </children></Pane>
+                   <Pane fx:id="pane9_1" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="9, 1" />
+                       </children></Pane>
+                   <Pane fx:id="pane10_1" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="9">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10, 1" />
+                       </children></Pane>
+                   <Pane fx:id="pane11_1" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="10">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="11, 1" />
+                       </children></Pane>
+                   <Pane fx:id="pane12_1" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="11">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="12, 1" />
+                       </children></Pane>
+                   <Pane fx:id="pane1_2" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1, 2" />
+                       </children></Pane>
+                   <Pane fx:id="pane2_2" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2, 2" />
+                       </children></Pane>
+                   <Pane fx:id="pane3_2" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3, 2" />
+                       </children></Pane>
+                   <Pane fx:id="pane4_2" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4, 2" />
+                       </children></Pane>
+                   <Pane fx:id="pane5_2" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5, 2" />
+                       </children></Pane>
+                   <Pane fx:id="pane6_2" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="1">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="6, 2" />
+                       </children></Pane>
+                   <Pane fx:id="pane7_2" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="1">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="7, 2" />
+                       </children></Pane>
+                   <Pane fx:id="pane8_2" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="1">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="8, 2" />
+                       </children></Pane>
+                   <Pane fx:id="pane9_2" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="1">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="9, 2" />
+                       </children></Pane>
+                   <Pane fx:id="pane10_2" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="9" GridPane.rowIndex="1">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10, 2" />
+                       </children></Pane>
+                   <Pane fx:id="pane11_2" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="10" GridPane.rowIndex="1">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="11, 2" />
+                       </children></Pane>
+                   <Pane fx:id="pane12_2" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="11" GridPane.rowIndex="1">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="12, 2" />
+                       </children></Pane>
+                   <Pane fx:id="pane1_3" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1, 3" />
+                       </children></Pane>
+                   <Pane fx:id="pane2_3" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2, 3" />
+                       </children></Pane>
+                   <Pane fx:id="pane3_3" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3, 3" />
+                       </children></Pane>
+                   <Pane fx:id="pane4_3" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4, 3" />
+                       </children></Pane>
+                   <Pane fx:id="pane5_3" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5, 3" />
+                       </children></Pane>
+                   <Pane fx:id="pane6_3" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="2">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="6, 3" />
+                       </children></Pane>
+                   <Pane fx:id="pane7_3" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="2">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="7, 3" />
+                       </children></Pane>
+                   <Pane fx:id="pane8_3" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="2">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="8, 3" />
+                       </children></Pane>
+                   <Pane fx:id="pane9_3" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="2">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="9, 3" />
+                       </children></Pane>
+                   <Pane fx:id="pane10_3" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="9" GridPane.rowIndex="2">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10, 3" />
+                       </children></Pane>
+                   <Pane fx:id="pane11_3" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="10" GridPane.rowIndex="2">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="11, 3" />
+                       </children></Pane>
+                   <Pane fx:id="pane12_3" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="11" GridPane.rowIndex="2">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="12, 3" />
+                       </children></Pane>
+                   <Pane fx:id="pane1_4" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1, 4" />
+                       </children></Pane>
+                   <Pane fx:id="pane2_4" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2, 4" />
+                       </children></Pane>
+                   <Pane fx:id="pane3_4" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3, 4" />
+                       </children></Pane>
+                   <Pane fx:id="pane4_4" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4, 4" />
+                       </children></Pane>
+                   <Pane fx:id="pane5_4" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5, 4" />
+                       </children></Pane>
+                   <Pane fx:id="pane6_4" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="3">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="6, 4" />
+                       </children></Pane>
+                   <Pane fx:id="pane7_4" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="3">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="7, 4" />
+                       </children></Pane>
+                   <Pane fx:id="pane8_4" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="3">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="8, 4" />
+                       </children></Pane>
+                   <Pane fx:id="pane9_4" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="3">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="9, 4" />
+                       </children></Pane>
+                   <Pane fx:id="pane10_4" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="9" GridPane.rowIndex="3">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10, 4" />
+                       </children></Pane>
+                   <Pane fx:id="pane11_4" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="10" GridPane.rowIndex="3">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="11, 4" />
+                       </children></Pane>
+                   <Pane fx:id="pane12_4" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="11" GridPane.rowIndex="3">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="12, 4" />
+                       </children></Pane>
+                   <Pane fx:id="pane1_5" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="4">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1, 5" />
+                       </children></Pane>
+                   <Pane fx:id="pane2_5" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2, 5" />
+                       </children></Pane>
+                   <Pane fx:id="pane3_5" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3, 5" />
+                       </children></Pane>
+                   <Pane fx:id="pane4_5" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4, 5" />
+                       </children></Pane>
+                   <Pane fx:id="pane5_5" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5, 5" />
+                       </children></Pane>
+                   <Pane fx:id="pane6_5" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="4">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="6, 5" />
+                       </children></Pane>
+                   <Pane fx:id="pane7_5" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="4">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="7, 5" />
+                       </children></Pane>
+                   <Pane fx:id="pane8_5" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="4">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="8, 5" />
+                       </children></Pane>
+                   <Pane fx:id="pane9_5" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="4">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="9, 5" />
+                       </children></Pane>
+                   <Pane fx:id="pane10_5" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="9" GridPane.rowIndex="4">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10, 5" />
+                       </children></Pane>
+                   <Pane fx:id="pane11_5" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="10" GridPane.rowIndex="4">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="11, 5" />
+                       </children></Pane>
+                   <Pane fx:id="pane12_5" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="11" GridPane.rowIndex="4">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="12, 5" />
+                       </children></Pane>
+                   <Pane fx:id="pane1_6" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="5">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1, 6" />
+                       </children></Pane>
+                   <Pane fx:id="pane2_6" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2, 6" />
+                       </children></Pane>
+                   <Pane fx:id="pane3_6" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3, 6" />
+                       </children></Pane>
+                   <Pane fx:id="pane4_6" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="5">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4, 6" />
+                       </children></Pane>
+                   <Pane fx:id="pane5_6" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="5">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5, 6" />
+                       </children></Pane>
+                   <Pane fx:id="pane6_6" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="5">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="6, 6" />
+                       </children></Pane>
+                   <Pane fx:id="pane7_6" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="5">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="7, 6" />
+                       </children></Pane>
+                   <Pane fx:id="pane8_6" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="5">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="8, 6" />
+                       </children></Pane>
+                   <Pane fx:id="pane9_6" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="5">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="9, 6" />
+                       </children></Pane>
+                   <Pane fx:id="pane10_6" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="9" GridPane.rowIndex="5">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10, 6" />
+                       </children></Pane>
+                   <Pane fx:id="pane11_6" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="10" GridPane.rowIndex="5">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="11, 6" />
+                       </children></Pane>
+                   <Pane fx:id="pane12_6" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="11" GridPane.rowIndex="5">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="12, 6" />
+                       </children></Pane>
+                   <Pane fx:id="pane1_7" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="6">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1, 7" />
+                       </children></Pane>
+                   <Pane fx:id="pane2_7" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2, 7" />
+                       </children></Pane>
+                   <Pane fx:id="pane3_7" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="6">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3, 7" />
+                       </children></Pane>
+                   <Pane fx:id="pane4_7" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="6">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4, 7" />
+                       </children></Pane>
+                   <Pane fx:id="pane5_7" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="6">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5, 7" />
+                       </children></Pane>
+                   <Pane fx:id="pane6_7" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="6">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="6, 7" />
+                       </children></Pane>
+                   <Pane fx:id="pane7_7" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="6">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="7, 7" />
+                       </children></Pane>
+                   <Pane fx:id="pane8_7" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="6">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="8, 7" />
+                       </children></Pane>
+                   <Pane fx:id="pane9_7" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="6">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="9, 7" />
+                       </children></Pane>
+                   <Pane fx:id="pane10_7" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="9" GridPane.rowIndex="6">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10, 7" />
+                       </children></Pane>
+                   <Pane fx:id="pane11_7" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="10" GridPane.rowIndex="6">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="11, 7" />
+                       </children></Pane>
+                   <Pane fx:id="pane12_7" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="11" GridPane.rowIndex="6">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="12, 7" />
+                       </children></Pane>
+                   <Pane fx:id="pane1_8" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="7">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1, 8" />
+                       </children></Pane>
+                   <Pane fx:id="pane2_8" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2, 8" />
+                       </children></Pane>
+                   <Pane fx:id="pane3_8" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="7">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3, 8" />
+                       </children></Pane>
+                   <Pane fx:id="pane4_8" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="7">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4, 8" />
+                       </children></Pane>
+                   <Pane fx:id="pane5_8" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="7">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5, 8" />
+                       </children></Pane>
+                   <Pane fx:id="panepane6_8" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="7">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="6, 8" />
+                       </children></Pane>
+                   <Pane fx:id="pane7_8" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="7">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="7, 8" />
+                       </children></Pane>
+                   <Pane fx:id="pane8_8" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="7">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="8, 8" />
+                       </children></Pane>
+                   <Pane fx:id="pane9_8" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="7">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="9, 8" />
+                       </children></Pane>
+                   <Pane fx:id="pane10_8" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="9" GridPane.rowIndex="7">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10, 8" />
+                       </children></Pane>
+                   <Pane fx:id="pane11_8" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="10" GridPane.rowIndex="7">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="11, 8" />
+                       </children></Pane>
+                   <Pane fx:id="pane12_8" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="11" GridPane.rowIndex="7">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="12, 8" />
+                       </children></Pane>
+                   <Pane fx:id="pane1_9" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="8">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1, 9" />
+                       </children></Pane>
+                   <Pane fx:id="pane2_9" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2, 9" />
+                       </children></Pane>
+                   <Pane fx:id="pane3_9" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="8">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3, 9" />
+                       </children></Pane>
+                   <Pane fx:id="pane4_9" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="8">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4, 9" />
+                       </children></Pane>
+                   <Pane fx:id="pane5_9" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="8">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5, 9" />
+                       </children></Pane>
+                   <Pane fx:id="pane6_9" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="8">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="6, 9" />
+                       </children></Pane>
+                   <Pane fx:id="pane7_9" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" GridPane.rowIndex="8">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="7, 9" />
+                       </children></Pane>
+                   <Pane fx:id="pane8_9" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="8">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="8, 9" />
+                       </children></Pane>
+                   <Pane fx:id="pane9_9" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8" GridPane.rowIndex="8">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="9, 9" />
+                       </children></Pane>
+                   <Pane fx:id="pane10_9" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="9" GridPane.rowIndex="8">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10, 9" />
+                       </children></Pane>
+                   <Pane fx:id="pane11_9" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="10" GridPane.rowIndex="8">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="11, 9" />
+                       </children></Pane>
+                   <Pane fx:id="pane12_9" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="11" GridPane.rowIndex="8">
+                       <children>
+                           <Text layoutX="18.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="12, 9" />
+                       </children></Pane>
+
                </children>
             </GridPane>
             <GridPane id="PlayerContainer" gridLinesVisible="true" GridPane.rowIndex="1">
@@ -77,7 +510,7 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="80.0" prefWidth="80.0" text="Button" />
+                        <Button mnemonicParsing="false" onAction="#playTile1" prefHeight="80.0" prefWidth="80.0" text="Button" />
                         <Button mnemonicParsing="false" prefHeight="80.0" prefWidth="80.0" text="Button" GridPane.columnIndex="1" />
                         <Button mnemonicParsing="false" prefHeight="80.0" prefWidth="80.0" text="Button" GridPane.columnIndex="2" />
                         <Button mnemonicParsing="false" prefHeight="80.0" prefWidth="80.0" text="Button" GridPane.columnIndex="3" />
@@ -99,7 +532,7 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
                      <children>
-                        <Button id="BuyButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Buy" />
+                        <Button id="BuyButton" mnemonicParsing="false" onAction="#buyButton" prefHeight="25.0" prefWidth="150.0" text="Buy" />
                         <Button id="SellButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Sell" GridPane.rowIndex="1" />
                         <Button id="EndTurnButton" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="End Turn" GridPane.rowIndex="2" />
                         <CheckBox id="ShowRulesRadio" alignment="CENTER" mnemonicParsing="false" prefHeight="17.0" prefWidth="128.0" text="Show Rules" GridPane.rowIndex="3" />
@@ -171,9 +604,9 @@
                         </Pane>
                         <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: brown;" GridPane.rowIndex="4">
                            <children>
-                              <Text fill="WHITE" layoutX="11.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="World">
+                              <Text fill="WHITE" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WorldWide">
                                <font>
-                                   <Font name="System Bold" size="12.0" />
+                                   <Font name="System Bold" size="10.0" />
                                </font>
                               </Text>
                            </children>
@@ -189,7 +622,7 @@
                         </Pane>
                         <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: red;" GridPane.rowIndex="6">
                            <children>
-                              <Text fill="WHITE" layoutX="12.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Luxor">
+                              <Text fill="WHITE" layoutX="4.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sackson">
                                   <font>
                                       <Font name="System Bold" size="12.0" />
                                   </font>
