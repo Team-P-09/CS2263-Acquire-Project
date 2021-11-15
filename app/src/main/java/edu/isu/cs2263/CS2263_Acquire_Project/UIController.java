@@ -248,9 +248,9 @@ public class UIController {
     @FXML
     public void ShowRulesButton() throws IOException{
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information Dialog");
-        alert.setHeaderText("Look, an Information Dialog");
-        alert.setContentText("I have a great message for you!");
+        alert.setTitle("Rules");
+        alert.setHeaderText("How to play the game!");
+        alert.setContentText("https://www.ultraboardgames.com/acquire/game-rules.php");
 
         alert.showAndWait();
     }
