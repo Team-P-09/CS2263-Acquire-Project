@@ -45,6 +45,7 @@ public class Scoreboard {
             getPlayers().getPlayerByName(playerName).getPWallet().addStock(corpName, 1);
             getCorporations().getCorp(corpName).setHasBeenFounded(true);
         }
+        getCorporations().setStockValue(corpName);
     }
 
     public ArrayList<String> getAvailableCorps(){
@@ -63,10 +64,9 @@ public class Scoreboard {
         for(String cName : getCorpNames()){
             if(!getCorporations().getCorp(cName).isStatus()){
                 newCorp = cName + "\n";
-                unfoundedCorps += cName;
+                unfoundedCorps += newCorp;
             }
         }
-
         return unfoundedCorps;
     }
 
@@ -93,8 +93,20 @@ public class Scoreboard {
             for(String player : affectedPlayers){
                 mergeTurn(player, domCorpName, mCorps);
             }
-            getCorporations().clearStockValues(mCorps);
+            for(String mcorp : mCorps){
+                HashMap<String, List<String>> stockHolderRankings = getStockHolderRankings(affectedPlayers, mcorp);
+                divyOutBonuses(stockHolderRankings,mcorp,"Majority");
+                divyOutBonuses(stockHolderRankings,mcorp,"Minority");
+            }
+
+            //Runs the merge function changing the number of tiles
             getCorporations().mergeCorps(domCorpName, mCorps);
+
+            //Update stock prices
+            for(String subCName : mCorps){
+                getCorporations().setStockValue(subCName);
+            }
+            getCorporations().setStockValue(domCorpName);
         }
 
         for(Tile t : tArray){
@@ -103,6 +115,76 @@ public class Scoreboard {
             }
         }
     }
+
+    private void divyOutBonuses(HashMap<String, List<String>> bonusList, String corpName, String bonusType){
+        List<String> players = bonusList.get(bonusType);
+        Integer bonusAmt = 0;
+        for(String playerName : players){
+            bonusAmt = getCorporations().getBonus(corpName, bonusType);
+            getPlayers().getPlayerByName(playerName).getPWallet().addCash(bonusAmt/players.size());
+        }
+
+    }
+
+    /**
+     * REFACTOR THIS WITH GET WINNERS THEY ARE THE SAME CODE WITH 10% CHANGE
+     * Returns a hashmap of winners and their position
+     * @param players
+     * @param corpName
+     * @return
+     */
+    private HashMap<String, List<String>> getStockHolderRankings(List<String> players, String corpName){
+        Integer playerScore;
+        HashMap<String, Integer> scoreResults = new HashMap<>();
+        HashMap<String, List<String>> playerPlaces = new HashMap<>();
+        List<String> majPlayers = new ArrayList<>();
+        List<String> minPlayers = new ArrayList<>();
+
+        for(String player : players){
+            playerScore = getPlayers().getPlayerByName(player).getPWallet().getStocks().get(corpName); //getPlayerScore(playerName);
+            scoreResults.put(player, playerScore);
+        }
+
+        //THIS CODE WAS FOUND AT https://stackabuse.com/how-to-sort-a-hashmap-by-value-in-java/
+        Map<String, Integer> sortedScores = scoreResults.entrySet().stream()
+                .sorted(Comparator.comparingInt(e -> -e.getValue()))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (a, b) -> { throw new AssertionError(); },
+                        LinkedHashMap::new
+                ));
+
+        Integer lastValue = 0;
+        Integer pScore;
+        Boolean majorityBool = true;
+        Boolean minorityBool = true;
+
+        for(String pName : sortedScores.keySet()){
+            pScore = scoreResults.get(pName);
+
+            if(pScore != lastValue){
+                if(majorityBool || lastValue == 0){
+                    majorityBool = false;
+                }else if(minorityBool){
+                    minorityBool = false;
+                }
+            }
+
+            if(majorityBool){
+                majPlayers.add(pName);
+            }else if(minorityBool){
+                minPlayers.add(pName);
+            }else{break;}
+            lastValue = pScore;
+        }
+        playerPlaces.put("Majority", majPlayers);
+        playerPlaces.put("Minority", minPlayers);
+
+
+        return playerPlaces;
+    }
+
 
     /**
      * removes all corp names for corporations that have sizes equal to or over 11
@@ -176,9 +258,6 @@ public class Scoreboard {
     }
 
     private Integer getQty(String corpName, Integer maxVal, String operation){
-        //CREATE A DIALOG BOX THAT ACCEPTS USER INPUT (ONLY ALLOWS INTEGERS)
-        //DOESNT ALLOW USER TO INPUT MORE STOCK THAN THEY OWN
-        //RETURNS QTY AS INTEGER
         Integer qty = 0;
         Integer newQty = 0;
 
@@ -203,9 +282,7 @@ public class Scoreboard {
                 }
             }
         }
-
         return qty;
-
     }
 
     private <T> T getDecision(ArrayList<T> choiceList, String title, String header){
@@ -239,6 +316,12 @@ public class Scoreboard {
         getCorporations().getCorp(corpName).addCorpStock(qty);
     }
 
+    /**
+     * returns maximum value the player can sell
+     * @param playerName
+     * @param corpName
+     * @return
+     */
     private Integer maxSell(String  playerName, String corpName){
         return getPlayers().getPlayerByName(playerName).getPWallet().getStocks().get(corpName);
     }
@@ -414,6 +497,7 @@ public class Scoreboard {
             }else if(t.status){tile = t;}
         }
         getCorporations().addTileToCorp(corpName, tile);
+        getCorporations().setStockValue(corpName);
     }
 
 
