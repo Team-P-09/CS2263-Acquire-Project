@@ -19,6 +19,7 @@ public class GameState {
     Gameboard gameboard;
     Scoreboard scoreboard;
     int currentPlayerTracker = 0;
+    Boolean hasPlayed = false;
 
     private static GameState instance = null;
     private GameState(Integer numberOfPlayers){
@@ -199,6 +200,7 @@ public class GameState {
         Corporations corp = null;
         Scoreboard scoreb = null;
         Gameboard gameb = null;
+        GameState savedGame = null;
 
         //retrieving data from json files using load methods from each class
         tileS.loadTileStack(gameFiles.get(0).toString());
@@ -212,12 +214,12 @@ public class GameState {
         scoreb.setPlayers(play);
         scoreb.setCorporations(corp);
 
-        //create new Gamestate object with the saved parameters
-        //ideally, should be able to pass the saved gameboard and scoreboard through here. ADD GAMEBOARD AND SCOREBOARD TO GAMESTATE CONSTRUCTOR PARAMS?
-        //ALSO, ISN'T NUMBER OF PLAYERS SAVED IN SCOREBOARD? WHY WOULD THAT PARAM NEED TO PASS INTO GAMESTATE AS WELL?
-        GameState previousGame = new GameState(0);
+        //load up params into gamestate object
+        savedGame.scoreboard = scoreb;
+        savedGame.gameboard = gameb;
 
-        return previousGame;
+        //return the loaded GameState object
+        return savedGame;
     }
 
     public PlayerInfo getCurrentPlayer(){
@@ -230,6 +232,13 @@ public class GameState {
         }
         else {
             currentPlayerTracker++;
+        }
+        hasPlayed = false;
+    }
+
+    public void hasPlayed(){
+        if (hasPlayed == false){
+            hasPlayed = true;
         }
     }
 }

@@ -112,7 +112,7 @@ public class Corporations {
         }
         stockTier += checkTier(corpSize);
 
-        if(stockTier != 0){
+        if(stockTier !=0) {
             getCorp(corpName).setStockPrice(stockTiers.get(stockTier));
         }
     }
