@@ -235,6 +235,11 @@ public class UIController {
         scene = ((Node)event.getSource()).getScene();
         GameState gameState = GameState.getInstance(null);
         Button button = (Button) event.getSource();
+
+        PlayerInfo currentPlayer = gameState.getCurrentPlayer();
+        gameState.drawTileToPlayer(currentPlayer.getPName());
+        gameState.checkPlayerHandForRefresh(currentPlayer.getPName());
+
         gameState.nextPlayer();
         render(event);
     }
