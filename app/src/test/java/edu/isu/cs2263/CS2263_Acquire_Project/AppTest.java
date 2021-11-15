@@ -8,40 +8,4 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AppTest {
 
-    @Test void canStartGame(){
-        //assertTrue
-    }
-
-    @Test void canEndGame(){
-
-    }
-
-    @Test void canInitGame(){
-
-    }
-
-    @Test void canInitScoreboard(){
-
-    }
-
-    @Test void canInitPlayer(){
-
-    }
-
-    @Test void canInitTStack(){
-
-    }
-
-    @Test void canDisplayGameboard(){
-
-    }
-
-    @Test void canDisplayScoreboard(){
-
-    }
-
-    @Test void canDisplayHand(){
-
-    }
-
 }

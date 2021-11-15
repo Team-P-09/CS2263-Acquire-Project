@@ -220,11 +220,11 @@ public class GameState {
     }
 
     public PlayerInfo getCurrentPlayer(){
-        return scoreboard.players.getPlayerByName("Player " + (currentPlayerTracker+1));
+        return scoreboard.getPlayers().getPlayerByName("Player " + (currentPlayerTracker+1));
     }
 
     public void nextPlayer(){
-        if(currentPlayerTracker == scoreboard.players.activePlayers.size()-1){
+        if(currentPlayerTracker == scoreboard.getPlayers().getActivePlayers().size()-1){
             currentPlayerTracker = 0;
         }
         else {
