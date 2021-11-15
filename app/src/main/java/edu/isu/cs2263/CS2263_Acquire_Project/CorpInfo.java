@@ -78,4 +78,5 @@ public class CorpInfo {
         //THE RESTRICTION OF NOT GOING BELOW 0 WILL BE HELD AT THE UI LEVEL
         setAvailableStocks(getAvailableStocks() - qty);
     }
+
 }
