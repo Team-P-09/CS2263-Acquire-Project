@@ -18,13 +18,11 @@ public class Hand {
     }
 
     public void addTile(Tile t){
-        playersTiles.add(t);
+        getPlayersTiles().add(t);
     }
 
-    public Tile removeTile(Integer i){
-        Tile outTile = getPlayersTiles().get(i);
-        getPlayersTiles().remove(i);
-        return outTile;
+    public void removeTile(Tile t){
+        getPlayersTiles().remove(t);
     }
 
 }

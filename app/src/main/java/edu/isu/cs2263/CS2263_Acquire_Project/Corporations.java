@@ -24,28 +24,27 @@ public class Corporations {
         corps = initializeCorps(corpNames);
     }
 
+    /**
+     * Removes all tiles from sub corps and adds them to the dominate corp in the merge
+     * @param domCorpName
+     * @param subCorpNames
+     */
     public void mergeCorps(String domCorpName, ArrayList<String> subCorpNames){
         for(String corpName : subCorpNames){
-            //this.getCorp(domCorpName).corpTiles.addAll(this.getCorp(corpName).retrieveTiles());
-            CorpInfo domCorp = this.getCorp(domCorpName);
+            CorpInfo domCorp = getCorp(domCorpName);
             HashMap<String, Tile> domTiles = domCorp.getCorpTiles();
-            CorpInfo subCorp = this.getCorp(corpName);
+
+            CorpInfo subCorp = getCorp(corpName);
             HashMap<String, Tile> subTiles = subCorp.retrieveTiles();
+
             domTiles.putAll(subTiles);
-            this.getCorp(corpName).setCorpTiles(domTiles);
-//
-//            this.getCorp(domCorpName).setCorpTiles(this.getCorp(domCorpName).getCorpTiles().putAll(subTiles));
-            this.getCorp(corpName).setStatus(false);
+            getCorp(corpName).setCorpTiles(domTiles);
+            getCorp(corpName).setStatus(false);
         }
     }
 
     private HashMap<String, CorpInfo> initializeCorps(ArrayList<String> corpNames){
         HashMap<String, CorpInfo> initCorp = new HashMap<>();
-//        int stPrice = 100;
-//        int avStocks = 25;
-//        ArrayList<Tile> coTiles = new ArrayList<>();
-//        int coSize = 0;
-//        boolean stat = false;
 
         for(String corpName : corpNames){
             initCorp.put(corpName, new CorpInfo());
@@ -81,6 +80,16 @@ public class Corporations {
         return null; //CHANGE TO THROW EXCEPTION
     }
 
+    /**
+     * Sets the value of all corporation stocks in the array list to 0
+     * Used after a merge in Scoreboard
+     * @param subCorps
+     */
+    public void clearStockValues(ArrayList<String> subCorps) {
+        for (String cName : subCorps) {
+            getCorp(cName).setStockPrice(0);
+        }
+    }
     /**
      * @param jsonFile (String to become json file)
      * @param corps (corporation object to save)
