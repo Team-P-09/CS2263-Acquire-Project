@@ -24,21 +24,38 @@
 
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class HandTest {
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-    @Test
+public class HandTest {
+    Hand thand;
+
+    @BeforeEach
     void setUp(){
+        Scoreboard s = new Scoreboard(2);
+        thand = s.getPlayers().getPlayerByName("Player 1").getPHand();
+    }
+
+    @AfterEach
+    void teardown(){
 
     }
+
     @Test
     void testaddTile(){
-        //size should equal 6
+        Tile testT = new Tile(5,2);
+        thand.addTile(testT);
+        assertTrue(thand.getPlayersTiles().size() == 7);
     }
     @Test
     void testRemoveTile(){
-        //size still 6
+        Tile testT = new Tile(5,2);
+        thand.addTile(testT);
+        thand.removeTile(testT);
+        assertTrue(thand.getPlayersTiles().size() == 6);
     }
 
 }
