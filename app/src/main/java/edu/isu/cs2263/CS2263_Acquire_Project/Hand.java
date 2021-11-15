@@ -18,7 +18,7 @@ public class Hand {
     }
 
     public void addTile(Tile t){
-        playersTiles.add(t);
+        getPlayersTiles().add(t);
     }
 
     public Tile removeTile(Integer i){

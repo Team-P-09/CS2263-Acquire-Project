@@ -488,4 +488,20 @@ public class Scoreboard {
         }
         return pScore;
     }
+
+    public boolean checkTileRefresh(List<String> corpNames){
+        //RETURNS true IF THE TILE IS ONLY ADJACENT TO SAFE CORPORATIONS
+        boolean refreshBool = false;
+        Integer safeCounter = 0;
+        for(String corpName : corpNames){
+            if(getCorporations().getCorp(corpName).isSafe()){
+                safeCounter++;
+                if(safeCounter >= 2){
+                    refreshBool = true;
+                    break; //if the true condition has been met exit
+                }
+            }
+        }
+        return refreshBool;
+    }
 }
