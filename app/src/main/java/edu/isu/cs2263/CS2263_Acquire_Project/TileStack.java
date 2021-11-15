@@ -53,11 +53,7 @@ public class TileStack {
         tileStack = initializeTiles();
     }
 
-    public boolean isEmpty(){
-        return getTileStack().isEmpty();
-    }
-
-    public ArrayList<Tile> initializeTiles(){
+    private ArrayList<Tile> initializeTiles(){
         ArrayList<Tile> newTStack = new ArrayList<>();
         for (int r = 0; r < height; r++){
             for (int c = 0; c < width; c++){
@@ -75,6 +71,13 @@ public class TileStack {
             pulledTiles.add(popTile());
         }
         return pulledTiles;
+    }
+
+    public Tile popTile(){
+        Tile current;
+        current = getTileStack().get(0);
+        getTileStack().remove(0);
+        return  current;
     }
 
     /**
@@ -136,13 +139,5 @@ public class TileStack {
             ex.printStackTrace();
         }
         return null;
-    }
-
-
-    public Tile popTile(){
-        Tile current;
-        current = getTileStack().get(0);
-        getTileStack().remove(0);
-        return  current;
     }
 }
