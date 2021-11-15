@@ -62,7 +62,6 @@ public class Corporations {
             HashMap<String, Tile> subTiles = subCorp.retrieveTiles();
 
             domTiles.putAll(subTiles);
-            getCorp(corpName).setCorpTiles(domTiles);
             getCorp(corpName).setStatus(false);
         }
     }
@@ -132,7 +131,7 @@ public class Corporations {
             stockTier = 2;
         }else if(corpName.equals("American") || corpName.equals("Worldwide") || corpName.equals("Festival")){
             stockTier = 1;
-        }else{ //corpName will be Tower or Luxor
+        }else{ //corpName will be Tower or Saxon
             stockTier = 0;
         }
         stockTier += checkTier(corpSize);

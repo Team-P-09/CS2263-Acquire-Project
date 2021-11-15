@@ -24,8 +24,11 @@
 
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
+import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
+import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -43,7 +46,7 @@ import com.google.gson.reflect.TypeToken;
 
 @Getter @Setter
 public class Scoreboard {
-    Players players;
+    private Players players;
     ArrayList<String> corpNames = new ArrayList<>(Arrays.asList("Worldwide", "Sackson", "Festival", "Imperial", "American", "Tower", "Continental"));
     Corporations corporations;
 
@@ -51,6 +54,7 @@ public class Scoreboard {
         corporations = new Corporations(getCorpNames());
         players = new Players(numberOfPlayers, getCorpNames());
     }
+
 
     public void initFounding(List<Tile> tiles, String playerName){
         ArrayList<String> availableCorps = getAvailableCorps();
@@ -67,26 +71,27 @@ public class Scoreboard {
 
         if(unfoundedCorps.contains(corpName)){
             getPlayers().getPlayerByName(playerName).getPWallet().addStock(corpName, 1);
-            getCorporations().getCorp(corpName).setHasBeenFounded(true);
+            getCorporations().getCorps().get(corpName).removeCorpStock(1);
+            getCorporations().getCorp(corpName).foundCorp();
         }
         getCorporations().setStockValue(corpName);
     }
 
-    public ArrayList<String> getAvailableCorps(){
+    private ArrayList<String> getAvailableCorps(){
         ArrayList<String> availableCorps = new ArrayList<>();
         for(String cName : getCorpNames()){
-            if(!getCorporations().getCorp(cName).isStatus()){
+            if(!getCorporations().getCorp(cName).isHasBeenFounded()){
                 availableCorps.add(cName);
             }
         }
         return availableCorps;
     }
 
-    public String getUnfoundedCorps(){
+    private String getUnfoundedCorps(){
         String unfoundedCorps = "";
         String newCorp;
         for(String cName : getCorpNames()){
-            if(!getCorporations().getCorp(cName).isStatus()){
+            if(!getCorporations().getCorp(cName).isHasBeenFounded()){
                 newCorp = cName + "\n";
                 unfoundedCorps += newCorp;
             }
@@ -382,7 +387,7 @@ public class Scoreboard {
      * @param domList
      * @return
      */
-    public boolean checkMergeStatus(ArrayList<String> domList){
+    private boolean checkMergeStatus(ArrayList<String> domList){
         if(domList.size() > 1){
             return true;
         }
@@ -396,7 +401,7 @@ public class Scoreboard {
      * @param tArray
      * @return
      */
-    public ArrayList<String> findCorps(List<Tile> tArray){
+    private ArrayList<String> findCorps(List<Tile> tArray){
         ArrayList<String> cNames = new ArrayList<>();
         int cSize;
         for(Tile t : tArray){
@@ -416,7 +421,7 @@ public class Scoreboard {
      * @param mCorps
      * @return      Returns the dominate corp name(s)
      */
-    public ArrayList<String> findDomCorp(ArrayList<String> mCorps){
+    private ArrayList<String> findDomCorp(ArrayList<String> mCorps){
         int leadingCorpSize = 0;
         ArrayList<String> domCorpList = new ArrayList<>();
         int cSize;

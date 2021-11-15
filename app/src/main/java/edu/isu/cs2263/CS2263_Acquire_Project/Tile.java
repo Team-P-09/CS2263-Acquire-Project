@@ -32,7 +32,7 @@ import java.util.List;
 
 @Getter @Setter
 public class Tile {
-    int row ;
+    int row;
     int col;
     String corp;
     String location;
@@ -45,41 +45,6 @@ public class Tile {
         corp = null;
         status = false;
     }
-
-//    public int getCol(){
-//        return col;
-//    }
-//
-//    public String getLocation(){
-//        String location = this.getCol() + ", " + this.getRow();
-//        return location;
-//    }
-//
-//    public String getCorp(){
-//        return corp;
-//    }
-//
-//    public void setRow(int y){
-//        if (y >= 1 && y <= 9){
-//            row = y - 1;
-//        }
-//        else{
-//            row = row;
-//        }
-//    }
-//
-//    public void setCol(int x){
-//        if (x >= 1 && x <= 12){
-//            col = x - 1;
-//        }
-//        else{
-//            col = col;
-//        }
-//    }
-//
-//    public void setCorp(String name){
-//        corp = name;
-//    }
 
     public void activateTile(){
         status = true;

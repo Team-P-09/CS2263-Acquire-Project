@@ -46,12 +46,6 @@ public class CorpInfoTest {
         nT.put(t.getLocation(), t);
 
         tcorp.setCorpTiles(nT);
-
-
-        tHM = tcorp.retrieveTiles();
-
-        //        tcorp.corpTiles.add(t);
-        //        ArrayList<Tile> tl = tcorp.retrieveTiles();
     }
 
     @AfterEach
@@ -62,10 +56,12 @@ public class CorpInfoTest {
 
 
     @Test void retrieveTilesTestRemoves(){
+        tHM = tcorp.retrieveTiles();
         assertTrue(tcorp.getCorpSize() == 0);
     }
 
     @Test void retrieveTilesTestExtracts(){
+        tHM = tcorp.retrieveTiles();
         assertTrue(tHM.size() == 1);
     }
 }

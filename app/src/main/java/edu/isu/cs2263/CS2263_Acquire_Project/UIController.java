@@ -121,8 +121,8 @@ public class UIController {
 
         //updates scoreboard
         GridPane scorePane = (GridPane) scene.lookup("#Scoreboard");
-        for (int playerIndex = 0; playerIndex < gameState.scoreboard.players.activePlayers.size(); playerIndex++){
-            PlayerInfo playerToAdd = gameState.scoreboard.players.getPlayerByName("Player "+(playerIndex+1));
+        for (int playerIndex = 0; playerIndex < gameState.scoreboard.getPlayers().getActivePlayers().size(); playerIndex++){
+            PlayerInfo playerToAdd = gameState.scoreboard.getPlayers().getPlayerByName("Player "+(playerIndex+1));
 
             //show cash
             Text cash = (Text) scene.lookup("#p"+(playerIndex+1)+"Cash");
@@ -239,24 +239,6 @@ public class UIController {
         render(event);
     }
 
-    @FXML
-    public void playTile(ActionEvent event) throws IOException {
-        scene = ((Node)event.getSource()).getScene();
-        GameState gameState = GameState.getInstance(null);
-        Button button = (Button) event.getSource();
-        if (gameState.hasPlayed == false){
-            String id = button.getId();
-            id = id.replace("Tile","");
-            Tile playTile = gameState.getCurrentPlayer().pHand.playersTiles.get(Integer.parseInt(id));
-            gameState.placeTile(playTile, gameState.getCurrentPlayer().pName);
-            gameState.hasPlayed();
-        }
-
-        render(event);
-    }
-
-
-
     //MENU BUTTONS
     @FXML
     public void handleStartNewGameButton(ActionEvent event) throws IOException {
@@ -291,5 +273,18 @@ public class UIController {
     public void handleExitGameButton(ActionEvent event){
 
         System.exit(0);
+    }
+
+    @FXML
+    public void playTile(ActionEvent event) throws IOException {
+        scene = ((Node)event.getSource()).getScene();
+        GameState gameState = GameState.getInstance(null);
+        Button button = (Button) event.getSource();
+        String id = button.getId();
+        id = id.replace("Tile","");
+        Tile playTile = gameState.getCurrentPlayer().getPHand().getPlayersTiles().get(Integer.parseInt(id));
+        gameState.placeTile(playTile, gameState.getCurrentPlayer().getPName());
+
+        render(event);
     }
 }
