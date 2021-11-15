@@ -44,15 +44,4 @@ public class PlayerInfo {
         pWallet = new Wallet(corpNames);
     }
 
-    public void drawTile(){
-        //random tile from tilestack is added to player's hand
-    }
-    public void drawHand(){
-        //get six random tiles from tile pool and add to hand
-    }
-    public void refreshHand(){
-        //remove unplayable tiles
-        //add new random tiles from TileStack
-    }
-
 }

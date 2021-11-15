@@ -32,17 +32,12 @@ public class HandTest {
     void setUp(){
 
     }
-
     @Test
-    void testDrawTile(){
-        //
-    }
-    @Test
-    void testDrawHand(){
+    void testaddTile(){
         //size should equal 6
     }
     @Test
-    void testRefreshHand(){
+    void testRemoveTile(){
         //size still 6
     }
 
