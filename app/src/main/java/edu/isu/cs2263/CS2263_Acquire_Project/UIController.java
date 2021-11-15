@@ -27,7 +27,6 @@ public class UIController {
     private Stage stage;
     private Scene scene;
     private Parent root;
-    private int numberOfPlayers;
 
     @FXML
     public void render(Event event) throws IOException {
@@ -38,15 +37,15 @@ public class UIController {
         GameState gameState = GameState.getInstance(null);
 
         //updates the current players hand
-//        PlayerInfo playerInfo = gameState.scoreboard.players.getCurrentPlayer();
-//        int i = 0;
-//        for (Tile tile : playerInfo.pHand.playersTiles){
-//            String id = "#Tile"+i;
-//            Button button = (Button) scene.lookup(id);
-//
-//            button.setText(tile.getLocation());
-//            i++;
-//        }
+        PlayerInfo playerInfo = gameState.getCurrentPlayer();
+        int i = 0;
+        for (Tile tile : playerInfo.pHand.playersTiles){
+            String id = "#Tile"+i;
+            Button button = (Button) scene.lookup(id);
+
+            button.setText(tile.getLocation());
+            i++;
+        }
 
         //update the gameboard
         Tile[][] gameboard = gameState.gameboard.gameboard;
@@ -101,8 +100,8 @@ public class UIController {
 
         //updates scoreboard
         GridPane scorePane = (GridPane) scene.lookup("#Scoreboard");
-        for (int playerIndex = 0; playerIndex < numberOfPlayers; playerIndex++){
-            PlayerInfo playerToAdd = gameState.scoreboard.players.activePlayers.get(playerIndex);
+        for (int playerIndex = 0; playerIndex < gameState.scoreboard.players.activePlayers.size(); playerIndex++){
+            PlayerInfo playerToAdd = gameState.scoreboard.players.getPlayerByName("Player "+(playerIndex+1));
 
             //show cash
             Text cash = (Text) scene.lookup("#p"+(playerIndex+1)+"Cash");
@@ -130,7 +129,7 @@ public class UIController {
             Continental.setText(String.valueOf(playerToAdd.pWallet.getStocks().get("Continental")));
 
             Text score = (Text) scene.lookup("#p"+(playerIndex+1)+"Score");
-//            score.setText(String.valueOf(gameState.scoreboard.getPlayerScore("Player"+(playerIndex+1))));
+            score.setText(String.valueOf(gameState.scoreboard.getPlayerScore("Player "+(playerIndex+1))));
         }
         //updates StockMarket
         List<String> corpNames = Arrays.asList("Festival", "Imperial", "Worldwide", "American", "Sackson", "Tower", "Continental");
@@ -169,7 +168,6 @@ public class UIController {
 
         if (result.isPresent()){
             GameState gameState = GameState.getInstance(result.get());
-            numberOfPlayers = result.get();
             render(event);
         }
     }
@@ -195,14 +193,14 @@ public class UIController {
 
     @FXML
     public void playTile(ActionEvent event) throws IOException {
-//        scene = ((Node)event.getSource()).getScene();
-//        GameState gameState = GameState.getInstance(null);
-//        Button button = (Button) event.getSource();
-//        String id = button.getId();
-//        id = id.replace("Tile","");
-//        Tile playTile = gameState.scoreboard.players.getCurrentPlayer().pHand.playersTiles.get(Integer.parseInt(id));
-//        System.out.println("tile corpval " + playTile.getCorp());
-//        gameState.gameboard.recordTile(playTile);
-//        render(event);
+        scene = ((Node)event.getSource()).getScene();
+        GameState gameState = GameState.getInstance(null);
+        Button button = (Button) event.getSource();
+        String id = button.getId();
+        id = id.replace("Tile","");
+        Tile playTile = gameState.getCurrentPlayer().pHand.playersTiles.get(Integer.parseInt(id));
+        gameState.placeTile(playTile, gameState.getCurrentPlayer().pName);
+
+        render(event);
     }
 }

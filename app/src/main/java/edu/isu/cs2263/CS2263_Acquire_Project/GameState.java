@@ -18,6 +18,7 @@ import java.util.*;
 public class GameState {
     Gameboard gameboard;
     Scoreboard scoreboard;
+    int currentPlayerTracker = 0;
 
     private static GameState instance = null;
     private GameState(Integer numberOfPlayers){
@@ -198,4 +199,16 @@ public class GameState {
         return previousGame;
     }
 
+    public PlayerInfo getCurrentPlayer(){
+        return scoreboard.players.getPlayerByName("Player " + (currentPlayerTracker+1));
+    }
+
+    public void nextPlayer(){
+        if(currentPlayerTracker == scoreboard.players.activePlayers.size()-1){
+            currentPlayerTracker = 0;
+        }
+        else {
+            currentPlayerTracker++;
+        }
+    }
 }
