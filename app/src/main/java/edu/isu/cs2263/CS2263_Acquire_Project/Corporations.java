@@ -137,7 +137,9 @@ public class Corporations {
         }
         stockTier += checkTier(corpSize);
 
-        getCorp(corpName).setStockPrice(stockTiers.get(stockTier));
+        if(stockTier !=0) {
+            getCorp(corpName).setStockPrice(stockTiers.get(stockTier));
+        }
     }
 
     public Integer getBonus(String corpName, String bonusType){
