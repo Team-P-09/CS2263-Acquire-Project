@@ -8,3 +8,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.0] - 2021-11-14
 -Completed basic implementation of game logic and UI controls
+
+## [v1.0.0] - 2021-11-14
+-Completed basic implementation of game logic and UI controls
