@@ -83,17 +83,17 @@ public class ScoreboardTest {
         assertTrue(testDisplayInfo.get("Worldwide")[0] == 2);
     }
 
-    @Test void testinitBuyAddsStock(){
-        s.initBuy(p1Name, "Worldwide");
-        assertTrue(s.getCorporations().getCorp("Worldwide").getAvailableStocks() == 12);
-    }
-
-    @Test void testinitBuyRemovesCash(){
-        s.initBuy(p1Name,"Worldwide");
-        Integer pcash = s.getPlayers().getPlayerByName(p1Name).getPWallet().getCash();
-        System.out.println(pcash);
-        assertTrue(pcash == 5700);
-    }
+//    @Test void testinitBuyAddsStock(){
+//        s.initBuy(p1Name, "Worldwide");
+//        assertTrue(s.getCorporations().getCorp("Worldwide").getAvailableStocks() == 12);
+//    }
+//
+//    @Test void testinitBuyRemovesCash(){
+//        s.initBuy(p1Name,"Worldwide");
+//        Integer pcash = s.getPlayers().getPlayerByName(p1Name).getPWallet().getCash();
+//        System.out.println(pcash);
+//        assertTrue(pcash == 5700);
+//    }
 
     @Test void testinitPlayers(){
         assertTrue(s.getPlayers().getActivePlayers().size() == 2);
