@@ -76,7 +76,7 @@ public class Corporations {
     }
 
     public CorpInfo getCorp(String corpName){
-        return this.corps.get(corpName);
+        return getCorps().get(corpName);
     }
 
     /**
@@ -91,7 +91,7 @@ public class Corporations {
      * @param t
      */
     public void addTileToCorp(String corpName, Tile t){
-        this.corps.get(corpName).addCorpTile(t);
+        getCorps().get(corpName).addCorpTile(t);
     }
 
     public String getTilesCorp(Tile t){
@@ -104,37 +104,18 @@ public class Corporations {
     }
 
     /**
-     * Sets the value of all corporation stocks in the array list to 0
-     * Used after a merge in Scoreboard
-     * @param subCorps
-     */
-    public void clearStockValues(ArrayList<String> subCorps) {
-        for (String cName : subCorps) {
-            getCorp(cName).setStockPrice(0);
-        }
-    }
-
-    /**
      * updates stock tier based on corporation name
      * @param corpName
      */
     public void setStockValue(String corpName){
         Integer corpSize = getCorp(corpName).getCorpSize();
-        Integer stockTier = 0;
+        Integer stockTier; //corps cannot be evaluated at a size less than 2 as no corp can be founded with a size less than 2
         HashMap<Integer, Integer> stockTiers = new HashMap<>();
         for(int i = 1 ; i < 13 ; i++){
             stockTiers.put(i, 100+100*i);
         }
 
-
-        if(corpName.equals("Imperial") || corpName.equals("Continental")){
-            stockTier = 2;
-        }else if(corpName.equals("American") || corpName.equals("Worldwide") || corpName.equals("Festival")){
-            stockTier = 1;
-        }else{ //corpName will be Tower or Saxon
-            stockTier = 0;
-        }
-        stockTier += checkTier(corpSize);
+        stockTier = 1 + getCorpBaseTier(corpName) + checkTier(corpSize);
 
         if(stockTier !=0) {
             getCorp(corpName).setStockPrice(stockTiers.get(stockTier));
@@ -143,7 +124,7 @@ public class Corporations {
 
     public Integer getBonus(String corpName, String bonusType){
         Integer corpSize = getCorp(corpName).getCorpSize();
-        Integer bonusTier = 0;
+        Integer bonusTier;
         Integer bonusAmt = 0;
         HashMap<Integer, Integer> majorityTiers = new HashMap<>();
         HashMap<Integer, Integer> minorityTiers = new HashMap<>();
@@ -152,14 +133,8 @@ public class Corporations {
             minorityTiers.put(i, 1000+500*i);
         }
 
-        if(corpName.equals("Imperial") || corpName.equals("Continental")){
-            bonusTier = 2;
-        }else if(corpName.equals("American") || corpName.equals("Worldwide") || corpName.equals("Festival")){
-            bonusTier = 1;
-        }else{ //corpName will be Tower or Luxor
-            bonusTier = 0;
-        }
-        bonusTier += checkTier(corpSize);
+        bonusTier = getCorpBaseTier(corpName) + checkTier(corpSize);
+
         if(bonusType.equals("Majority")){
             bonusAmt += majorityTiers.get(bonusTier);
         }else{
@@ -168,18 +143,32 @@ public class Corporations {
         return bonusAmt;
     }
 
+    private Integer getCorpBaseTier(String corpName){
+        Integer bonusTier;
+        if(corpName.equals("Imperial") || corpName.equals("Continental")){
+            bonusTier = 2;
+        }else if(corpName.equals("American") || corpName.equals("Worldwide") || corpName.equals("Festival")){
+            bonusTier = 1;
+        }else{ //corpName will be Tower or Saxon
+            bonusTier = 0;
+        }
+        return bonusTier;
+    }
+
     /**
      * returns a number to increment the tier of a corporation for accuract retreival or stock price
+     * Max return value is 8
      * @param corpSize
      * @return
      */
-    public Integer checkTier(Integer corpSize){
-        Integer[] tierArray = new Integer[]{1,2,3,4,5,6,11,21,31,41};
+    private Integer checkTier(Integer corpSize){
+        Integer[] tierArray = new Integer[]{2,3,4,5,6,11,21,31,41};
         Integer tierIncrement = 0;
         if(corpSize > 0){
             Integer i = 0;
-            while(i<tierArray.length && corpSize < tierArray[i]){
-                tierIncrement = tierArray[i];
+            while(i<tierArray.length && corpSize >= tierArray[i]){
+                tierIncrement = i;
+                i++;
             }
         }
         return tierIncrement;

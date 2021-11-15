@@ -39,13 +39,16 @@ public class CorporationsTest {
     String domCorpName;
     ArrayList<String> subCorpNames;
     Corporations tcorps;
+    String corp1 = "Worldwide";
+    String corp2 = "Imperial";
+    String corp3 = "Saxon";
 
     @BeforeEach
     void setUp(){
         corpNames = new ArrayList<>();
-        corpNames.add("tcorpA");
-        corpNames.add("tcorpB");
-        corpNames.add("tcorpC");
+        corpNames.add(corp1);
+        corpNames.add(corp2);
+        corpNames.add(corp3);
 
         domCorpName = corpNames.get(0);
         subCorpNames = new ArrayList(corpNames.subList(1, corpNames.size()));
@@ -76,13 +79,11 @@ public class CorporationsTest {
      */
     @Test void mergeIncreasesDomSize(){
         tcorps.mergeCorps(domCorpName, subCorpNames);
-
         assertTrue(tcorps.getCorp(domCorpName).getCorpSize() == 4);
     }
 
     @Test void mergeDecreasesSubSize(){
         tcorps.mergeCorps(domCorpName, subCorpNames);
-
         assertTrue(tcorps.getCorp(subCorpNames.get(0)).getCorpSize() == 0);
     }
 
@@ -90,14 +91,39 @@ public class CorporationsTest {
      * Asserts to confirm that the number of corporations initialized are correct
      */
     @Test void initSizeTest(){
-//        corpNames;
-//        String[] corpNames = new String[]{"Worldwide", "Sackson", "Festival", "Imperial", "American", "Tower", "Continental"};
-//        Corporations tcorp = new Corporations(corpNames);
         assertTrue(tcorps.getCorps().size() == 3);
     }
 
     @Test
-    void checkValidation(){
+    void testGetTilesCorp(){
+        Tile t = new Tile(2,8);
+        tcorps.addTileToCorp(corp1, t);
+        assertTrue(tcorps.getTilesCorp(t) == corp1);
+    }
 
+    @Test
+    void corpAddsTile(){
+        Tile t = new Tile(2,8);
+        Integer oldCorpSize = tcorps.getCorp(corp1).getCorpSize();
+        tcorps.addTileToCorp(corp1, t);
+        assertTrue(tcorps.getCorp(corp1).getCorpSize() == oldCorpSize +1);
+    }
+
+    @Test
+    void getBonusMajorityReturnsCorrectValue(){
+        Integer bonusVal = tcorps.getBonus(corp1, "Majority");
+        assertTrue(bonusVal == 3000);
+    }
+
+    @Test
+    void getBonusMinorityReturnsCorrectValue(){
+        Integer bonusVal = tcorps.getBonus(corp1, "Minority");
+        assertTrue(bonusVal == 1500);
+    }
+
+    @Test
+    void testStockValueCorrectlyIncrements(){
+        tcorps.setStockValue(corp1);
+        assertTrue(tcorps.getCorp(corp1).getStockPrice() == 300);
     }
 }
