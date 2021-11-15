@@ -19,6 +19,7 @@ public class GameState {
     Gameboard gameboard;
     Scoreboard scoreboard;
     int currentPlayerTracker = 0;
+    Boolean hasPlayed = false;
 
     private static GameState instance = null;
     private GameState(Integer numberOfPlayers){
@@ -230,6 +231,13 @@ public class GameState {
         }
         else {
             currentPlayerTracker++;
+        }
+        hasPlayed = false;
+    }
+
+    public void hasPlayed(){
+        if (hasPlayed == false){
+            hasPlayed = true;
         }
     }
 }

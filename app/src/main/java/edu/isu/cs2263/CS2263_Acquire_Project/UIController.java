@@ -1,24 +1,18 @@
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
-import lombok.Getter;
-import lombok.Setter;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.stage.Window;
-import java.io.Console;
+
 import java.io.IOException;
 import java.util.*;
 
@@ -27,6 +21,7 @@ public class UIController {
     private Stage stage;
     private Scene scene;
     private Parent root;
+    private Boolean hasPlayed = false;
 
     @FXML
     public void render(Event event) throws IOException {
@@ -59,7 +54,9 @@ public class UIController {
                 text.setText(tile.getLocation());
                 pane.getChildren().add(text);
                 String corpVal = tile.getCorp() != null ? tile.getCorp() : "empty";
-                System.out.println("corpval: " + corpVal);
+                System.out.println(tile.status);
+                System.out.println(tile.getCorp());
+
                 switch (corpVal){
                     case "Festival":
                         pane.setStyle("-fx-background-color: green; -fx-border-color: darkgray");
@@ -69,7 +66,7 @@ public class UIController {
                         pane.setStyle("-fx-background-color: magenta; -fx-border-color: darkgray");
                         text.setStyle("-fx-fill: white");
                         break;
-                    case "WorldWide":
+                    case "Worldwide":
                         pane.setStyle("-fx-background-color: brown; -fx-border-color: darkgray");
                         text.setStyle("-fx-fill: white");
                         break;
@@ -113,7 +110,7 @@ public class UIController {
             Text Imperial = (Text) scene.lookup("#p"+(playerIndex+1)+"Imperial");
             Imperial.setText(String.valueOf(playerToAdd.pWallet.getStocks().get("Imperial")));
 
-            Text WorldWide = (Text) scene.lookup("#p"+(playerIndex+1)+"WorldWide");
+            Text WorldWide = (Text) scene.lookup("#p"+(playerIndex+1)+"Worldwide");
             WorldWide.setText(String.valueOf(playerToAdd.pWallet.getStocks().get("Worldwide")));
 
             Text American = (Text) scene.lookup("#p"+(playerIndex+1)+"American");
@@ -151,6 +148,93 @@ public class UIController {
     }
 
     @FXML
+    public void buyButton(ActionEvent event) throws IOException {
+        scene = ((Node)event.getSource()).getScene();
+        GameState gameState = GameState.getInstance(null);
+        Button button = (Button) event.getSource();
+
+        //popup to get number of players
+        ArrayList<String> choices = new ArrayList<String>();
+        choices.add("Festival");
+        choices.add("Imperial");
+        choices.add("Worldwide");
+        choices.add("American");
+        choices.add("Sackson");
+        choices.add("Tower");
+        choices.add("Continental");
+
+
+        ChoiceDialog<String> dialog = new ChoiceDialog("Festival", choices);
+        dialog.setTitle("Buy");
+        dialog.setHeaderText("What corporation would you like to buy?");
+
+        Optional<String> result = dialog.showAndWait();
+
+        if (result.isPresent()){
+            gameState.scoreboard.initBuy(gameState.getCurrentPlayer().getPName(), result.get());
+
+            render(event);
+        }
+    }
+
+    @FXML
+    public void sellButton(ActionEvent event) throws IOException {
+        scene = ((Node)event.getSource()).getScene();
+        GameState gameState = GameState.getInstance(null);
+        Button button = (Button) event.getSource();
+
+        //popup to get number of players
+        ArrayList<String> choices = new ArrayList<String>();
+        choices.add("Festival");
+        choices.add("Imperial");
+        choices.add("Worldwide");
+        choices.add("American");
+        choices.add("Sackson");
+        choices.add("Tower");
+        choices.add("Continental");
+
+
+        ChoiceDialog<String> dialog = new ChoiceDialog("Festival", choices);
+        dialog.setTitle("Sell");
+        dialog.setHeaderText("What corporation would you like to sell?");
+
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()){
+            gameState.scoreboard.initSell(gameState.getCurrentPlayer().getPName(), result.get(), false);
+
+            render(event);
+        }
+    }
+
+    @FXML
+    public void endTurnButton(ActionEvent event) throws IOException{
+        scene = ((Node)event.getSource()).getScene();
+        GameState gameState = GameState.getInstance(null);
+        Button button = (Button) event.getSource();
+        gameState.nextPlayer();
+        render(event);
+    }
+
+    @FXML
+    public void playTile(ActionEvent event) throws IOException {
+        scene = ((Node)event.getSource()).getScene();
+        GameState gameState = GameState.getInstance(null);
+        Button button = (Button) event.getSource();
+        if (gameState.hasPlayed == false){
+            String id = button.getId();
+            id = id.replace("Tile","");
+            Tile playTile = gameState.getCurrentPlayer().pHand.playersTiles.get(Integer.parseInt(id));
+            gameState.placeTile(playTile, gameState.getCurrentPlayer().pName);
+            gameState.hasPlayed();
+        }
+
+        render(event);
+    }
+
+
+
+    //MENU BUTTONS
+    @FXML
     public void handleStartNewGameButton(ActionEvent event) throws IOException {
         event.consume();
 
@@ -173,12 +257,6 @@ public class UIController {
     }
 
     @FXML
-    public void buyButton(ActionEvent event) throws IOException {
-        scene = ((Node)event.getSource()).getScene();
-        render(event);
-    }
-
-    @FXML
     public void handleLoadGameButton(ActionEvent event){
         scene = ((Node)event.getSource()).getScene();
 
@@ -189,18 +267,5 @@ public class UIController {
     public void handleExitGameButton(ActionEvent event){
 
         System.exit(0);
-    }
-
-    @FXML
-    public void playTile(ActionEvent event) throws IOException {
-        scene = ((Node)event.getSource()).getScene();
-        GameState gameState = GameState.getInstance(null);
-        Button button = (Button) event.getSource();
-        String id = button.getId();
-        id = id.replace("Tile","");
-        Tile playTile = gameState.getCurrentPlayer().pHand.playersTiles.get(Integer.parseInt(id));
-        gameState.placeTile(playTile, gameState.getCurrentPlayer().pName);
-
-        render(event);
     }
 }

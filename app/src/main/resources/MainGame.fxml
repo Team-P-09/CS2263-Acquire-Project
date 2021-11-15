@@ -100,8 +100,8 @@
                      </padding>
                      <children>
                         <Button id="BuyButton" mnemonicParsing="false" onAction="#buyButton" prefHeight="25.0" prefWidth="150.0" text="Buy" />
-                        <Button id="SellButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Sell" GridPane.rowIndex="1" />
-                        <Button id="EndTurnButton" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="End Turn" GridPane.rowIndex="2" />
+                        <Button id="SellButton" mnemonicParsing="false" onAction="#sellButton" prefHeight="25.0" prefWidth="150.0" text="Sell" GridPane.rowIndex="1" />
+                        <Button id="EndTurnButton" alignment="CENTER" mnemonicParsing="false" onAction="#endTurnButton" prefHeight="25.0" prefWidth="150.0" text="End Turn" GridPane.rowIndex="2" />
                         <CheckBox id="ShowRulesRadio" alignment="CENTER" mnemonicParsing="false" prefHeight="17.0" prefWidth="128.0" text="Show Rules" GridPane.rowIndex="3" />
                      </children>
                   </GridPane>
@@ -288,19 +288,19 @@
                            </children></Pane>
                         <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                            <children>
-                              <Text id="p1WorldWide" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                              <Text id="p1Worldwide" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
                            </children></Pane>
                         <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
                            <children>
-                              <Text id="p2WorldWide" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                              <Text id="p2Worldwide" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
                            </children></Pane>
                         <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
                            <children>
-                              <Text id="p3WorldWide" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                              <Text id="p3Worldwide" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
                            </children></Pane>
                         <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4">
                            <children>
-                              <Text id="p4WorldWide" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                              <Text id="p4Worldwide" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
                            </children></Pane>
                         <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                            <children>
