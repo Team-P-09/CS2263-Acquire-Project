@@ -64,7 +64,7 @@ public class CorpInfo {
         return outTiles;
     }
 
-    public void checkIfSafe(){
+    private void checkIfSafe(){
         if(getCorpSize() >= 11){
             setSafe(true);
         }
@@ -83,10 +83,6 @@ public class CorpInfo {
         getCorpTiles().put(t.getLocation(), t);
         checkIfSafe();
         //this.corpTiles.add(t);
-    }
-
-    public void addAllTiles(){
-
     }
 
     /**

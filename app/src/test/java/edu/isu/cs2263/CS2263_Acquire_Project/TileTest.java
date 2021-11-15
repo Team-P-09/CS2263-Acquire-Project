@@ -44,4 +44,14 @@ class TileTest {
         assertEquals("1, 1", testTile.getLocation(), "Should return string of coordinates");
     }
 
+    @Test
+    void testActivate(){
+        testTile.activateTile();
+        assertTrue(testTile.isStatus());
+    }
+
+    @Test
+    void testInactive(){
+        assertFalse(testTile.isStatus());
+    }
 }

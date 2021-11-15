@@ -57,7 +57,7 @@ public class Players {
      * @param corpNames
      * @return
      */
-    public ArrayList<PlayerInfo> initPlayers(Integer number, ArrayList<String> corpNames){
+    private ArrayList<PlayerInfo> initPlayers(Integer number, ArrayList<String> corpNames){
         ArrayList<PlayerInfo> newPlayers = new ArrayList<>();
         ArrayList<String> playerList = namePlayers(number);
         ArrayList<String> pNames = sortPlayers(playerList);
@@ -76,7 +76,7 @@ public class Players {
      * @param number
      * @return
      */
-    public ArrayList<String> namePlayers(Integer number){
+    private ArrayList<String> namePlayers(Integer number){
         ArrayList<String> pSet = new ArrayList<>();
         String p = "Player ";
         for(int i = 1 ; i < number +1 ; i++){
@@ -90,7 +90,7 @@ public class Players {
      * @param pSet
      * @return
      */
-    public ArrayList<String> sortPlayers(ArrayList<String> pSet){
+    private ArrayList<String> sortPlayers(ArrayList<String> pSet){
         HashMap<String, Integer> playerOrderTM = new HashMap<>();
         ArrayList<Tile> tilesForPosition = new ArrayList<>();
         Tile t;

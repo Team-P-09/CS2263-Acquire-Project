@@ -145,6 +145,12 @@ public class Scoreboard {
         }
     }
 
+    /**
+     * gives bonuses to players based on the number of stocks they own
+     * @param bonusList
+     * @param corpName
+     * @param bonusType
+     */
     private void divyOutBonuses(HashMap<String, List<String>> bonusList, String corpName, String bonusType){
         List<String> players = bonusList.get(bonusType);
         Integer bonusAmt = 0;
@@ -152,7 +158,6 @@ public class Scoreboard {
             bonusAmt = getCorporations().getBonus(corpName, bonusType);
             getPlayers().getPlayerByName(playerName).getPWallet().addCash(bonusAmt/players.size());
         }
-
     }
 
     /**
@@ -324,9 +329,9 @@ public class Scoreboard {
         dialog.setTitle(title);
         dialog.setHeaderText(header);
 
-        Optional<T> domChoice = dialog.showAndWait();
-        while(!domChoice.isPresent()){
-            domChoice = dialog.showAndWait();
+        Optional<T> pChoice = dialog.showAndWait();
+        while(!pChoice.isPresent()){
+            pChoice = dialog.showAndWait();
         }
         return dialog.getSelectedItem();
     }
