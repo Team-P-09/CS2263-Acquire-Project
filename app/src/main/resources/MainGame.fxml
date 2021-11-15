@@ -126,7 +126,7 @@
                         <Button id="BuyButton" mnemonicParsing="false" onAction="#buyButton" prefHeight="25.0" prefWidth="150.0" text="Buy" />
                         <Button id="SellButton" mnemonicParsing="false" onAction="#sellButton" prefHeight="25.0" prefWidth="150.0" text="Sell" GridPane.rowIndex="1" />
                         <Button id="EndTurnButton" alignment="CENTER" mnemonicParsing="false" onAction="#endTurnButton" prefHeight="25.0" prefWidth="150.0" text="End Turn" GridPane.rowIndex="2" />
-                        <CheckBox id="ShowRulesRadio" alignment="CENTER" mnemonicParsing="false" prefHeight="17.0" prefWidth="128.0" text="Show Rules" GridPane.rowIndex="3" />
+                        <Button id="showRulesButton" mnemonicParsing="false" onAction="#ShowRulesButton" prefHeight="25.0" prefWidth="148.0" text="Show Rules" GridPane.rowIndex="3" />
                      </children>
                   </GridPane>
                </children>

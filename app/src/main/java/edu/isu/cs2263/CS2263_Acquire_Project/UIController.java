@@ -239,6 +239,33 @@ public class UIController {
         render(event);
     }
 
+
+    @FXML
+    public void ShowRulesButton() throws IOException{
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText("Look, an Information Dialog");
+        alert.setContentText("I have a great message for you!");
+
+        alert.showAndWait();
+    }
+
+    @FXML
+    public void playTile(ActionEvent event) throws IOException{
+        scene = ((Node)event.getSource()).getScene();
+        GameState gameState = GameState.getInstance(null);
+        Button button = (Button) event.getSource();
+        if (gameState.hasPlayed == false){
+            String id = button.getId();
+            id = id.replace("Tile","");
+            Tile playTile = gameState.getCurrentPlayer().pHand.playersTiles.get(Integer.parseInt(id));
+            gameState.placeTile(playTile, gameState.getCurrentPlayer().pName);
+            gameState.hasPlayed();
+        }
+
+        render(event);
+    }
+
     //MENU BUTTONS
     @FXML
     public void handleStartNewGameButton(ActionEvent event) throws IOException {
@@ -273,18 +300,5 @@ public class UIController {
     public void handleExitGameButton(ActionEvent event){
 
         System.exit(0);
-    }
-
-    @FXML
-    public void playTile(ActionEvent event) throws IOException {
-        scene = ((Node)event.getSource()).getScene();
-        GameState gameState = GameState.getInstance(null);
-        Button button = (Button) event.getSource();
-        String id = button.getId();
-        id = id.replace("Tile","");
-        Tile playTile = gameState.getCurrentPlayer().getPHand().getPlayersTiles().get(Integer.parseInt(id));
-        gameState.placeTile(playTile, gameState.getCurrentPlayer().getPName());
-
-        render(event);
     }
 }
