@@ -1,5 +1,7 @@
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
+import lombok.Getter;
+import lombok.Setter;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -16,16 +18,12 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-
 import java.io.Console;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 public class UIController {
 
-    public Pane pane1_1;
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -37,7 +35,9 @@ public class UIController {
         scene = new Scene(root);
 
         GameState gameState = GameState.getInstance(null);
-        PlayerInfo playerInfo = gameState.scoreboard.players.getCurrentPlayer();
+
+        //updates the current players hand
+        PlayerInfo playerInfo = gameState.getCurrentPlayer();
         int i = 0;
         for (Tile tile : playerInfo.pHand.playersTiles){
             String id = "#Tile"+i;
@@ -46,6 +46,8 @@ public class UIController {
             button.setText(tile.getLocation());
             i++;
         }
+
+        //update the gameboard
         Tile[][] gameboard = gameState.gameboard.gameboard;
         GridPane gridPane = (GridPane) scene.lookup("#gameboard");
         gridPane.getChildren().clear();
@@ -75,7 +77,7 @@ public class UIController {
                         pane.setStyle("-fx-background-color: navy; -fx-border-color: darkgray");
                         text.setStyle("-fx-fill: white");
                         break;
-                    case "Luxor":
+                    case "Sackson":
                         pane.setStyle("-fx-background-color: red; -fx-border-color: darkgray");
                         text.setStyle("-fx-fill: white");
                         break;
@@ -94,6 +96,54 @@ public class UIController {
                 }
                 gridPane.add(pane, x, y);
             }
+        }
+
+        //updates scoreboard
+        GridPane scorePane = (GridPane) scene.lookup("#Scoreboard");
+        for (int playerIndex = 0; playerIndex < gameState.scoreboard.players.activePlayers.size(); playerIndex++){
+            PlayerInfo playerToAdd = gameState.scoreboard.players.getPlayerByName("Player "+(playerIndex+1));
+
+            //show cash
+            Text cash = (Text) scene.lookup("#p"+(playerIndex+1)+"Cash");
+            cash.setText(String.valueOf(playerToAdd.pWallet.cash));
+            //show Stock
+            Text festival = (Text) scene.lookup("#p"+(playerIndex+1)+"Festival");
+            festival.setText(String.valueOf(playerToAdd.pWallet.getStocks().get("Festival")));
+
+            Text Imperial = (Text) scene.lookup("#p"+(playerIndex+1)+"Imperial");
+            Imperial.setText(String.valueOf(playerToAdd.pWallet.getStocks().get("Imperial")));
+
+            Text WorldWide = (Text) scene.lookup("#p"+(playerIndex+1)+"WorldWide");
+            WorldWide.setText(String.valueOf(playerToAdd.pWallet.getStocks().get("Worldwide")));
+
+            Text American = (Text) scene.lookup("#p"+(playerIndex+1)+"American");
+            American.setText(String.valueOf(playerToAdd.pWallet.getStocks().get("American")));
+
+            Text Sackson = (Text) scene.lookup("#p"+(playerIndex+1)+"Sackson");
+            Sackson.setText(String.valueOf(playerToAdd.pWallet.getStocks().get("Sackson")));
+
+            Text Tower = (Text) scene.lookup("#p"+(playerIndex+1)+"Tower");
+            Tower.setText(String.valueOf(playerToAdd.pWallet.getStocks().get("Tower")));
+
+            Text Continental = (Text) scene.lookup("#p"+(playerIndex+1)+"Continental");
+            Continental.setText(String.valueOf(playerToAdd.pWallet.getStocks().get("Continental")));
+
+            Text score = (Text) scene.lookup("#p"+(playerIndex+1)+"Score");
+            score.setText(String.valueOf(gameState.scoreboard.getPlayerScore("Player "+(playerIndex+1))));
+        }
+        //updates StockMarket
+        List<String> corpNames = Arrays.asList("Festival", "Imperial", "Worldwide", "American", "Sackson", "Tower", "Continental");
+        for (String string : corpNames){
+            //update remaining
+            CorpInfo currentCorp = gameState.scoreboard.corporations.getCorp(string);
+            Text currentCorpRemaining = (Text) scene.lookup("#"+string+"Quantity");
+            currentCorpRemaining.setText(String.valueOf(currentCorp.getAvailableStocks()));
+            //updates price
+            Text currentCorpPrice = (Text) scene.lookup("#"+string+"Price");
+            currentCorpPrice.setText(String.valueOf(currentCorp.getStockPrice()));
+            //updates size
+            Text currentCorpSize = (Text) scene.lookup("#"+string+"Size");
+            currentCorpSize.setText(String.valueOf(currentCorp.getCorpSize()));
         }
 
         stage.setScene(scene);
@@ -125,9 +175,7 @@ public class UIController {
     @FXML
     public void buyButton(ActionEvent event) throws IOException {
         scene = ((Node)event.getSource()).getScene();
-
-        Pane currentPane = (Pane) scene.lookup("#pane1_1");
-        currentPane.setStyle("-fx-background-color: black");
+        render(event);
     }
 
     @FXML
@@ -150,10 +198,9 @@ public class UIController {
         Button button = (Button) event.getSource();
         String id = button.getId();
         id = id.replace("Tile","");
-        Tile playTile = gameState.scoreboard.players.getCurrentPlayer().pHand.playersTiles.get(Integer.parseInt(id));
-        System.out.println("tile corpval " + playTile.getCorp());
-        gameState.gameboard.recordTile(playTile);
+        Tile playTile = gameState.getCurrentPlayer().pHand.playersTiles.get(Integer.parseInt(id));
+        gameState.placeTile(playTile, gameState.getCurrentPlayer().pName);
+
         render(event);
     }
-
 }

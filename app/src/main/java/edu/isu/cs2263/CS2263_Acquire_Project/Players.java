@@ -91,8 +91,12 @@ public class Players {
     }
 
     public PlayerInfo getPlayerByName(String name){
-        Integer pindex = getActivePlayers().indexOf(name);
-        return getActivePlayers().get(pindex);
+        for(PlayerInfo pinfo : getActivePlayers()){
+            if(pinfo.getPName().equals(name)){
+                return pinfo;
+            }
+        }
+        return null;
     }
 
     public void buyStock(String pName, String cName, Integer qty, Integer stockVal){
