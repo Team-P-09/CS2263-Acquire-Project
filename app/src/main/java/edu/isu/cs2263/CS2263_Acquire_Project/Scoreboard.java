@@ -36,7 +36,7 @@ public class Scoreboard {
         String corpName = getDecision(availableCorps, title, header);
 
         for(Tile t : tiles){
-            if(t.isStatus() && t.getCorp().equals(null)){
+            if(t.isStatus() && t.getCorp() == null){
                 getCorporations().addTileToCorp(corpName, t);
             }
         }
@@ -98,7 +98,7 @@ public class Scoreboard {
         }
 
         for(Tile t : tArray){
-            if(t.isStatus() && t.getCorp().equals(null)){
+            if(t.isStatus() && t.getCorp() == null){
                 getCorporations().addTileToCorp(domCorpName, t);
             }
         }
@@ -487,21 +487,5 @@ public class Scoreboard {
             pScore += stockQty * stockPrice;
         }
         return pScore;
-    }
-
-    public boolean checkTileRefresh(List<String> corpNames){
-        //RETURNS true IF THE TILE IS ONLY ADJACENT TO SAFE CORPORATIONS
-        boolean refreshBool = false;
-        Integer safeCounter = 0;
-        for(String corpName : corpNames){
-            if(getCorporations().getCorp(corpName).isSafe()){
-                safeCounter++;
-                if(safeCounter >= 2){
-                    refreshBool = true;
-                    break; //if the true condition has been met exit
-                }
-            }
-        }
-        return refreshBool;
     }
 }

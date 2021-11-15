@@ -50,37 +50,15 @@ public class GameState {
             //The tag "Nothing" is not accounted for as nothing would change from the initialized tile object
         }
         getGameboard().getTile(handTile.getRow(), handTile.getCol()).setCorp(cName); //Sets the corporation for the tile on the gameboard
+        removeTileFromPlayer(playerName, handTile);
     }
 
-    public void runGame(){
-        boolean runGameBool = true;
-        List<PlayerInfo> players = getScoreboard().getPlayers().getActivePlayers();
-        String playerName;
-        while(runGameBool){
-            for(PlayerInfo player : players){
-                playerName = player.getPName();
-                runGameBool = runTurn(playerName);
-                if(!runGameBool){break;} //exits the game if the player chooses to end the game
-            }
-        }
-    }
-
-    public boolean runTurn(String playerName){
-        //OBSERVER FOR BUTTON : PLAYER TO PLACE ONE TILE
-        //OBSERVER FOR BUTTON : ALLOW PLAYER TO BUY STOCK
-        //OBSERVER FOR BUTTON : ALLOW PLAYER TO SELL STOCK
-        //OBSERVER FOR BUTTON : ALLOW PLAYER TO END TURN
-        //OBSERVER FOR BUTTON : ALLOW PLAYER TO SHOW RULES
-        //OBSERVER FOR BUTTON : END GAME (RUN checkIfGameCanEnd())
-        //Return true if end game is not pressed else return false
-        return true;
-    }
-
-    public void endGame(){
+    public HashMap<String, Integer> endGame(){
         if(checkIfGameCanEnd()){
-            getScoreboard().getWinners();
+            return getScoreboard().getWinners();
             //CODE TO END GAME
         }
+        return new HashMap<String, Integer>();
     }
 
     /**
@@ -105,25 +83,67 @@ public class GameState {
         return canEndBool;
     }
 
+    public void drawTileToPlayer(String playerName){
+        Tile t = getScoreboard().getPlayers().getTStack().popTile();
+        getScoreboard().getPlayers().getPlayerByName(playerName).getPHand().addTile(t);
+    }
+
+    public void removeTileFromPlayer(String playerName, Tile t){
+        getScoreboard().getPlayers().getPlayerByName(playerName).getPHand().removeTile(t);
+    }
+
     public void checkPlayerHandForRefresh(String playerName){
         List<Tile> playerHand = getScoreboard().getPlayers().getPlayerByName(playerName).getPHand().getPlayersTiles();
-        List<String> corpsForRefreshCheck = getCorpsForRefreshTiles(playerHand);
-        if(!corpsForRefreshCheck.isEmpty()){
+        List<Tile> tilesToRemove = getCorpsForRefreshTiles(playerHand);
+        Integer tilesToRefresh = tilesToRemove.size();
+        Tile newTile;
+        if(tilesToRefresh > 0){
             //REFRESH PLAYER HAND
+            for(Tile t : tilesToRemove){
+                removeTileFromPlayer(playerName, t);
+            }
+            for(int i = 0 ; i < tilesToRefresh ; i++){
+                drawTileToPlayer(playerName);
+            }
         }
     }
-    public List<String> getCorpsForRefreshTiles(List<Tile> playerHand){
-        List<String> corpsForRefreshCheck = new ArrayList<>();
+
+    /**
+     *
+     * @param playerHand
+     * @return
+     */
+    public List<Tile> getCorpsForRefreshTiles(List<Tile> playerHand){
+        List<Tile> tilesToRemove = new ArrayList<>();
         for(Tile t : playerHand){
             List<Tile> adjtiles = getGameboard().getAdjacentTiles(t);
             List<String> adjCorpNames = getGameboard().getAdjTileCorpNames(adjtiles);
-            for(String corpName : adjCorpNames){
-                if(!corpsForRefreshCheck.contains(corpName)){
-                    corpsForRefreshCheck.add(corpName);
+            if(checkTileRefresh(adjCorpNames)){
+                tilesToRemove.add(t);
+            }
+        }
+        return tilesToRemove;
+    }
+
+    /**
+     * Checks if the tile must be refreshed
+     * @param corpNames
+     * @return  boolean, true if must be refreshed
+     */
+    public boolean checkTileRefresh(List<String> corpNames){
+        //RETURNS true IF THE TILE IS ONLY ADJACENT TO SAFE CORPORATIONS
+        boolean refreshBool = false;
+        Integer safeCounter = 0;
+        for(String corpName : corpNames){
+            if(getScoreboard().getCorporations().getCorp(corpName).isSafe()){
+                safeCounter++;
+                if(safeCounter >= 2){
+                    refreshBool = true;
+                    break; //if the true condition has been met exit
                 }
             }
         }
-        return corpsForRefreshCheck;
+        return refreshBool;
     }
 
     /**

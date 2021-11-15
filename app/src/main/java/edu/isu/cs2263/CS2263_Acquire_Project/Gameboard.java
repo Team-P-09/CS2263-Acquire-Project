@@ -71,7 +71,7 @@ public class Gameboard {
         String corpName;
         for(Tile t : tiles){
             corpName = t.getCorp();
-            if(t.isStatus() && !corpName.equals(null)){
+            if(t.isStatus() && corpName != null){
                 adjCorpNames.add(corpName);
             }
         }
@@ -134,7 +134,7 @@ public class Gameboard {
         }else if(adjCorps.size() == 1){
             //ADD TO CORP OR FOUNDING
             corpNameForAdding = (new ArrayList<>(adjCorps.keySet())).get(0); //Name of the corporation for the adjacent tile(s)
-            if(!corpNameForAdding.equals(null)){
+            if(corpNameForAdding != null){
                 action = "Add to Corp";
             }else{action = "Founding Tile";}
         }else{ action = "Nothing";}
