@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<!--
+  ~ MIT License
+  ~
+  ~ Copyright (c) 2021 Thomas Evans, David Lindeman, and Natalia Castaneda
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  -->
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1000.0" style="-fx-background-color: radial-gradient(center 50% 50%, radius 50%, rgb(191, 57, 60) 0%, rgb(104, 17, 17) 100%);" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.isu.cs2263.CS2263_Acquire_Project.UIController">
+   <children>
+      <Text layoutX="298.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Acquire">
+         <font>
+            <Font size="120.0" />
+         </font>
+      </Text>
+      <Text layoutX="502.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The board game">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Text>
+      <Button id="newGameButton" fx:id="startNewGameButton" alignment="CENTER" layoutX="370.0" layoutY="298.0" mnemonicParsing="false" onAction="#handleStartNewGameButton" prefHeight="42.0" prefWidth="262.0" text="Start New Game">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Button>
+      <Button id="loadGameButton" fx:id="loadGameButton" alignment="CENTER" layoutX="371.0" layoutY="357.0" mnemonicParsing="false" onAction="#handleLoadGameButton" prefHeight="42.0" prefWidth="262.0" text="Load Game">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Button>
+      <Button id="exitButton" fx:id="exitGameButton" alignment="CENTER" layoutX="415.0" layoutY="417.0" mnemonicParsing="false" onAction="#handleExitGameButton" prefHeight="28.0" prefWidth="175.0" text="Exit Acquire">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+   </children>
+</Pane>

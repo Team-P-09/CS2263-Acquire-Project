@@ -1,0 +1,658 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<!--
+  ~ MIT License
+  ~
+  ~ Copyright (c) 2021 Thomas Evans, David Lindeman, and Natalia Castaneda
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  -->
+
+<Pane fx:id="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.isu.cs2263.CS2263_Acquire_Project.UIController">
+   <children>
+      <GridPane prefHeight="680.0" prefWidth="1000.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="711.0" minWidth="10.0" prefWidth="700.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="495.0" minWidth="10.0" prefWidth="300.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="551.0" minHeight="10.0" prefHeight="543.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="335.0" minHeight="10.0" prefHeight="137.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <GridPane id="gameboard" fx:id="gameboard" gridLinesVisible="true">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <padding>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </padding>
+               <children>
+               </children>
+            </GridPane>
+            <GridPane id="PlayerContainer" gridLinesVisible="true" GridPane.rowIndex="1">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="532.0" minWidth="10.0" prefWidth="502.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="325.0" minWidth="10.0" prefWidth="168.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <padding>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </padding>
+               <children>
+                  <GridPane id="Hand" gridLinesVisible="true">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <children>
+                        <Button id="Tile0" mnemonicParsing="false" onAction="#playTile" prefHeight="80.0" prefWidth="80.0" text="Button" />
+                        <Button id="Tile1" mnemonicParsing="false" onAction="#playTile" prefHeight="80.0" prefWidth="80.0" text="Button" GridPane.columnIndex="1" />
+                        <Button id="Tile2" mnemonicParsing="false" onAction="#playTile" prefHeight="80.0" prefWidth="80.0" text="Button" GridPane.columnIndex="2" />
+                        <Button id="Tile3" mnemonicParsing="false" onAction="#playTile" prefHeight="80.0" prefWidth="80.0" text="Button" GridPane.columnIndex="3" />
+                        <Button id="Tile4" mnemonicParsing="false" onAction="#playTile" prefHeight="80.0" prefWidth="80.0" text="Button" GridPane.columnIndex="4" />
+                        <Button id="Tile5" mnemonicParsing="false" onAction="#playTile" prefHeight="80.0" prefWidth="80.0" text="Button" GridPane.columnIndex="5" />
+                     </children>
+                  </GridPane>
+                  <GridPane id="Menu" gridLinesVisible="true" GridPane.columnIndex="1">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <children>
+                        <Button id="BuyButton" mnemonicParsing="false" onAction="#buyButton" prefHeight="25.0" prefWidth="150.0" text="Buy" />
+                        <Button id="SellButton" mnemonicParsing="false" onAction="#sellButton" prefHeight="25.0" prefWidth="150.0" text="Sell" GridPane.rowIndex="1" />
+                        <Button id="EndTurnButton" alignment="CENTER" mnemonicParsing="false" onAction="#endTurnButton" prefHeight="25.0" prefWidth="150.0" text="End Turn" GridPane.rowIndex="2" />
+                        <Button id="showRulesButton" mnemonicParsing="false" onAction="#ShowRulesButton" prefHeight="25.0" prefWidth="148.0" text="Show Rules" GridPane.rowIndex="3" />
+                     </children>
+                  </GridPane>
+               </children>
+            </GridPane>
+            <GridPane GridPane.columnIndex="1">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints maxHeight="304.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="346.0" minHeight="10.0" prefHeight="257.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="266.0" minHeight="0.0" prefHeight="33.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="286.0" minHeight="10.0" prefHeight="220.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <GridPane id="Scoreboard" gridLinesVisible="true" GridPane.rowIndex="1">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <padding>
+                        <Insets left="15.0" right="15.0" />
+                     </padding>
+                     <children>
+                        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: Gray;" GridPane.rowIndex="1">
+                           <children>
+                              <Text layoutX="14.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cash">
+                                  <font>
+                                      <Font name="System Bold" size="12.0" />
+                                  </font>
+                              </Text>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: green;" GridPane.rowIndex="2">
+                           <children>
+                              <Text fill="WHITE" layoutX="8.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Festival">
+                                  <font>
+                                      <Font name="System Bold" size="12.0" />
+                                  </font>
+                              </Text>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: magenta;" GridPane.rowIndex="3">
+                           <children>
+                              <Text fill="WHITE" layoutX="6.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Imperial">
+                                  <font>
+                                      <Font name="System Bold" size="12.0" />
+                                  </font>
+                              </Text>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: brown;" GridPane.rowIndex="4">
+                           <children>
+                              <Text fill="WHITE" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WorldWide">
+                               <font>
+                                   <Font name="System Bold" size="10.0" />
+                               </font>
+                              </Text>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: navy;" GridPane.rowIndex="5">
+                           <children>
+                              <Text fill="WHITE" layoutX="2.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="American">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: red;" GridPane.rowIndex="6">
+                           <children>
+                              <Text fill="WHITE" layoutX="4.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sackson">
+                                  <font>
+                                      <Font name="System Bold" size="12.0" />
+                                  </font>
+                              </Text>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: yellow;" GridPane.rowIndex="7">
+                           <children>
+                              <Text layoutX="11.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tower">
+                                  <font>
+                                      <Font name="System Bold" size="12.0" />
+                                  </font>
+                              </Text>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: cyan;" GridPane.rowIndex="8">
+                           <children>
+                              <Text layoutX="1.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Continent">
+                                  <font>
+                                      <Font name="System Bold" size="11.0" />
+                                  </font>
+                              </Text>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="9">
+                           <children>
+                              <Text layoutX="12.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Score" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+                           <children>
+                              <Text layoutX="6.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
+                           <children>
+                              <Text layoutX="6.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3">
+                           <children>
+                              <Text layoutX="6.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 3" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4">
+                           <children>
+                              <Text layoutX="6.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 4" />
+                           </children></Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <children>
+                              <Text id="p1Cash" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children></Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                           <children>
+                              <Text id="p2Cash" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children></Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                           <children>
+                              <Text id="p3Cash" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children></Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                           <children>
+                              <Text id="p4Cash" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children></Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <children>
+                              <Text id="p1Festival" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children></Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                           <children>
+                              <Text id="p2Festival" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children></Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                           <children>
+                              <Text id="p3Festival" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children></Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                           <children>
+                              <Text id="p4Festival" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children></Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <children>
+                              <Text id="p1Imperial" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children></Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                           <children>
+                              <Text id="p2Imperial" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children></Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                           <children>
+                              <Text id="p3Imperial" layoutX="2.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children></Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                           <children>
+                              <Text id="p4Imperial" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children></Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                           <children>
+                              <Text id="p1Worldwide" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children></Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                           <children>
+                              <Text id="p2Worldwide" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children></Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                           <children>
+                              <Text id="p3Worldwide" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children></Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4">
+                           <children>
+                              <Text id="p4Worldwide" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children></Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                           <children>
+                              <Text id="p1American" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children></Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                           <children>
+                              <Text id="p2American" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="5">
+                           <children>
+                              <Text id="p3American" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="5">
+                           <children>
+                              <Text id="p4American" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                           <children>
+                              <Text id="p1Sackson" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="6">
+                           <children>
+                              <Text id="p2Sackson" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="6">
+                           <children>
+                              <Text id="p3Sackson" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="6">
+                           <children>
+                              <Text id="p4Sackson" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                           <children>
+                              <Text id="p1Tower" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="7">
+                           <children>
+                              <Text id="p2Tower" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="7">
+                           <children>
+                              <Text id="p3Tower" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="7">
+                           <children>
+                              <Text id="p4Tower" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                           <children>
+                              <Text id="p1Continental" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="8">
+                           <children>
+                              <Text id="p2Continental" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="8">
+                           <children>
+                              <Text id="p3Continental" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="8">
+                           <children>
+                              <Text id="p4Continental" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                           <children>
+                              <Text id="p1Score" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="9">
+                           <children>
+                              <Text id="p2Score" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="9">
+                           <children>
+                              <Text id="p3Score" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="9">
+                           <children>
+                              <Text id="p4Score" layoutX="1.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No Player" />
+                           </children>
+                        </Pane>
+                     </children>
+                  </GridPane>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Scoreboard" textAlignment="CENTER" wrappingWidth="299.13671875">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Stock Market" textAlignment="CENTER" wrappingWidth="299.13671875" GridPane.rowIndex="2">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+                  <GridPane id="StockMarket" gridLinesVisible="true" GridPane.rowIndex="3">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <padding>
+                        <Insets bottom="15.0" left="15.0" right="15.0" />
+                     </padding>
+                     <children>
+                        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: green;" GridPane.rowIndex="1">
+                           <children>
+                              <Text fill="WHITE" layoutX="14.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Festival">
+                                  <font>
+                                      <Font name="System Bold" size="11.0" />
+                                  </font>
+                              </Text>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: magenta;" GridPane.rowIndex="2">
+                           <children>
+                              <Text fill="WHITE" layoutX="12.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Imperial">
+                                  <font>
+                                      <Font name="System Bold" size="11.0" />
+                                  </font>
+                              </Text>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: brown;" GridPane.rowIndex="3">
+                           <children>
+                              <Text fill="WHITE" layoutX="17.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="World">
+                                  <font>
+                                      <Font name="System Bold" size="11.0" />
+                                  </font>
+                              </Text>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: navy;" GridPane.rowIndex="4">
+                           <children>
+                              <Text fill="WHITE" layoutX="9.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="American">
+                                  <font>
+                                      <Font name="System Bold" size="11.0" />
+                                  </font>
+                              </Text>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: red;" GridPane.rowIndex="5">
+                           <children>
+                              <Text fill="WHITE" layoutX="13.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sackson">
+                                  <font>
+                                      <Font name="System Bold" size="11.0" />
+                                  </font>
+                              </Text>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: yellow;" GridPane.rowIndex="6">
+                           <children>
+                              <Text layoutX="17.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tower">
+                                  <font>
+                                      <Font name="System Bold" size="11.0" />
+                                  </font>
+                              </Text>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: cyan;" GridPane.rowIndex="7">
+                           <children>
+                              <Text layoutX="7.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Continent">
+                                  <font>
+                                      <Font name="System Bold" size="11.0" />
+                                  </font>
+                              </Text>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+                           <children>
+                              <Text layoutX="7.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="# of Stock" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
+                           <children>
+                              <Text layoutX="23.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3">
+                           <children>
+                              <Text layoutX="24.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Size" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <children>
+                              <Text id="FestivalQuantity" layoutX="22.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                           <children>
+                              <Text id="FestivalPrice" layoutX="23.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                           <children>
+                              <Text id="FestivalSize" layoutX="23.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <children>
+                              <Text id="ImperialQuantity" layoutX="22.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                           <children>
+                              <Text id="ImperialPrice" layoutX="23.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                           <children>
+                              <Text id="ImperialSize" layoutX="23.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <children>
+                              <Text id="WorldwideQuantity" layoutX="22.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                           <children>
+                              <Text id="WorldwidePrice" layoutX="23.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                           <children>
+                              <Text id="WorldwideSize" layoutX="23.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                           <children>
+                              <Text id="AmericanQuantity" layoutX="22.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                           <children>
+                              <Text id="AmericanPrice" layoutX="23.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                           <children>
+                              <Text id="AmericanSize" layoutX="23.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                           <children>
+                              <Text id="SacksonQuantity" layoutX="22.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                           <children>
+                              <Text id="SacksonPrice" layoutX="23.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="5">
+                           <children>
+                              <Text id="SacksonSize" layoutX="23.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                           <children>
+                              <Text id="TowerQuantity" layoutX="22.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="6">
+                           <children>
+                              <Text id="TowerPrice" layoutX="23.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="6">
+                           <children>
+                              <Text id="TowerSize" layoutX="23.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                           <children>
+                              <Text id="ContinentalQuantity" layoutX="22.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="7">
+                           <children>
+                              <Text id="ContinentalPrice" layoutX="23.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                           </children></Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="7">
+                           <children>
+                              <Text id="ContinentalSize" layoutX="23.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                           </children></Pane>
+                     </children>
+                  </GridPane>
+               </children>
+            </GridPane>
+            <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                  <Button id="EndGame" layoutX="32.0" layoutY="10.0" mnemonicParsing="false" prefHeight="117.0" prefWidth="237.0" style="-fx-background-color: darkred;" text="END GAME" textFill="WHITE">
+                     <font>
+                        <Font size="36.0" />
+                     </font>
+                  </Button>
+               </children>
+            </Pane>
+         </children>
+      </GridPane>
+   </children>
+</Pane>
