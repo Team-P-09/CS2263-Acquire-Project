@@ -56,7 +56,7 @@ public class CorporationsTest {
         assertTrue(tcorps.getCorp(domCorpName).getCorpSize() == 4);
     }
 
-    @Test void mergeIncreasesSubSize(){
+    @Test void mergeDecreasesSubSize(){
         tcorps.mergeCorps(domCorpName, subCorpNames);
 
         assertTrue(tcorps.getCorp(subCorpNames.get(0)).getCorpSize() == 0);
@@ -69,7 +69,7 @@ public class CorporationsTest {
 //        corpNames;
 //        String[] corpNames = new String[]{"Worldwide", "Sackson", "Festival", "Imperial", "American", "Tower", "Continental"};
 //        Corporations tcorp = new Corporations(corpNames);
-        assertTrue(tcorps.corps.size() == 7);
+        assertTrue(tcorps.getCorps().size() == 3);
     }
 
     @Test

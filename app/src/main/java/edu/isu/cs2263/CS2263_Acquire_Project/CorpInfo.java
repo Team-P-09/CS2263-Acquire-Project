@@ -20,10 +20,14 @@ public class CorpInfo {
     public CorpInfo(){ //int stPrice, int avStocks, ArrayList<Tile> coTiles, int coSize, boolean stat
         stockPrice = 100;
         availableStocks = 25;
-        corpTiles = new HashMap<>();//new ArrayList<>();
+        corpTiles = new HashMap<>();
         status = false;
         isSafe = false;
         hasBeenFounded = false;
+    }
+
+    public void foundCorp(){
+        hasBeenFounded = true;
     }
 
     /**
@@ -31,9 +35,8 @@ public class CorpInfo {
      * @return an ArrayList of the Tile class
      */
     public HashMap<String, Tile> retrieveTiles(){
-        //ArrayList<Tile> outTiles = this.corpTiles;
         HashMap<String, Tile> outTiles = getCorpTiles();
-        setCorpTiles(new HashMap<>());//ArrayList<Tile>();
+        setCorpTiles(new HashMap<>());
         return outTiles;
     }
 

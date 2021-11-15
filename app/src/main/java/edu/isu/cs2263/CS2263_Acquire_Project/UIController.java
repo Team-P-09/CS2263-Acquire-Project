@@ -198,8 +198,8 @@ public class UIController {
         Button button = (Button) event.getSource();
         String id = button.getId();
         id = id.replace("Tile","");
-        Tile playTile = gameState.getCurrentPlayer().pHand.playersTiles.get(Integer.parseInt(id));
-        gameState.placeTile(playTile, gameState.getCurrentPlayer().pName);
+        Tile playTile = gameState.getCurrentPlayer().getPHand().getPlayersTiles().get(Integer.parseInt(id));
+        gameState.placeTile(playTile, gameState.getCurrentPlayer().getPName());
 
         render(event);
     }

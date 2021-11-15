@@ -1,5 +1,6 @@
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
+import javafx.application.Application;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,7 +44,6 @@ public class ScoreboardTest {
 
         p1Name = "Player 1";
         p2Name = "Player 2";
-
     }
 
     @AfterEach
@@ -59,32 +59,20 @@ public class ScoreboardTest {
         assertTrue(testDisplayInfo.get("Worldwide")[0] == 2);
     }
 
-    @Test void testinitSell(){
-
-    }
-
-    @Test void testinitBuyTakesStock(){
-        s.initBuy("Player1", "Worldwide");
+    @Test void testinitBuyAddsStock(){
+        s.initBuy(p1Name, "Worldwide");
         assertTrue(s.getCorporations().getCorp("Worldwide").getAvailableStocks() == 12);
     }
 
-    @Test void testinitBuyAddsCash(){
+    @Test void testinitBuyRemovesCash(){
         s.initBuy(p1Name,"Worldwide");
         Integer pcash = s.getPlayers().getPlayerByName(p1Name).getPWallet().getCash();
         System.out.println(pcash);
         assertTrue(pcash == 5700);
     }
 
-    @Test void testinitMergeSingleDom(){
-
-    }
-
-//    @Test void testFindDomCorp(){
-//
-//    }
-
     @Test void testinitPlayers(){
-        //THIS WILL BE MOVED TO PLAYERS OBJECT
+        assertTrue(s.getPlayers().getActivePlayers().size() == 2);
     }
 
     @Test void testGetWinners(){

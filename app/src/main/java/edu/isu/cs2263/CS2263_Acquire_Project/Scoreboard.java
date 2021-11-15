@@ -1,7 +1,10 @@
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
+import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
+import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,6 +31,7 @@ public class Scoreboard {
         players = new Players(numberOfPlayers, getCorpNames());
     }
 
+
     public void initFounding(List<Tile> tiles, String playerName){
         ArrayList<String> availableCorps = getAvailableCorps();
         String unfoundedCorps = getUnfoundedCorps();
@@ -43,7 +47,8 @@ public class Scoreboard {
 
         if(unfoundedCorps.contains(corpName)){
             getPlayers().getPlayerByName(playerName).getPWallet().addStock(corpName, 1);
-            getCorporations().getCorp(corpName).setHasBeenFounded(true);
+            getCorporations().getCorps().get(corpName).removeCorpStock(1);
+            getCorporations().getCorp(corpName).foundCorp();
         }
         getCorporations().setStockValue(corpName);
     }
@@ -51,7 +56,7 @@ public class Scoreboard {
     private ArrayList<String> getAvailableCorps(){
         ArrayList<String> availableCorps = new ArrayList<>();
         for(String cName : getCorpNames()){
-            if(!getCorporations().getCorp(cName).isStatus()){
+            if(!getCorporations().getCorp(cName).isHasBeenFounded()){
                 availableCorps.add(cName);
             }
         }
@@ -62,7 +67,7 @@ public class Scoreboard {
         String unfoundedCorps = "";
         String newCorp;
         for(String cName : getCorpNames()){
-            if(!getCorporations().getCorp(cName).isStatus()){
+            if(!getCorporations().getCorp(cName).isHasBeenFounded()){
                 newCorp = cName + "\n";
                 unfoundedCorps += newCorp;
             }

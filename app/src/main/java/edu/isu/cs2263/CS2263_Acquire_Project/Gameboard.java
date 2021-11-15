@@ -30,18 +30,17 @@ public class Gameboard {
      * Returns a HashMap for the action that will be taken after the tile is played
      * @return
      */
-    public HashMap<String, List<Tile>> recordTile(Tile t){
-        activateTile(t);
+    public HashMap<String, List<Tile>> getActionAndTiles(Tile t){
         List<Tile> tList = getAdjacentTiles(t);
-        tList.add(t); //add the initial tile to the tile List
         String action = decideAction(tList);
+        tList.add(t); //add the initial tile to the tile List
 
         HashMap<String, List<Tile>> actionMap = new HashMap<>();
         actionMap.put(action, tList);
         return actionMap;
     }
 
-    public Tile[][] initGameboard(){
+    private Tile[][] initGameboard(){
         Tile[][] gboard = new Tile[9][12];
         for(int r = 0 ; r < gboard.length ; r++){
             for(int c = 0 ; c < gboard[r].length ; c ++){
@@ -88,19 +87,32 @@ public class Gameboard {
      */
     private List<Tile> checkAdj(Integer dimA, Integer dimB, List<Tile> adjTList, Boolean isRow){
         int dimAMax;
+        Integer newDim;
+        List<Tile> outTiles = new ArrayList<>();
         if(isRow){
             dimAMax = 8;
         }else{
             dimAMax = 11;
         }
-        for(int i = -1 ; i < 2 ; i+=2){
-            dimA = dimA + i;
-            if(dimA <= dimAMax || dimA >=0){
-                if(isRow){adjTList.add(getTile(dimA, dimB));}
-                else{adjTList.add(getTile(dimB, dimA));}
+        for(Integer i = -1 ; i < 2 ; i+=2){
+            newDim = dimA + i;
+            System.out.println(newDim);
+            if(newDim <= dimAMax && newDim >=0){
+                if(isRow){
+                    adjTList.add(getTile(newDim, dimB));
+                }
+                else{
+                    adjTList.add(getTile(dimB, newDim));
+                }
             }
         }
-        return adjTList;
+        //only adds active tiles
+        for(Tile t : adjTList){
+            if(t.isStatus()){
+                outTiles.add(t);
+            }
+        }
+        return outTiles;
     }
 
     /**
@@ -110,7 +122,6 @@ public class Gameboard {
      */
     public String decideAction(List<Tile> adjTileList){
         String action;
-        String actionStat;
         String corpNameForAdding;
         String cName;
 
@@ -119,6 +130,7 @@ public class Gameboard {
         for(Tile t : adjTileList){
             cName = t.getCorp();
             if(t.isStatus()){
+                System.out.println(t.getLocation());
                 if(adjCorps.containsKey(cName)){
                     adjCorps.put(cName, adjCorps.get(cName) + 1);
                 }
@@ -134,6 +146,7 @@ public class Gameboard {
         }else if(adjCorps.size() == 1){
             //ADD TO CORP OR FOUNDING
             corpNameForAdding = (new ArrayList<>(adjCorps.keySet())).get(0); //Name of the corporation for the adjacent tile(s)
+            System.out.println(corpNameForAdding);
             if(corpNameForAdding != null){
                 action = "Add to Corp";
             }else{action = "Founding Tile";}
@@ -152,7 +165,7 @@ public class Gameboard {
         getGameboard()[row][col].setCorp(cName);
     }
 
-    private void activateTile(Tile t){
+    public void recordTile(Tile t){
         int row = t.getRow();
         int col = t.getCol();
         getGameboard()[row][col].activateTile();

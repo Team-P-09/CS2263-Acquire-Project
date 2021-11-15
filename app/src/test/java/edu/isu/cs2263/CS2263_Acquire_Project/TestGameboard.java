@@ -3,6 +3,10 @@ package edu.isu.cs2263.CS2263_Acquire_Project;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestGameboard {
@@ -13,41 +17,27 @@ public class TestGameboard {
 
     @BeforeEach
     public void setUp(){
-        Gameboard testGameboard = new Gameboard();
-        Tile testTile = new Tile(3, 3);
-        testTile.setRow(3);
-        testTile.setCol(3);
+        testGameboard = new Gameboard();
+        testTile = new Tile(2, 3);
+        testTile.activateTile();
     }
 
     @AfterEach
     public void teardown(){
-        Gameboard testGameboard = new Gameboard();
-        Tile testTile = new Tile(3, 3);
-        testTile.setRow(3);
-        testTile.setCol(3);
+        testGameboard = new Gameboard();
+        testTile = new Tile(3, 3);
     }
 
     @Test
     public void testRecordTileActivation(){
-        Tile tile = testTile;
-        int row = tile.getRow();
-        int col = tile.getCol();
-        testGameboard.recordTile(tile);
-        assertNotNull(testGameboard.gameboard[testTile.getRow()][testTile.getCol()]);
-    }
-
-    @Test
-    public void testRecordTileGetsMerge(){
-
+        int row = testTile.getRow();
+        int col = testTile.getCol();
+        testGameboard.recordTile(testTile);
+        assertNotNull(testGameboard.getTile(row, col).isStatus());
     }
 
     @Test
     public void testRecordTileGetNothing(){
-
-    }
-
-    @Test
-    public void testRecordTileGetFounding(){
 
     }
 

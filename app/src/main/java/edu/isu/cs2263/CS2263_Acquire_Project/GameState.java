@@ -34,7 +34,8 @@ public class GameState {
 
 
     public void placeTile(Tile handTile, String playerName){
-        HashMap<String, List<Tile>> result = getGameboard().recordTile(handTile);
+        getGameboard().recordTile(handTile);
+        HashMap<String, List<Tile>> result = getGameboard().getActionAndTiles(handTile);
         String action = (new ArrayList<>(result.keySet())).get(0);
         List<Tile> tList = result.get(action);
         String cName = null;
