@@ -78,8 +78,8 @@ public class UIController {
                 text.setText(tile.getLocation());
                 pane.getChildren().add(text);
                 String corpVal = tile.getCorp() != null ? tile.getCorp() : "empty";
-                System.out.println(tile.status);
-                System.out.println(tile.getCorp());
+//                System.out.println(tile.status);
+//                System.out.println(tile.getCorp());
 
                 switch (corpVal){
                     case "Festival":
@@ -297,8 +297,8 @@ public class UIController {
     @FXML
     public void handleLoadGameButton(ActionEvent event){
         scene = ((Node)event.getSource()).getScene();
-
-        System.out.println("Clicked load button");
+//
+//        System.out.println("Clicked load button");
     }
 
     @FXML

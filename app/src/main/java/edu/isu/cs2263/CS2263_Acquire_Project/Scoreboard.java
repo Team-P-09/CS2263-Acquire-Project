@@ -143,7 +143,10 @@ public class Scoreboard {
                 getCorporations().addTileToCorp(domCorpName, t);
             }
         }
+
     }
+
+
 
     /**
      * gives bonuses to players based on the number of stocks they own
