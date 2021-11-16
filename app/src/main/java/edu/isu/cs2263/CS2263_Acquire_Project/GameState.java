@@ -68,11 +68,13 @@ public class GameState {
 
         if(!action.equals("Nothing")){
             if(action.equals("Add to Corp")) {
-                getScoreboard().initCorpTileAdd(tList);
+                tList =  getScoreboard().initCorpTileAdd(tList);
             }else if(action.equals("Merge")){
-                getScoreboard().initMerge(tList);
+                tList = getScoreboard().initMerge(tList);
             }else if(action.equals("Founding Tile")){
-                getScoreboard().initFounding(tList, playerName);
+                if(getScoreboard().getAvailableCorps().size() > 0) {
+                    getScoreboard().initFounding(tList, playerName);
+                }
             }
             cName = getScoreboard().getCorporations().getTilesCorp(handTile);
             //The tag "Nothing" is not accounted for as nothing would change from the initialized tile object
@@ -86,8 +88,10 @@ public class GameState {
     private void updateAffectedTiles(List<Tile> affectedTiles){
         String cName;
         for(Tile t : affectedTiles){
-            cName = getScoreboard().getCorporations().getTilesCorp(t);
-            getGameboard().getTile(t.getRow(), t.getCol()).setCorp(cName);
+            if(t != null){
+                cName = getScoreboard().getCorporations().getTilesCorp(t);
+                getGameboard().getTile(t.getRow(), t.getCol()).setCorp(cName);
+            }
         }
     }
 
