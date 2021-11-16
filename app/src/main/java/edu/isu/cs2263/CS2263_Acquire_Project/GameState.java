@@ -126,8 +126,10 @@ public class GameState {
     }
 
     public void drawTileToPlayer(String playerName){
-        Tile t = getScoreboard().getPlayers().getTStack().popTile();
-        getScoreboard().getPlayers().getPlayerByName(playerName).getPHand().addTile(t);
+        if(getScoreboard().getPlayers().getTStack().getTileStack().size() > 0){
+            Tile t = getScoreboard().getPlayers().getTStack().popTile();
+            getScoreboard().getPlayers().getPlayerByName(playerName).getPHand().addTile(t);
+        }
     }
 
     public void removeTileFromPlayer(String playerName, Tile t){

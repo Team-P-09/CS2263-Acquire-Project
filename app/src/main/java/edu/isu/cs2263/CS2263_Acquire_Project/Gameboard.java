@@ -81,6 +81,11 @@ public class Gameboard {
         List<Tile> adjTiles = new ArrayList<>();
         adjTiles = checkAdj(row, col, adjTiles, true);
         adjTiles = checkAdj(col, row, adjTiles, false);
+        for(Tile nt : adjTiles){
+            if(nt == null){
+                adjTiles.remove(nt);
+            }
+        }
         return adjTiles;
     }
 
@@ -123,6 +128,7 @@ public class Gameboard {
             //System.out.println(newDim);
             if(newDim <= dimAMax && newDim >=0){
                 if(isRow){
+
                     adjTList.add(getTile(newDim, dimB));
                 }
                 else{
