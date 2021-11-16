@@ -27,6 +27,9 @@ package edu.isu.cs2263.CS2263_Acquire_Project;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestTileStack {
@@ -57,8 +60,9 @@ public class TestTileStack {
     }
 
     @Test
-    void testInitTStack(){
-        int stackSize = 9*12;
-        assertTrue(testTileStack.getTileStack().size() == stackSize);
+    void testPullTilesRemovesFromStack(){
+        Integer qty = 5;
+        ArrayList<Tile> tArry = testTileStack.pullTiles(qty);
+        assertTrue(testTileStack.getTileStack().size() == 9*12-qty);
     }
 }

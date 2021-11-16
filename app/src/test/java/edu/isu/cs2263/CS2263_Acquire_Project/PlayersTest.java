@@ -24,6 +24,7 @@
 
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,57 +35,63 @@ import java.util.Arrays;
 public class PlayersTest {
     ArrayList<String> corpNames;
     Integer pNumb;
-    ArrayList<PlayerInfo> tPlayers;
+    Players tPlayers;
+    Integer stockVal;
+    Integer qty;
+    String corpName;
+    String pName;
 
     @BeforeEach
     void setUp(){
         corpNames = new ArrayList<>(Arrays.asList("Worldwide", "Sackson", "Festival", "Imperial", "American", "Tower", "Continental"));
         pNumb = 4;
+        tPlayers = new Players(pNumb, corpNames);
+        stockVal = 100;
+        qty = 5;
+        corpName = corpNames.get(0);
+        pName = tPlayers.getActivePlayers().get(0).getPName();
+    }
 
+    @AfterEach
+    void teardown(){
+        corpNames = new ArrayList<>(Arrays.asList("Worldwide", "Sackson", "Festival", "Imperial", "American", "Tower", "Continental"));
+        pNumb = 4;
+        tPlayers = new Players(pNumb, corpNames);
+        stockVal = 100;
+        qty = 5;
+        corpName = corpNames.get(0);
+        pName = tPlayers.getActivePlayers().get(0).getPName();
     }
 
     @Test
-    void setup(){
-        //  Player player = new Player("P1", , );
+    void testCanGetPlayerByName(){
+        String tPName = tPlayers.getPlayerByName(pName).getPName();
+        assertTrue(tPName == pName);
     }
 
     @Test
-    void testPlayTile(){
-
-    }
-    @Test
-    void testStartTurn(){
-
-    }
-    @Test
-    void testEndTurn(){
-
-    }
-    @Test
-    void testDoTurn(){
-
-    }
-    @Test
-    void testMerge(){
-
-    }
-    @Test
-    void testOrderBuy(){
-
-    }
-    @Test
-    void testOrderSell(){
-
-    }
-    @Test
-    void testGetScore(){
-
+    void buyStockAddsStock(){
+        tPlayers.buyStock(pName, corpName, qty, stockVal);
+        assertTrue(tPlayers.getPlayerByName(pName).getPWallet().getStocks().get(corpName) == 5);
     }
 
     @Test
-    void testInitPlayers(){
-        Players tPlayers = new Players(pNumb, corpNames);
-        int tstackSize = 9*12 - 6*pNumb;
-        assertTrue(tPlayers.getTStack().getTileStack().size() == tstackSize);
+    void buyStockRemovesCash(){
+        tPlayers.buyStock(pName, corpName, qty, stockVal);
+        assertTrue(tPlayers.getPlayerByName(pName).getPWallet().getCash() == 6000 - 5*100);
+    }
+
+    @Test
+    void sellRemovesStock(){
+        tPlayers.buyStock(pName, corpName, qty, stockVal);
+        tPlayers.sellStock(pName, corpName, 3, stockVal);
+        assertTrue(tPlayers.getPlayerByName(pName).getPWallet().getStocks().get(corpName) == 2);
+    }
+
+    @Test
+    void sellAddsCash(){
+        tPlayers.buyStock(pName, corpName, qty, stockVal);
+        tPlayers.sellStock(pName, corpName, 3, stockVal);
+        assertTrue(tPlayers.getPlayerByName(pName).getPWallet().getCash() == 6000 -5*100 + 3*100);
     }
 }

@@ -120,7 +120,7 @@ public class Gameboard {
         }
         for(Integer i = -1 ; i < 2 ; i+=2){
             newDim = dimA + i;
-            System.out.println(newDim);
+            //System.out.println(newDim);
             if(newDim <= dimAMax && newDim >=0){
                 if(isRow){
                     adjTList.add(getTile(newDim, dimB));
@@ -154,7 +154,7 @@ public class Gameboard {
         for(Tile t : adjTileList){
             cName = t.getCorp();
             if(t.isStatus()){
-                System.out.println(t.getLocation());
+                //System.out.println(t.getLocation());
                 if(adjCorps.containsKey(cName)){
                     adjCorps.put(cName, adjCorps.get(cName) + 1);
                 }
@@ -170,7 +170,7 @@ public class Gameboard {
         }else if(adjCorps.size() == 1){
             //ADD TO CORP OR FOUNDING
             corpNameForAdding = (new ArrayList<>(adjCorps.keySet())).get(0); //Name of the corporation for the adjacent tile(s)
-            System.out.println(corpNameForAdding);
+            //System.out.println(corpNameForAdding);
             if(corpNameForAdding != null){
                 action = "Add to Corp";
             }else{action = "Founding Tile";}
@@ -189,6 +189,10 @@ public class Gameboard {
         getGameboard()[row][col].setCorp(cName);
     }
 
+    /**
+     * Activates the tile on the gameboard
+     * @param t
+     */
     public void recordTile(Tile t){
         int row = t.getRow();
         int col = t.getCol();

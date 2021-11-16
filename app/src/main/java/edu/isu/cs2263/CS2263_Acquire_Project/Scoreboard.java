@@ -77,7 +77,7 @@ public class Scoreboard {
         getCorporations().setStockValue(corpName);
     }
 
-    private ArrayList<String> getAvailableCorps(){
+    public ArrayList<String> getAvailableCorps(){
         ArrayList<String> availableCorps = new ArrayList<>();
         for(String cName : getCorpNames()){
             if(!getCorporations().getCorp(cName).isHasBeenFounded()){
@@ -104,7 +104,7 @@ public class Scoreboard {
      * tArray will be a size of 5, order of entry is unimportant, Array datatype is used for easy iteration
      * Calls mergeCorps from Corporations
      */
-    public void initMerge(List<Tile> tArray){
+    public List<Tile> initMerge(List<Tile> tArray){
         ArrayList<String> mCorps = findCorps(tArray); //We will be used to identify the players who will need to take a merge action
         ArrayList<String> domCorp = findDomCorp(mCorps);
         String domCorpName;
@@ -143,8 +143,24 @@ public class Scoreboard {
                 getCorporations().addTileToCorp(domCorpName, t);
             }
         }
+        return retreiveTiles(getCorporations().getCorp(domCorpName).getCorpTiles());
     }
 
+    private List<Tile> retreiveTiles(HashMap<String, Tile> corpTiles){
+        List<Tile> outTiles = new ArrayList<>();
+        for(String tileLoc : corpNames){
+            outTiles.add(corpTiles.get(tileLoc));
+        }
+        return outTiles;
+    }
+
+
+    /**
+     * gives bonuses to players based on the number of stocks they own
+     * @param bonusList
+     * @param corpName
+     * @param bonusType
+     */
     private void divyOutBonuses(HashMap<String, List<String>> bonusList, String corpName, String bonusType){
         List<String> players = bonusList.get(bonusType);
         Integer bonusAmt = 0;
@@ -152,7 +168,6 @@ public class Scoreboard {
             bonusAmt = getCorporations().getBonus(corpName, bonusType);
             getPlayers().getPlayerByName(playerName).getPWallet().addCash(bonusAmt/players.size());
         }
-
     }
 
     /**
@@ -288,7 +303,7 @@ public class Scoreboard {
 
     private Integer getQty(String corpName, Integer maxVal, String operation){
         Integer qty = 0;
-        Integer newQty = 0;
+        Integer newQty;
 
         TextInputDialog dialog = new TextInputDialog("0");
         dialog.setTitle(operation + " operation for " + corpName);
@@ -296,18 +311,19 @@ public class Scoreboard {
         dialog.setContentText("Please enter a value:");
 
         boolean canBeInt = false;
-
-        while(!canBeInt){
-            Optional<String> result = dialog.showAndWait();
-            if (result.isPresent()){
-                try{
-                    newQty = Integer.parseInt(result.get());
-                    if(newQty <= maxVal){
-                        qty = newQty;
-                        canBeInt = true;
+        if(maxVal > 0){
+            while(!canBeInt){
+                Optional<String> result = dialog.showAndWait();
+                if (result.isPresent()){
+                    try{
+                        newQty = Integer.parseInt(result.get());
+                        if(newQty <= maxVal && newQty >= 0){
+                            qty = newQty;
+                            canBeInt = true;
+                        }
+                    }catch(Exception e){
+                        canBeInt = false;
                     }
-                }catch(Exception e){
-                    canBeInt = false;
                 }
             }
         }
@@ -324,9 +340,9 @@ public class Scoreboard {
         dialog.setTitle(title);
         dialog.setHeaderText(header);
 
-        Optional<T> domChoice = dialog.showAndWait();
-        while(!domChoice.isPresent()){
-            domChoice = dialog.showAndWait();
+        Optional<T> pChoice = dialog.showAndWait();
+        while(!pChoice.isPresent()){
+            pChoice = dialog.showAndWait();
         }
         return dialog.getSelectedItem();
     }
@@ -403,12 +419,12 @@ public class Scoreboard {
      */
     private ArrayList<String> findCorps(List<Tile> tArray){
         ArrayList<String> cNames = new ArrayList<>();
-        int cSize;
+        String cName;
         for(Tile t : tArray){
-            for(Map.Entry<String, CorpInfo> c : getCorporations().getCorps().entrySet()){
-                if(c.getValue().getCorpTiles().containsKey(t)){
-                    cNames.add(c.getKey());
-                    break; //each tile can only appear once therefore we stop looking
+            cName = getCorporations().getTilesCorp(t);
+            if(cName != null){
+                if(!cNames.contains(cName)){
+                    cNames.add(cName);
                 }
             }
         }
@@ -427,12 +443,16 @@ public class Scoreboard {
         int cSize;
         for(String s : mCorps){
             cSize = getCorporations().getCorp(s).getCorpSize();
+            System.out.println(cSize);
             if(leadingCorpSize < cSize){
-                domCorpList = new ArrayList<>();
+//                domCorpList = new ArrayList<>();
+                domCorpList.clear();
                 domCorpList.add(s);
+                System.out.println("NEW DOM CORP " + s);
 
             } else if(leadingCorpSize == cSize){
                 domCorpList.add(s);
+                System.out.println(s);
             }
         }
         return domCorpList;
@@ -517,16 +537,19 @@ public class Scoreboard {
      *      3 - Corporations : addTileToCorp
      *      4 - CorpInfo : addCorpTile
      */
-    public void initCorpTileAdd(List<Tile> tList){ //String corpName, Tile t
+    public List<Tile> initCorpTileAdd(List<Tile> tList){ //String corpName, Tile t
         String corpName = "";
-        Tile tile = new Tile(-1,-1);
+        List<Tile> tilesToAdd = new ArrayList<>();
         for(Tile t : tList){
-            if(t.status && t.getCorp() != null){
+            if(t.isStatus() && t.getCorp() != null){
                 corpName = t.getCorp();
-            }else if(t.status){tile = t;}
+            }else if(t.isStatus()){tilesToAdd.add(t);}
         }
-        getCorporations().addTileToCorp(corpName, tile);
+        for(Tile t : tilesToAdd){
+            getCorporations().addTileToCorp(corpName, t);
+        }
         getCorporations().setStockValue(corpName);
+        return tilesToAdd;
     }
 
 

@@ -24,49 +24,53 @@
 
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class WalletTest {
+    ArrayList<String> corpNames = new ArrayList<>(Arrays.asList("Worldwide", "Sackson", "Festival", "Imperial", "American", "Tower", "Continental"));
+    Wallet wallet;
 
-//    @Test
-//    void setUp(){
-//        HashMap<String, Integer> stocks = new HashMap<>();
-//        Wallet wallet = new Wallet(1, stocks);
-//    }
-
-    @Test
-    void testStockVal(){
-
-    }
-//    @Test
-//    void testCashVal(){
-//        HashMap<String, Integer> stocks = new HashMap<>();
-//        Wallet wallet = new Wallet(1, stocks);
-//        assertEquals(1, wallet.cashValue(), "Cash value is correct.");
-//    }
-
-    @Test
-    void testTrade(){
-
-    }
-    @Test
-    void testSell(){
-
-    }
-    @Test
-    void testHold(){
-
-    }
-    @Test
-    void testBuy(){
-
-    }
-    @Test
-    void testGetBonusStock(){
-
+    @BeforeEach
+    void setUp(){
+        HashMap<String, Integer> stocks = new HashMap<>();
+        wallet = new Wallet(corpNames);
     }
 
+    @AfterEach
+    void teardown(){
+        HashMap<String, Integer> stocks = new HashMap<>();
+        wallet = new Wallet(corpNames);
+    }
+
+    @Test
+    void testaddCash(){
+        wallet.addCash(50);
+        assertTrue(wallet.getCash() == 6050);
+    }
+
+    @Test
+    void testRemoveCash(){
+        wallet.removeCash(50);
+        assertTrue(wallet.getCash() == 5950);
+    }
+
+    @Test
+    void testAddStock(){
+        wallet.addStock("Worldwide", 4);
+        assertTrue(wallet.getStocks().get("Worldwide") == 4);
+    }
+
+    @Test
+    void testRemoveStock(){
+        wallet.addStock("Worldwide", 4);
+        wallet.removeStock("Worldwide", 2);
+        assertTrue(wallet.getStocks().get("Worldwide") == 2);
+    }
 }

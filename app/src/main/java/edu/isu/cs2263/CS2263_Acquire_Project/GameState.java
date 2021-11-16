@@ -60,6 +60,7 @@ public class GameState {
 
     public void placeTile(Tile handTile, String playerName){
         getGameboard().recordTile(handTile);
+        handTile.activateTile();
         HashMap<String, List<Tile>> result = getGameboard().getActionAndTiles(handTile);
         String action = (new ArrayList<>(result.keySet())).get(0);
         List<Tile> tList = result.get(action);
@@ -67,17 +68,31 @@ public class GameState {
 
         if(!action.equals("Nothing")){
             if(action.equals("Add to Corp")) {
-                getScoreboard().initCorpTileAdd(tList);
+                tList =  getScoreboard().initCorpTileAdd(tList);
             }else if(action.equals("Merge")){
-                getScoreboard().initMerge(tList);
+                tList = getScoreboard().initMerge(tList);
             }else if(action.equals("Founding Tile")){
-                getScoreboard().initFounding(tList, playerName);
+                if(getScoreboard().getAvailableCorps().size() > 0) {
+                    getScoreboard().initFounding(tList, playerName);
+                }
             }
             cName = getScoreboard().getCorporations().getTilesCorp(handTile);
             //The tag "Nothing" is not accounted for as nothing would change from the initialized tile object
         }
-        getGameboard().getTile(handTile.getRow(), handTile.getCol()).setCorp(cName); //Sets the corporation for the tile on the gameboard
+        //tList.add(handTile);
+        //getGameboard().getTile(handTile.getRow(), handTile.getCol()).setCorp(cName); //Sets the corporation for the tile on the gameboard
+        updateAffectedTiles(tList);
         removeTileFromPlayer(playerName, handTile);
+    }
+
+    private void updateAffectedTiles(List<Tile> affectedTiles){
+        String cName;
+        for(Tile t : affectedTiles){
+            if(t != null){
+                cName = getScoreboard().getCorporations().getTilesCorp(t);
+                getGameboard().getTile(t.getRow(), t.getCol()).setCorp(cName);
+            }
+        }
     }
 
     public HashMap<String, Integer> endGame(){
