@@ -81,39 +81,45 @@ public class UIController {
 //                System.out.println(tile.status);
 //                System.out.println(tile.getCorp());
 
-                switch (corpVal){
-                    case "Festival":
-                        pane.setStyle("-fx-background-color: green; -fx-border-color: darkgray");
-                        text.setStyle("-fx-fill: white");
-                        break;
-                    case "Imperial":
-                        pane.setStyle("-fx-background-color: magenta; -fx-border-color: darkgray");
-                        text.setStyle("-fx-fill: white");
-                        break;
-                    case "Worldwide":
-                        pane.setStyle("-fx-background-color: brown; -fx-border-color: darkgray");
-                        text.setStyle("-fx-fill: white");
-                        break;
-                    case "American":
-                        pane.setStyle("-fx-background-color: navy; -fx-border-color: darkgray");
-                        text.setStyle("-fx-fill: white");
-                        break;
-                    case "Sackson":
-                        pane.setStyle("-fx-background-color: red; -fx-border-color: darkgray");
-                        text.setStyle("-fx-fill: white");
-                        break;
-                    case "Tower":
-                        pane.setStyle("-fx-background-color: yellow; -fx-border-color: darkgray");
-                        text.setStyle("-fx-fill: black");
-                        break;
-                    case "Continental":
-                        pane.setStyle("-fx-background-color: cyan; -fx-border-color: darkgray");
-                        text.setStyle("-fx-fill: black");
-                        break;
-                    default:
-                        pane.setStyle("-fx-background-color: lightgray; -fx-border-color: darkgray");
-                        text.setStyle("-fx-fill: black");
-                        break;
+                if(tile.status == true){
+                    switch (corpVal){
+                        case "Festival":
+                            pane.setStyle("-fx-background-color: green; -fx-border-color: darkgray");
+                            text.setStyle("-fx-fill: white");
+                            break;
+                        case "Imperial":
+                            pane.setStyle("-fx-background-color: magenta; -fx-border-color: darkgray");
+                            text.setStyle("-fx-fill: white");
+                            break;
+                        case "Worldwide":
+                            pane.setStyle("-fx-background-color: brown; -fx-border-color: darkgray");
+                            text.setStyle("-fx-fill: white");
+                            break;
+                        case "American":
+                            pane.setStyle("-fx-background-color: navy; -fx-border-color: darkgray");
+                            text.setStyle("-fx-fill: white");
+                            break;
+                        case "Sackson":
+                            pane.setStyle("-fx-background-color: red; -fx-border-color: darkgray");
+                            text.setStyle("-fx-fill: white");
+                            break;
+                        case "Tower":
+                            pane.setStyle("-fx-background-color: yellow; -fx-border-color: darkgray");
+                            text.setStyle("-fx-fill: black");
+                            break;
+                        case "Continental":
+                            pane.setStyle("-fx-background-color: cyan; -fx-border-color: darkgray");
+                            text.setStyle("-fx-fill: black");
+                            break;
+                        default:
+                            pane.setStyle("-fx-background-color: gray; -fx-border-color: darkgray");
+                            text.setStyle("-fx-fill: black");
+                            break;
+                    }
+                }
+                else {
+                    pane.setStyle("-fx-background-color: lightgray; -fx-border-color: darkgray");
+                    text.setStyle("-fx-fill: black");
                 }
                 gridPane.add(pane, x, y);
             }
