@@ -36,6 +36,7 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -64,6 +65,10 @@ public class Gameboard {
         return actionMap;
     }
 
+    /**
+     *
+     * @return
+     */
     private Tile[][] initGameboard(){
         Tile[][] gboard = new Tile[9][12];
         for(int r = 0 ; r < gboard.length ; r++){
@@ -80,6 +85,9 @@ public class Gameboard {
      * @return
      */
     public List<Tile> getAdjacentTiles(Tile t){
+        //THIS NEEDS TO BE TURNED INTO A RECURISIVE METHOD
+        //checkAdj SHOULD BE RAN FOR EACH TILE FOUND
+        //THIS RUNS UNTIL THERE ARE NO TILES LEFT TO THE QUEUE
         int row = t.getRow();
         int col = t.getCol();
         List<Tile> adjTiles = new ArrayList<>();

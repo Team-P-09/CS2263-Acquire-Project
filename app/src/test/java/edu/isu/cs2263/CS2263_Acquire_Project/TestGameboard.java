@@ -73,7 +73,4 @@ public class TestGameboard {
     void getAdjCorpNames(){
 
     }
-
-
-
 }
