@@ -74,7 +74,11 @@ public class Gameboard {
         return gboard;
     }
 
-    //todo:handle outOfBounds response for tiles on the edge of the gameboard
+    /**
+     *
+     * @param t
+     * @return
+     */
     public List<Tile> getAdjacentTiles(Tile t){
         int row = t.getRow();
         int col = t.getCol();
@@ -150,7 +154,7 @@ public class Gameboard {
      * @param adjTileList
      * @return
      */
-    public String decideAction(List<Tile> adjTileList){
+    private String decideAction(List<Tile> adjTileList){
         String action;
         String corpNameForAdding;
         String cName;
@@ -186,12 +190,6 @@ public class Gameboard {
 
     public Tile getTile(int r, int c){
         return getGameboard()[r][c];
-    }
-
-    private void updateTileCorp(Tile t, String cName){
-        int row = t.getRow();
-        int col = t.getCol();
-        getGameboard()[row][col].setCorp(cName);
     }
 
     /**

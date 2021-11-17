@@ -40,20 +40,14 @@ public class TestGameboard {
 
 
     @BeforeEach
-    public void setUp(){
+    void setUp(){
         testGameboard = new Gameboard();
         testTile = new Tile(2, 3);
         testTile.activateTile();
     }
 
-    @AfterEach
-    public void teardown(){
-        testGameboard = new Gameboard();
-        testTile = new Tile(3, 3);
-    }
-
     @Test
-    public void testRecordTileActivation(){
+    void testRecordTileActivation(){
         int row = testTile.getRow();
         int col = testTile.getCol();
         testGameboard.recordTile(testTile);
@@ -61,12 +55,25 @@ public class TestGameboard {
     }
 
     @Test
-    public void testRecordTileGetNothing(){
+    void testGetTile(){
 
     }
 
     @Test
-    public void testRecordTileGetAddtoCorp(){
+    void testGetActionAndTiles(){
 
     }
+
+    @Test
+    void testGetAdjacentTiles(){
+
+    }
+
+    @Test
+    void getAdjCorpNames(){
+
+    }
+
+
+
 }
