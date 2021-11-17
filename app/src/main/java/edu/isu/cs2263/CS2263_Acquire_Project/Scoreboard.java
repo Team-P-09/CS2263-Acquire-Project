@@ -459,33 +459,33 @@ public class Scoreboard {
 
 
 
-    /**
-     * Returns a HashMap with a corpName as a key and an Array of Integer[3]
-     * The Array has positions [CorpInfo size, CorpInfo Stock Price, CorpInfo Available Stocks]
-     * @return      HashMap String, Integer[] of CorpInfo for display
-     */
-    public HashMap<String, Integer[]> displayCorpInfo(){
-        HashMap<String, Integer[]> displayInfo = new HashMap<>();
-        int cSize;
-        int cPrice;
-        int cStocks;
-
-        for(Map.Entry<String, CorpInfo> c : getCorporations().getCorps().entrySet()){
-            Integer[] infoArray = new Integer[3];
-            String cName = c.getKey();
-            cSize = c.getValue().getCorpSize();
-            cPrice = c.getValue().getStockPrice();
-            cStocks = c.getValue().getAvailableStocks();
-
-            infoArray[0] = cSize;
-            infoArray[1] = cPrice;
-            infoArray[2] = cStocks;
-
-            //ArrayList<Tile> cTiles = c.getValue().getCorpTiles(); //not addding in the tiles as this information is readily available to the player
-            displayInfo.put(cName, infoArray);
-        }
-        return displayInfo;
-    }
+//    /**
+//     * Returns a HashMap with a corpName as a key and an Array of Integer[3]
+//     * The Array has positions [CorpInfo size, CorpInfo Stock Price, CorpInfo Available Stocks]
+//     * @return      HashMap String, Integer[] of CorpInfo for display
+//     */
+//    public HashMap<String, Integer[]> displayCorpInfo(){
+//        HashMap<String, Integer[]> displayInfo = new HashMap<>();
+//        int cSize;
+//        int cPrice;
+//        int cStocks;
+//
+//        for(Map.Entry<String, CorpInfo> c : getCorporations().getCorps().entrySet()){
+//            Integer[] infoArray = new Integer[3];
+//            String cName = c.getKey();
+//            cSize = c.getValue().getCorpSize();
+//            cPrice = c.getValue().getStockPrice();
+//            cStocks = c.getValue().getAvailableStocks();
+//
+//            infoArray[0] = cSize;
+//            infoArray[1] = cPrice;
+//            infoArray[2] = cStocks;
+//
+//            //ArrayList<Tile> cTiles = c.getValue().getCorpTiles(); //not addding in the tiles as this information is readily available to the player
+//            displayInfo.put(cName, infoArray);
+//        }
+//        return displayInfo;
+//    }
 
     public HashMap<String, Integer> getWinners(){
         Integer playerScore;
@@ -552,6 +552,20 @@ public class Scoreboard {
     }
 
 
+    public Integer getPlayerScore(String playerName) {
+        Integer pScore = getPlayers().getPlayerByName(playerName).getPWallet().getCash();
+        HashMap<String, Integer> pStocks = getPlayers().getPlayerByName(playerName).getPWallet().getStocks();
+        Integer stockPrice;
+        Integer stockQty;
+        for (String stockCorp : pStocks.keySet()) {
+            stockPrice = getCorporations().getCorp(stockCorp).getStockPrice();
+            stockQty = getPlayers().getPlayerByName(playerName).getPWallet().getStocks().get(stockCorp);
+            pScore += stockQty * stockPrice;
+        }
+        return pScore;
+    }
+
+
     /**
      * @param jsonFile (string to become json file)
      * @param scoreboard_obj (scoreboard obj to save)
@@ -609,18 +623,5 @@ public class Scoreboard {
             ex.printStackTrace();
         }
         return null;
-    }
-
-    public Integer getPlayerScore(String playerName) {
-        Integer pScore = getPlayers().getPlayerByName(playerName).getPWallet().getCash();
-        HashMap<String, Integer> pStocks = getPlayers().getPlayerByName(playerName).getPWallet().getStocks();
-        Integer stockPrice;
-        Integer stockQty;
-        for (String stockCorp : pStocks.keySet()) {
-            stockPrice = getCorporations().getCorp(stockCorp).getStockPrice();
-            stockQty = getPlayers().getPlayerByName(playerName).getPWallet().getStocks().get(stockCorp);
-            pScore += stockQty * stockPrice;
-        }
-        return pScore;
     }
 }
