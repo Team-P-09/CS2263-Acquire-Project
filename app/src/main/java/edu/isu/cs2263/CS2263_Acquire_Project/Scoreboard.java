@@ -143,12 +143,12 @@ public class Scoreboard {
                 getCorporations().addTileToCorp(domCorpName, t);
             }
         }
-        return retreiveTiles(getCorporations().getCorp(domCorpName).getCorpTiles());
+        return retrieveTiles(getCorporations().getCorp(domCorpName).getCorpTiles());
     }
 
-    private List<Tile> retreiveTiles(HashMap<String, Tile> corpTiles){
+    private List<Tile> retrieveTiles(HashMap<String, Tile> corpTiles){
         List<Tile> outTiles = new ArrayList<>();
-        for(String tileLoc : corpNames){
+        for(String tileLoc : corpTiles.keySet()){
             outTiles.add(corpTiles.get(tileLoc));
         }
         return outTiles;

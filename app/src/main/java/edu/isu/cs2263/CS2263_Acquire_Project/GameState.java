@@ -142,7 +142,6 @@ public class GameState {
         Integer tilesToRefresh = tilesToRemove.size();
         Tile newTile;
         if(tilesToRefresh > 0){
-            //REFRESH PLAYER HAND
             for(Tile t : tilesToRemove){
                 removeTileFromPlayer(playerName, t);
             }
@@ -170,7 +169,7 @@ public class GameState {
     }
 
     /**
-     * Checks if the tile must be refreshed
+     * Checks if two or more of the adjacent corporation names are safe
      * @param corpNames
      * @return  boolean, true if must be refreshed
      */
