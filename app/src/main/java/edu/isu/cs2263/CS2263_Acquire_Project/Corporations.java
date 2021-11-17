@@ -59,7 +59,7 @@ public class Corporations {
             HashMap<String, Tile> domTiles = domCorp.getCorpTiles();
 
             CorpInfo subCorp = getCorp(corpName);
-            HashMap<String, Tile> subTiles = subCorp.retrieveTiles();
+            HashMap<String, Tile> subTiles = subCorp.popAllTiles();
 
             domTiles.putAll(subTiles);
             getCorp(corpName).setStatus(false);

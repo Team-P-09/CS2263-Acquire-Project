@@ -42,6 +42,10 @@ public class CorporationsTest {
     String corp1 = "Worldwide";
     String corp2 = "Imperial";
     String corp3 = "Saxon";
+    Tile tileA;
+    Tile tileB;
+    Tile tileC;
+    Tile tileD;
 
     @BeforeEach
     void setUp(){
@@ -55,10 +59,10 @@ public class CorporationsTest {
 
         tcorps = new Corporations(corpNames);
 
-        Tile tileA = new Tile(1, 1);
-        Tile tileB = new Tile(1, 2);
-        Tile tileC = new Tile(2, 3);
-        Tile tileD = new Tile(2, 2);
+        tileA = new Tile(1, 1);
+        tileB = new Tile(1, 2);
+        tileC = new Tile(2, 3);
+        tileD = new Tile(2, 2);
 
         tcorps.addTileToCorp(domCorpName, tileA);
         tcorps.addTileToCorp(domCorpName, tileB);
@@ -84,7 +88,19 @@ public class CorporationsTest {
 
     @Test void mergeDecreasesSubSize(){
         tcorps.mergeCorps(domCorpName, subCorpNames);
-        assertTrue(tcorps.getCorp(subCorpNames.get(0)).getCorpSize() == 0);
+        assertTrue(tcorps.getCorp(subCorpNames.get(1)).getCorpSize() == 0);
+    }
+
+    @Test
+    void mergeUpdatesTileCorp(){
+        tcorps.mergeCorps(domCorpName, subCorpNames);
+        assertTrue(tcorps.getTilesCorp(tileD).equals(domCorpName));
+    }
+
+    @Test
+    void mergeRemovesTileFromCorp(){
+        tcorps.mergeCorps(domCorpName, subCorpNames);
+        assertFalse(tcorps.getTilesCorp(tileD).equals(subCorpNames.get(1)));
     }
 
     /**

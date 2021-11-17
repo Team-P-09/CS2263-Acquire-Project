@@ -58,12 +58,12 @@ public class CorpInfoTest {
 
 
     @Test void retrieveTilesTestRemoves(){
-        tHM = tcorp.retrieveTiles();
+        tHM = tcorp.popAllTiles();
         assertTrue(tcorp.getCorpSize() == 0);
     }
 
     @Test void retrieveTilesTestExtracts(){
-        tHM = tcorp.retrieveTiles();
+        tHM = tcorp.popAllTiles();
         assertTrue(tHM.size() == 1);
     }
 
