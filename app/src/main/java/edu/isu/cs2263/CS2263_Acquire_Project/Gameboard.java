@@ -160,7 +160,6 @@ public class Gameboard {
         for(Tile t : adjTileList){
             cName = t.getCorp();
             if(t.isStatus()){
-                //System.out.println(t.getLocation());
                 if(adjCorps.containsKey(cName)){
                     adjCorps.put(cName, adjCorps.get(cName) + 1);
                 }
