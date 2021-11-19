@@ -81,39 +81,45 @@ public class UIController {
 //                System.out.println(tile.status);
 //                System.out.println(tile.getCorp());
 
-                switch (corpVal){
-                    case "Festival":
-                        pane.setStyle("-fx-background-color: green; -fx-border-color: darkgray");
-                        text.setStyle("-fx-fill: white");
-                        break;
-                    case "Imperial":
-                        pane.setStyle("-fx-background-color: magenta; -fx-border-color: darkgray");
-                        text.setStyle("-fx-fill: white");
-                        break;
-                    case "Worldwide":
-                        pane.setStyle("-fx-background-color: brown; -fx-border-color: darkgray");
-                        text.setStyle("-fx-fill: white");
-                        break;
-                    case "American":
-                        pane.setStyle("-fx-background-color: navy; -fx-border-color: darkgray");
-                        text.setStyle("-fx-fill: white");
-                        break;
-                    case "Sackson":
-                        pane.setStyle("-fx-background-color: red; -fx-border-color: darkgray");
-                        text.setStyle("-fx-fill: white");
-                        break;
-                    case "Tower":
-                        pane.setStyle("-fx-background-color: yellow; -fx-border-color: darkgray");
-                        text.setStyle("-fx-fill: black");
-                        break;
-                    case "Continental":
-                        pane.setStyle("-fx-background-color: cyan; -fx-border-color: darkgray");
-                        text.setStyle("-fx-fill: black");
-                        break;
-                    default:
-                        pane.setStyle("-fx-background-color: lightgray; -fx-border-color: darkgray");
-                        text.setStyle("-fx-fill: black");
-                        break;
+                if(tile.status == true){
+                    switch (corpVal){
+                        case "Festival":
+                            pane.setStyle("-fx-background-color: green; -fx-border-color: darkgray");
+                            text.setStyle("-fx-fill: white");
+                            break;
+                        case "Imperial":
+                            pane.setStyle("-fx-background-color: magenta; -fx-border-color: darkgray");
+                            text.setStyle("-fx-fill: white");
+                            break;
+                        case "Worldwide":
+                            pane.setStyle("-fx-background-color: brown; -fx-border-color: darkgray");
+                            text.setStyle("-fx-fill: white");
+                            break;
+                        case "American":
+                            pane.setStyle("-fx-background-color: navy; -fx-border-color: darkgray");
+                            text.setStyle("-fx-fill: white");
+                            break;
+                        case "Sackson":
+                            pane.setStyle("-fx-background-color: red; -fx-border-color: darkgray");
+                            text.setStyle("-fx-fill: white");
+                            break;
+                        case "Tower":
+                            pane.setStyle("-fx-background-color: yellow; -fx-border-color: darkgray");
+                            text.setStyle("-fx-fill: black");
+                            break;
+                        case "Continental":
+                            pane.setStyle("-fx-background-color: cyan; -fx-border-color: darkgray");
+                            text.setStyle("-fx-fill: black");
+                            break;
+                        default:
+                            pane.setStyle("-fx-background-color: gray; -fx-border-color: darkgray");
+                            text.setStyle("-fx-fill: black");
+                            break;
+                    }
+                }
+                else {
+                    pane.setStyle("-fx-background-color: lightgray; -fx-border-color: darkgray");
+                    text.setStyle("-fx-fill: black");
                 }
                 gridPane.add(pane, x, y);
             }
@@ -152,6 +158,7 @@ public class UIController {
             Text score = (Text) scene.lookup("#p"+(playerIndex+1)+"Score");
             score.setText(String.valueOf(gameState.scoreboard.getPlayerScore("Player "+(playerIndex+1))));
         }
+
         //updates StockMarket
         List<String> corpNames = Arrays.asList("Festival", "Imperial", "Worldwide", "American", "Sackson", "Tower", "Continental");
         for (String string : corpNames){
@@ -165,6 +172,17 @@ public class UIController {
             //updates size
             Text currentCorpSize = (Text) scene.lookup("#"+string+"Size");
             currentCorpSize.setText(String.valueOf(currentCorp.getCorpSize()));
+        }
+
+        //check end game validity
+        Button endButton = (Button) scene.lookup("#endGameButton");
+        if (gameState.checkIfGameCanEnd() == true){
+            endButton.setText("Game can not end!");
+            endButton.setStyle("-fx-background-color: gray; -fx-fill: black");
+        }
+        else {
+            endButton.setText("End game this turn?");
+            endButton.setStyle("-fx-background-color: darkred; -fx-fill: white");
         }
 
         stage.setScene(scene);
@@ -236,8 +254,14 @@ public class UIController {
         GameState gameState = GameState.getInstance(null);
         Button button = (Button) event.getSource();
 
+        if(gameState.getEndGame() == true){
+            gameState.endGame();
+        }
+
         PlayerInfo currentPlayer = gameState.getCurrentPlayer();
-        gameState.drawTileToPlayer(currentPlayer.getPName());
+        if(gameState.getCurrentPlayer().getPHand().getPlayersTiles().size() < 6){
+            gameState.drawTileToPlayer(currentPlayer.getPName());
+        }
         gameState.checkPlayerHandForRefresh(currentPlayer.getPName());
 
         gameState.nextPlayer();
@@ -253,6 +277,24 @@ public class UIController {
         alert.setContentText("https://www.ultraboardgames.com/acquire/game-rules.php");
 
         alert.showAndWait();
+    }
+
+    @FXML
+    public  void handleEndGameButton(ActionEvent event){
+        scene = ((Node)event.getSource()).getScene();
+        GameState gameState = GameState.getInstance(null);
+        Button button = (Button) event.getSource();
+        if(gameState.checkIfGameCanEnd() == true){
+            gameState.setEndGame();
+        }
+    }
+
+    @FXML
+    public void handleSaveGameButton(ActionEvent event){
+        scene = ((Node)event.getSource()).getScene();
+        GameState gameState = GameState.getInstance(null);
+        Button button = (Button) event.getSource();
+        gameState.saveGameState(gameState.getScoreboard(), gameState.getGameboard());
     }
 
     @FXML

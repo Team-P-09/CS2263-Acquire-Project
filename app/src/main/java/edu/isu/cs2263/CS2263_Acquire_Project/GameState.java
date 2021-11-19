@@ -44,6 +44,7 @@ public class GameState {
     Scoreboard scoreboard;
     int currentPlayerTracker = 0;
     Boolean hasPlayed = false;
+    Boolean endGame = false;
 
     private static GameState instance = null;
     private GameState(Integer numberOfPlayers){
@@ -280,5 +281,9 @@ public class GameState {
         if (hasPlayed == false){
             hasPlayed = true;
         }
+    }
+
+    public void setEndGame(){
+        endGame = true;
     }
 }
