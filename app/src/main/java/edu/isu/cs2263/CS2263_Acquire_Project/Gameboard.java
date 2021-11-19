@@ -64,7 +64,7 @@ public class Gameboard {
     }
 
     /**
-     *
+     * Initialzies a new gameboard
      * @return
      */
     private Tile[][] initGameboard(){
@@ -78,13 +78,15 @@ public class Gameboard {
     }
 
     /**
-     *
+     *Returns a list of adjacent tiles
+     * Wont return all corporations in a corporation tile chain
+     * Ran by getCorpsForRefreshTiles in GameState, getActionAndTiles in Gameboard
      * @param t
      * @return
      */
     public List<Tile> getAdjacentTiles(Tile t){
         //Variables for DFS algorithm
-        List<Tile> adjTiles = new ArrayList<>();
+        List<Tile> adjTiles;
         Queue<Tile> tileQueue = new ArrayDeque<>();
         HashMap<String, Tile> visitedTiles = new HashMap<>();
         tileQueue.add(t);
@@ -93,9 +95,9 @@ public class Gameboard {
         //DFS algo to add all connected adjacent tiles
         //does not add unactivated tiles
         //does not search adjacent tiles for tiles with a corporation(they will all have the same corporation)
-        while(tileQueue.isEmpty()){
+        while(!tileQueue.isEmpty()){
             curTile = tileQueue.remove();
-            adjTiles = checkAdj(curTile);
+            adjTiles = checkAdj(curTile); //This wont retrieve tiles if the tile has a corporation
             for(Tile adjT : adjTiles){
                 curTLoc = adjT.getLocation();
                 if(!visitedTiles.containsKey(curTLoc)){
@@ -129,40 +131,47 @@ public class Gameboard {
      * @return
      */
     public List<String> getAdjTileCorpNames(List<Tile> tiles){
-        List<String> adjCorpNames = new ArrayList<>();
+        HashSet<String> uniqueCorpNames = new HashSet<>();
         String corpName;
         for(Tile t : tiles){
             corpName = t.getCorp();
-            if(t.isStatus() && corpName != null){
-                adjCorpNames.add(corpName);
+            if(t.isStatus() && corpName != null && !uniqueCorpNames.contains(corpName)){
+                uniqueCorpNames.add(corpName);
             }
         }
-        return adjCorpNames;
+        return new ArrayList<>(uniqueCorpNames);
     }
 
+    /**
+     * Checks if the tile has a corporation, if not then adds adjacent tiles to a List of tiles to return
+     * Ran by getAdjacentTiles
+     * @param t input tile to check and find adjacents
+     * @return list of adjacent tiles max size 4
+     */
     private List<Tile> checkAdj(Tile t){
         Integer row = t.getRow();
         Integer col = t.getCol();
 
         List<Tile> adjTiles = new ArrayList<>();
         Boolean isCorp = getTile(row, col).getCorp() != null;
-
-        adjTiles = checkSides(row, col, adjTiles, true, isCorp);
-        adjTiles = checkSides(col, row, adjTiles, false, isCorp);
+        if(!isCorp){
+            adjTiles = checkSides(row, col, adjTiles, true);
+            adjTiles = checkSides(col, row, adjTiles, false);
+        }
 
         return adjTiles;
     }
 
     /**
      * Validates that the dimensions will not exceed the max gameboard size
+     * Ran by checkAdj
      * @param dimA
      * @param dimB
      * @param adjTList
      * @param isRow
      * @return
      */
-    //todo: add canHaveCorp if clause
-    private List<Tile> checkSides(Integer dimA, Integer dimB, List<Tile> adjTList, Boolean isRow, Boolean canHaveCorp){
+    private List<Tile> checkSides(Integer dimA, Integer dimB, List<Tile> adjTList, Boolean isRow){
         int dimAMax;
         Integer newDim;
         List<Tile> outTiles = new ArrayList<>();
@@ -195,6 +204,7 @@ public class Gameboard {
 
     /**
      * Decides the necissary action based on a list of adjacent tiles
+     * ran by getActionAndTiles
      * @param adjTileList
      * @return
      */
