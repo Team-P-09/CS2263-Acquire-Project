@@ -200,5 +200,14 @@ public class TestGameboard {
         testGameboard.recordTile(corpBTtwo);
         testGameboard.getTile(5,7).setCorp("Tower");
         testGameboard.getTile(5,8).setCorp("Tower");
+
+        Tile tileForAdj = new Tile(5,6);
+        tileForAdj.activateTile();
+        List<Tile> adjTiles = testGameboard.getAdjacentTiles(tileForAdj);
+        List<String> corpNames = testGameboard.getAdjTileCorpNames(adjTiles);
+        assertAll("Names of adjacent corporations",
+                () -> assertEquals("Worldwide" ,corpNames.get(1)),
+                () -> assertEquals("Tower", corpNames.get(0))
+                );
     }
 }
