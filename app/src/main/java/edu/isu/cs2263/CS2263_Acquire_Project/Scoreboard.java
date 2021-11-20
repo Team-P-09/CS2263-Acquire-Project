@@ -451,6 +451,7 @@ public class Scoreboard {
 
             } else if(leadingCorpSize == cSize){
                 domCorpList.add(s);
+                System.out.println("It happened");
 //                System.out.println(s);
             }
         }
