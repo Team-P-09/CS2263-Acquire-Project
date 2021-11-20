@@ -65,7 +65,7 @@ public class GameState {
         HashMap<String, List<Tile>> result = getGameboard().getActionAndTiles(handTile);
         String action = (new ArrayList<>(result.keySet())).get(0);
         List<Tile> tList = result.get(action);
-        String cName = null;
+//        String cName = null;
 
         if(!action.equals("Nothing")){
             if(action.equals("Add to Corp")) {
@@ -77,7 +77,7 @@ public class GameState {
                     getScoreboard().initFounding(tList, playerName);
                 }
             }
-            cName = getScoreboard().getCorporations().getTilesCorp(handTile);
+//            cName = getScoreboard().getCorporations().getTilesCorp(handTile);
             //The tag "Nothing" is not accounted for as nothing would change from the initialized tile object
         }
         //tList.add(handTile);
@@ -153,7 +153,7 @@ public class GameState {
     }
 
     /**
-     *
+     * Removes all tiles from a players hand that cannot be played
      * @param playerHand
      * @return
      */

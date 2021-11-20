@@ -34,9 +34,8 @@ import java.nio.file.Paths;
 
 import lombok.Getter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -64,6 +63,10 @@ public class Gameboard {
         return actionMap;
     }
 
+    /**
+     * Initialzies a new gameboard
+     * @return
+     */
     private Tile[][] initGameboard(){
         Tile[][] gboard = new Tile[9][12];
         for(int r = 0 ; r < gboard.length ; r++){
@@ -74,19 +77,52 @@ public class Gameboard {
         return gboard;
     }
 
-    //todo:handle outOfBounds response for tiles on the edge of the gameboard
+    /**
+     *Returns a list of adjacent tiles
+     * Wont return all corporations in a corporation tile chain
+     * Ran by getCorpsForRefreshTiles in GameState, getActionAndTiles in Gameboard
+     * @param t
+     * @return
+     */
     public List<Tile> getAdjacentTiles(Tile t){
-        int row = t.getRow();
-        int col = t.getCol();
-        List<Tile> adjTiles = new ArrayList<>();
-        adjTiles = checkAdj(row, col, adjTiles, true);
-        adjTiles = checkAdj(col, row, adjTiles, false);
-        for(Tile nt : adjTiles){
-            if(nt == null){
-                adjTiles.remove(nt);
+        //Variables for DFS algorithm
+        List<Tile> adjTiles;
+        Queue<Tile> tileQueue = new ArrayDeque<>();
+        HashMap<String, Tile> visitedTiles = new HashMap<>();
+        tileQueue.add(t);
+        Tile curTile;
+        String curTLoc;
+        //DFS algo to add all connected adjacent tiles
+        //does not add unactivated tiles
+        //does not search adjacent tiles for tiles with a corporation(they will all have the same corporation)
+        while(!tileQueue.isEmpty()){
+            curTile = tileQueue.remove();
+            adjTiles = checkAdj(curTile); //This wont retrieve tiles if the tile has a corporation
+            for(Tile adjT : adjTiles){
+                curTLoc = adjT.getLocation();
+                if(!visitedTiles.containsKey(curTLoc)){
+                    visitedTiles.put(curTLoc, adjT);
+                    tileQueue.add(adjT);
+                }
             }
         }
-        return adjTiles;
+
+        //Translate visited tile hashmap to list for further processing
+        List<Tile> outTiles = new ArrayList<>();
+        for(String loc : visitedTiles.keySet()){
+            outTiles.add(visitedTiles.get(loc));
+        }
+
+
+        //Remove null entries
+        outTiles.remove(null);
+        //above code does below code, testing to verify
+//        for(Tile nt : outTiles){
+//            if(nt == null){
+//                outTiles.remove(nt);
+//            }
+//        }
+        return outTiles;
     }
 
     /**
@@ -95,26 +131,47 @@ public class Gameboard {
      * @return
      */
     public List<String> getAdjTileCorpNames(List<Tile> tiles){
-        List<String> adjCorpNames = new ArrayList<>();
+        HashSet<String> uniqueCorpNames = new HashSet<>();
         String corpName;
         for(Tile t : tiles){
             corpName = t.getCorp();
-            if(t.isStatus() && corpName != null){
-                adjCorpNames.add(corpName);
+            if(t.isStatus() && corpName != null && !uniqueCorpNames.contains(corpName)){
+                uniqueCorpNames.add(corpName);
             }
         }
-        return adjCorpNames;
+        return new ArrayList<>(uniqueCorpNames);
+    }
+
+    /**
+     * Checks if the tile has a corporation, if not then adds adjacent tiles to a List of tiles to return
+     * Ran by getAdjacentTiles
+     * @param t input tile to check and find adjacents
+     * @return list of adjacent tiles max size 4
+     */
+    private List<Tile> checkAdj(Tile t){
+        Integer row = t.getRow();
+        Integer col = t.getCol();
+
+        List<Tile> adjTiles = new ArrayList<>();
+        Boolean isCorp = getTile(row, col).getCorp() != null;
+        if(!isCorp){
+            adjTiles = checkSides(row, col, adjTiles, true);
+            adjTiles = checkSides(col, row, adjTiles, false);
+        }
+
+        return adjTiles;
     }
 
     /**
      * Validates that the dimensions will not exceed the max gameboard size
+     * Ran by checkAdj
      * @param dimA
      * @param dimB
      * @param adjTList
      * @param isRow
      * @return
      */
-    private List<Tile> checkAdj(Integer dimA, Integer dimB, List<Tile> adjTList, Boolean isRow){
+    private List<Tile> checkSides(Integer dimA, Integer dimB, List<Tile> adjTList, Boolean isRow){
         int dimAMax;
         Integer newDim;
         List<Tile> outTiles = new ArrayList<>();
@@ -147,10 +204,11 @@ public class Gameboard {
 
     /**
      * Decides the necissary action based on a list of adjacent tiles
+     * ran by getActionAndTiles
      * @param adjTileList
      * @return
      */
-    public String decideAction(List<Tile> adjTileList){
+    private String decideAction(List<Tile> adjTileList){
         String action;
         String corpNameForAdding;
         String cName;
@@ -186,12 +244,6 @@ public class Gameboard {
 
     public Tile getTile(int r, int c){
         return getGameboard()[r][c];
-    }
-
-    private void updateTileCorp(Tile t, String cName){
-        int row = t.getRow();
-        int col = t.getCol();
-        getGameboard()[row][col].setCorp(cName);
     }
 
     /**
