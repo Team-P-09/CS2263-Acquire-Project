@@ -104,10 +104,6 @@ public class Scoreboard {
      * tArray will be a size of 5, order of entry is unimportant, Array datatype is used for easy iteration
      * Calls mergeCorps from Corporations
      */
-    //todo merge is giving all tiles to the sub corp FIXED
-    //todo merge does not let the user make a decision when the sizes are tied WORKED ON PLAY TEST
-    //todo merge is not merging a safe and unsafe corp(s) FIXED
-    //todo merge is running on multi tile adds FIXED
     public List<Tile> initMerge(List<Tile> tArray){
         ArrayList<String> mCorps = findCorps(tArray); //We will be used to identify the players who will need to take a merge action
         ArrayList<String> domCorp = findDomCorp(mCorps);
