@@ -47,8 +47,8 @@ import com.google.gson.reflect.TypeToken;
 @Getter @Setter
 public class Scoreboard {
     private Players players;
-    ArrayList<String> corpNames = new ArrayList<>(Arrays.asList("Worldwide", "Sackson", "Festival", "Imperial", "American", "Tower", "Continental"));
-    Corporations corporations;
+    public ArrayList<String> corpNames = new ArrayList<>(Arrays.asList("Worldwide", "Sackson", "Festival", "Imperial", "American", "Tower", "Continental"));
+    private Corporations corporations;
 
     public Scoreboard(Integer numberOfPlayers) {
         corporations = new Corporations(getCorpNames());
@@ -104,6 +104,10 @@ public class Scoreboard {
      * tArray will be a size of 5, order of entry is unimportant, Array datatype is used for easy iteration
      * Calls mergeCorps from Corporations
      */
+    //todo merge is giving all tiles to the sub corp FIXED
+    //todo merge does not let the user make a decision when the sizes are tied WORKED ON PLAY TEST
+    //todo merge is not merging a safe and unsafe corp(s) FIXED
+    //todo merge is running on multi tile adds FIXED
     public List<Tile> initMerge(List<Tile> tArray){
         ArrayList<String> mCorps = findCorps(tArray); //We will be used to identify the players who will need to take a merge action
         ArrayList<String> domCorp = findDomCorp(mCorps);
@@ -442,17 +446,13 @@ public class Scoreboard {
         int cSize;
         for(String s : mCorps){
             cSize = getCorporations().getCorp(s).getCorpSize();
-//            System.out.println(cSize);
             if(leadingCorpSize < cSize){
-//                domCorpList = new ArrayList<>();
                 domCorpList.clear();
                 domCorpList.add(s);
-//                System.out.println("NEW DOM CORP " + s);
+                leadingCorpSize = cSize;
 
             } else if(leadingCorpSize == cSize){
                 domCorpList.add(s);
-                System.out.println("It happened");
-//                System.out.println(s);
             }
         }
         return domCorpList;

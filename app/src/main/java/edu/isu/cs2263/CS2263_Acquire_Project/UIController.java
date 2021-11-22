@@ -58,7 +58,7 @@ public class UIController {
         //updates the current players hand
         PlayerInfo playerInfo = gameState.getCurrentPlayer();
         int i = 0;
-        for (Tile tile : playerInfo.pHand.playersTiles){
+        for (Tile tile : playerInfo.getPHand().getPlayersTiles()){
             String id = "#Tile"+i;
             Button button = (Button) scene.lookup(id);
 
@@ -67,7 +67,7 @@ public class UIController {
         }
 
         //update the gameboard
-        Tile[][] gameboard = gameState.gameboard.gameboard;
+        Tile[][] gameboard = gameState.getGameboard().getGameboard();
         GridPane gridPane = (GridPane) scene.lookup("#gameboard");
         gridPane.getChildren().clear();
         for (int y = 0; y < gameboard.length; y++){
@@ -81,7 +81,7 @@ public class UIController {
 //                System.out.println(tile.status);
 //                System.out.println(tile.getCorp());
 
-                if(tile.status == true){
+                if(tile.isStatus() == true){
                     switch (corpVal){
                         case "Festival":
                             pane.setStyle("-fx-background-color: green; -fx-border-color: darkgray");
@@ -127,43 +127,43 @@ public class UIController {
 
         //updates scoreboard
         GridPane scorePane = (GridPane) scene.lookup("#Scoreboard");
-        for (int playerIndex = 0; playerIndex < gameState.scoreboard.getPlayers().getActivePlayers().size(); playerIndex++){
-            PlayerInfo playerToAdd = gameState.scoreboard.getPlayers().getPlayerByName("Player "+(playerIndex+1));
+        for (int playerIndex = 0; playerIndex < gameState.getScoreboard().getPlayers().getActivePlayers().size(); playerIndex++){
+            PlayerInfo playerToAdd = gameState.getScoreboard().getPlayers().getPlayerByName("Player "+(playerIndex+1));
 
             //show cash
             Text cash = (Text) scene.lookup("#p"+(playerIndex+1)+"Cash");
-            cash.setText(String.valueOf(playerToAdd.pWallet.cash));
+            cash.setText(String.valueOf(playerToAdd.getPWallet().getCash()));
             //show Stock
             Text festival = (Text) scene.lookup("#p"+(playerIndex+1)+"Festival");
-            festival.setText(String.valueOf(playerToAdd.pWallet.getStocks().get("Festival")));
+            festival.setText(String.valueOf(playerToAdd.getPWallet().getStocks().get("Festival")));
 
             Text Imperial = (Text) scene.lookup("#p"+(playerIndex+1)+"Imperial");
-            Imperial.setText(String.valueOf(playerToAdd.pWallet.getStocks().get("Imperial")));
+            Imperial.setText(String.valueOf(playerToAdd.getPWallet().getStocks().get("Imperial")));
 
             Text WorldWide = (Text) scene.lookup("#p"+(playerIndex+1)+"Worldwide");
-            WorldWide.setText(String.valueOf(playerToAdd.pWallet.getStocks().get("Worldwide")));
+            WorldWide.setText(String.valueOf(playerToAdd.getPWallet().getStocks().get("Worldwide")));
 
             Text American = (Text) scene.lookup("#p"+(playerIndex+1)+"American");
-            American.setText(String.valueOf(playerToAdd.pWallet.getStocks().get("American")));
+            American.setText(String.valueOf(playerToAdd.getPWallet().getStocks().get("American")));
 
             Text Sackson = (Text) scene.lookup("#p"+(playerIndex+1)+"Sackson");
-            Sackson.setText(String.valueOf(playerToAdd.pWallet.getStocks().get("Sackson")));
+            Sackson.setText(String.valueOf(playerToAdd.getPWallet().getStocks().get("Sackson")));
 
             Text Tower = (Text) scene.lookup("#p"+(playerIndex+1)+"Tower");
-            Tower.setText(String.valueOf(playerToAdd.pWallet.getStocks().get("Tower")));
+            Tower.setText(String.valueOf(playerToAdd.getPWallet().getStocks().get("Tower")));
 
             Text Continental = (Text) scene.lookup("#p"+(playerIndex+1)+"Continental");
-            Continental.setText(String.valueOf(playerToAdd.pWallet.getStocks().get("Continental")));
+            Continental.setText(String.valueOf(playerToAdd.getPWallet().getStocks().get("Continental")));
 
             Text score = (Text) scene.lookup("#p"+(playerIndex+1)+"Score");
-            score.setText(String.valueOf(gameState.scoreboard.getPlayerScore("Player "+(playerIndex+1))));
+            score.setText(String.valueOf(gameState.getScoreboard().getPlayerScore("Player "+(playerIndex+1))));
         }
 
         //updates StockMarket
         List<String> corpNames = Arrays.asList("Festival", "Imperial", "Worldwide", "American", "Sackson", "Tower", "Continental");
         for (String string : corpNames){
             //update remaining
-            CorpInfo currentCorp = gameState.scoreboard.corporations.getCorp(string);
+            CorpInfo currentCorp = gameState.getScoreboard().getCorporations().getCorp(string);
             Text currentCorpRemaining = (Text) scene.lookup("#"+string+"Quantity");
             currentCorpRemaining.setText(String.valueOf(currentCorp.getAvailableStocks()));
             //updates price
@@ -176,7 +176,7 @@ public class UIController {
 
         //check end game validity
         Button endButton = (Button) scene.lookup("#endGameButton");
-        if (gameState.checkIfGameCanEnd() == true){
+        if (gameState.checkIfGameCanEnd() == true){ //todo this is being called more than once per player turn
             endButton.setText("Game can not end!");
             endButton.setStyle("-fx-background-color: gray; -fx-fill: black");
         }
@@ -213,7 +213,7 @@ public class UIController {
         Optional<String> result = dialog.showAndWait();
 
         if (result.isPresent()){
-            gameState.scoreboard.initBuy(gameState.getCurrentPlayer().getPName(), result.get());
+            gameState.getScoreboard().initBuy(gameState.getCurrentPlayer().getPName(), result.get());
 
             render(event);
         }
@@ -242,7 +242,7 @@ public class UIController {
 
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()){
-            gameState.scoreboard.initSell(gameState.getCurrentPlayer().getPName(), result.get(), false);
+            gameState.getScoreboard().initSell(gameState.getCurrentPlayer().getPName(), result.get(), false);
 
             render(event);
         }
@@ -305,8 +305,8 @@ public class UIController {
         if (gameState.hasPlayed == false){
             String id = button.getId();
             id = id.replace("Tile","");
-            Tile playTile = gameState.getCurrentPlayer().pHand.playersTiles.get(Integer.parseInt(id));
-            gameState.placeTile(playTile, gameState.getCurrentPlayer().pName);
+            Tile playTile = gameState.getCurrentPlayer().getPHand().getPlayersTiles().get(Integer.parseInt(id));
+            gameState.placeTile(playTile, gameState.getCurrentPlayer().getPName());
             gameState.hasPlayed();
         }
 

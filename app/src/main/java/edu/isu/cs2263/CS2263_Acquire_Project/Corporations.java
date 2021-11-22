@@ -42,7 +42,7 @@ import com.google.gson.reflect.TypeToken;
 
 @Getter @Setter
 public class Corporations {
-    HashMap<String, CorpInfo> corps;
+    private HashMap<String, CorpInfo> corps;
 
     public Corporations(ArrayList<String> corpNames){
         corps = initializeCorps(corpNames);
