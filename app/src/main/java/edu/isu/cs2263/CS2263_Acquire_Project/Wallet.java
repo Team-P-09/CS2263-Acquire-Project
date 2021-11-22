@@ -33,8 +33,8 @@ import java.util.HashMap;
 @Getter @Setter
 public class Wallet {
     //instance variables
-    int cash;
-    HashMap<String, Integer> stocks;
+    private int cash;
+    private HashMap<String, Integer> stocks;
     //contains corp name and quantity of stocks in that corp
 
     //Constructor method

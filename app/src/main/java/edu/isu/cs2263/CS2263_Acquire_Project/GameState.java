@@ -40,11 +40,11 @@ import java.util.*;
 
 @Getter @Setter
 public class GameState {
-    Gameboard gameboard;
-    Scoreboard scoreboard;
-    int currentPlayerTracker = 0;
-    Boolean hasPlayed = false;
-    Boolean endGame = false;
+    private Gameboard gameboard;
+    private Scoreboard scoreboard;
+    private int currentPlayerTracker = 0;
+    public Boolean hasPlayed = false;
+    public Boolean endGame = false;
 
     private static GameState instance = null;
     private GameState(Integer numberOfPlayers){
@@ -52,20 +52,24 @@ public class GameState {
         scoreboard = new Scoreboard(numberOfPlayers);
     }
     public static GameState getInstance(Integer numberOfPlayers){
-        if (instance==null){
-            instance=new GameState(numberOfPlayers);
+        if (instance == null){
+            instance = new GameState(numberOfPlayers);
         }
         return instance;
     }
 
 
+    /**
+     * Places a tile on the board and determines which action needs to be executed
+     * @param handTile the tile from the players input in the UI
+     * @param playerName the string name of the player
+     */
     public void placeTile(Tile handTile, String playerName){
         getGameboard().recordTile(handTile);
         handTile.activateTile();
         HashMap<String, List<Tile>> result = getGameboard().getActionAndTiles(handTile);
         String action = (new ArrayList<>(result.keySet())).get(0);
         List<Tile> tList = result.get(action);
-//        String cName = null;
 
         if(!action.equals("Nothing")){
             if(action.equals("Add to Corp")) {
@@ -77,15 +81,16 @@ public class GameState {
                     getScoreboard().initFounding(tList, playerName);
                 }
             }
-//            cName = getScoreboard().getCorporations().getTilesCorp(handTile);
             //The tag "Nothing" is not accounted for as nothing would change from the initialized tile object
         }
-        //tList.add(handTile);
-        //getGameboard().getTile(handTile.getRow(), handTile.getCol()).setCorp(cName); //Sets the corporation for the tile on the gameboard
         updateAffectedTiles(tList);
         removeTileFromPlayer(playerName, handTile);
     }
 
+    /**
+     * updates a list of tiles to correctly represent which corporation they belong to in the Gameboard object
+     * @param affectedTiles
+     */
     private void updateAffectedTiles(List<Tile> affectedTiles){
         String cName;
         for(Tile t : affectedTiles){
@@ -96,25 +101,33 @@ public class GameState {
         }
     }
 
+    /**
+     * Checks if game can end then returns winner information
+     * If the game cannot end returns null
+     * @return
+     */
     public HashMap<String, Integer> endGame(){
         if(checkIfGameCanEnd()){
             return getScoreboard().getWinners();
-            //CODE TO END GAME
         }
-        return new HashMap<String, Integer>();
+        return null;
     }
 
     /**
      * Iterates through corporations checking if there are any active and unsafe corporations OR if any corporation is equal or greater 41 tiles in size
      * @return returns a boolean if true the game can end if false the game cannot end
      */
+    //todo doesnt work, could be because corporations are not set to inactive after merge
+    //todo need to test equal to or greater than 41, also need to test !isSafe and isActive
     public boolean checkIfGameCanEnd(){
+        System.out.println("end game checked");
         boolean canEndBool = true;
         boolean isSafe;
         boolean isActive;
         for(String corpName : getScoreboard().getCorporations().getCorps().keySet()){
             isSafe = getScoreboard().getCorporations().getCorp(corpName).isSafe();
             isActive = getScoreboard().getCorporations().getCorp(corpName).isStatus();
+//            System.out.println(corpName + "\n" + isSafe + "\n" + isActive);
             if(!isSafe && isActive){ //doesnt allow the game to end if there is an active corporation that is not safe
                 canEndBool = false;
             }
@@ -133,15 +146,25 @@ public class GameState {
         }
     }
 
+    /**
+     * removes tiles from players hand
+     * @param playerName
+     * @param t
+     */
     public void removeTileFromPlayer(String playerName, Tile t){
         getScoreboard().getPlayers().getPlayerByName(playerName).getPHand().removeTile(t);
     }
 
+    /**
+     * Checks if players hand needs to be refreshed
+     * Then removes all unplayable tiles from the players hand
+     * @param playerName
+     */
+    //todo invalid tiles are not removed
     public void checkPlayerHandForRefresh(String playerName){
         List<Tile> playerHand = getScoreboard().getPlayers().getPlayerByName(playerName).getPHand().getPlayersTiles();
         List<Tile> tilesToRemove = getCorpsForRefreshTiles(playerHand);
         Integer tilesToRefresh = tilesToRemove.size();
-        Tile newTile;
         if(tilesToRefresh > 0){
             for(Tile t : tilesToRemove){
                 removeTileFromPlayer(playerName, t);

@@ -43,9 +43,9 @@ import java.util.List;
 
 @Getter @Setter
 public class TileStack {
-    int height;
-    int width;
-    ArrayList<Tile> tileStack;
+    private int height;
+    private int width;
+    private ArrayList<Tile> tileStack;
 
     public TileStack(){
         height = 9;

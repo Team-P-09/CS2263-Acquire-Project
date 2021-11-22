@@ -28,14 +28,25 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class GameStateTest {
+    private GameState tGameState;
 
     @BeforeEach
     private void setUp(){
-
+        //set up gameboard and players
+        tGameState = GameState.getInstance(2);
     }
 
 
+    /**
+     *
+     */
     @Test void testPlayTileNothing(){
+
+    }
+
+    @Test
+    void testPlayTileNothingWithSevenCorps(){
+        //set all corps as safe
 
     }
 
