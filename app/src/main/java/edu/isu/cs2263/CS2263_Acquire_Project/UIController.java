@@ -57,6 +57,8 @@ public class UIController {
 
         //updates the current players hand
         PlayerInfo playerInfo = gameState.getCurrentPlayer();
+        Text playerLabel = (Text) scene.lookup("#turnLabel");
+        playerLabel.setText(playerInfo.getPName());
         int i = 0;
         for (Tile tile : playerInfo.pHand.playersTiles){
             String id = "#Tile"+i;
@@ -339,8 +341,11 @@ public class UIController {
     @FXML
     public void handleLoadGameButton(ActionEvent event){
         scene = ((Node)event.getSource()).getScene();
-//
-//        System.out.println("Clicked load button");
+        GameState gameState = GameState.getInstance(null);
+        Button button = (Button) event.getSource();
+
+//        gameState.loadGameState();
+
     }
 
     @FXML
