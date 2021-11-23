@@ -47,8 +47,8 @@ import com.google.gson.reflect.TypeToken;
 @Getter @Setter
 public class Scoreboard {
     private Players players;
-    ArrayList<String> corpNames = new ArrayList<>(Arrays.asList("Worldwide", "Sackson", "Festival", "Imperial", "American", "Tower", "Continental"));
-    Corporations corporations;
+    public ArrayList<String> corpNames = new ArrayList<>(Arrays.asList("Worldwide", "Sackson", "Festival", "Imperial", "American", "Tower", "Continental"));
+    private Corporations corporations;
 
     public Scoreboard(Integer numberOfPlayers) {
         corporations = new Corporations(getCorpNames());
@@ -442,16 +442,13 @@ public class Scoreboard {
         int cSize;
         for(String s : mCorps){
             cSize = getCorporations().getCorp(s).getCorpSize();
-//            System.out.println(cSize);
             if(leadingCorpSize < cSize){
-//                domCorpList = new ArrayList<>();
                 domCorpList.clear();
                 domCorpList.add(s);
-//                System.out.println("NEW DOM CORP " + s);
+                leadingCorpSize = cSize;
 
             } else if(leadingCorpSize == cSize){
                 domCorpList.add(s);
-//                System.out.println(s);
             }
         }
         return domCorpList;

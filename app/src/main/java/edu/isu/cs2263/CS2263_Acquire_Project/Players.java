@@ -42,8 +42,8 @@ import com.google.gson.reflect.TypeToken;
 
 @Getter @Setter
 public class Players {
-    ArrayList<PlayerInfo> activePlayers; //ORDER OF PLAYERS AND PLAYER NAMES
-    TileStack tStack;
+    private ArrayList<PlayerInfo> activePlayers; //ORDER OF PLAYERS AND PLAYER NAMES
+    private TileStack tStack;
 
 
     public Players(Integer number, ArrayList<String> corpNames){

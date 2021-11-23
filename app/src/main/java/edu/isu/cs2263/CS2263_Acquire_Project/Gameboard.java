@@ -212,6 +212,7 @@ public class Gameboard {
         String action;
         String corpNameForAdding;
         String cName;
+        Integer numberOfNonNullCorps;
 
         //Get data for all of the adjacent tiles
         HashMap<String, Integer> adjCorps = new HashMap<>(); //This will be a hashmap with <CorpName, Number Of Tiles>
@@ -227,9 +228,14 @@ public class Gameboard {
             }
         }
 
+        numberOfNonNullCorps = findNumberOfNonNullCorps(adjCorps);
         //decide which action to return
         if(adjCorps.size() > 1){
-            action = "Merge";
+            if(numberOfNonNullCorps > 1){
+                action = "Merge";
+            }else{
+                action = "Add to Corp";
+            }
         }else if(adjCorps.size() == 1){
             //ADD TO CORP OR FOUNDING
             corpNameForAdding = (new ArrayList<>(adjCorps.keySet())).get(0); //Name of the corporation for the adjacent tile(s)
@@ -237,13 +243,35 @@ public class Gameboard {
             if(corpNameForAdding != null){
                 action = "Add to Corp";
             }else{action = "Founding Tile";}
-        }else{ action = "Nothing";}
+        } else{ action = "Nothing";}
+
+//        if(adjCorps.size() > 1){
+//            action = "Merge";
+//        }else if(adjCorps.size() == 1){
+//            //ADD TO CORP OR FOUNDING
+//            corpNameForAdding = (new ArrayList<>(adjCorps.keySet())).get(0); //Name of the corporation for the adjacent tile(s)
+//            //System.out.println(corpNameForAdding);
+//            if(corpNameForAdding != null){
+//                action = "Add to Corp";
+//            }else{action = "Founding Tile";}
+//        } else{ action = "Nothing";}
 
         return action;
     }
 
     public Tile getTile(int r, int c){
         return getGameboard()[r][c];
+    }
+
+    private Integer findNumberOfNonNullCorps(HashMap<String, Integer> corps){
+        List<String> adjCorps = new ArrayList<>(corps.keySet());
+        Integer corpCounter = 0;
+        for(String corpName : adjCorps){
+            if(corpName != null){
+                corpCounter++;
+            }
+        }
+        return corpCounter;
     }
 
     /**
