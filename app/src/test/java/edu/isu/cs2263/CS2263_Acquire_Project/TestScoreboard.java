@@ -25,8 +25,6 @@
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
 import javafx.application.Application;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -34,7 +32,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ScoreboardTest {
+public class TestScoreboard {
 
     private HashMap<String, Integer[]> testDisplayInfo;
     Scoreboard s;
@@ -50,8 +48,6 @@ public class ScoreboardTest {
         String[] corpNames = new String[]{"Worldwide", "Sackson", "Festival", "Imperial", "American", "Tower", "Continental"};
 
         s = new Scoreboard(2);
-
-        //Corporations tcorps = new Corporations(corpNames);
 
         tileA = new Tile(1, 1);
         tileB = new Tile(1, 2);
@@ -72,11 +68,6 @@ public class ScoreboardTest {
         s.getCorporations().addTileToCorp(corpNames[0], tileB);
         s.getCorporations().addTileToCorp(corpNames[1], tileC);
         s.getCorporations().addTileToCorp(corpNames[1], tileD);
-
-
-        //System.out.println(s.corporations.getCorp(corpNames[0]).getCorpSize());
-
-//        testDisplayInfo =  s.displayCorpInfo();
 
         p1Name = "Player 1";
         p2Name = "Player 2";
@@ -121,22 +112,12 @@ public class ScoreboardTest {
     @Test
     void testInitCorpTileAdd(){
         Tile newTone = new Tile(1,3);
-        Tile newTtwo = new Tile(1,4);
-        Tile newTthree = new Tile(0,3);
-        Tile newTfour = new Tile(2,3);
         newTone.activateTile();
         List<Tile> tList = new ArrayList<>();
         tList.add(newTone);
-//        tList.add(newTtwo);
-//        tList.add(newTthree);
-//        tList.add(newTfour);
         tList.add(tileB);
 
-        for(Tile t : tList){
-            System.out.println(t.isStatus());
-            System.out.println(t.getCorp());
-        }
-
+        //only adds one tile, the corporation is initialized with 2 tiles
         s.initCorpTileAdd(tList);
         assertTrue(s.getCorporations().getCorp("Worldwide").getCorpSize() == 3);
     }

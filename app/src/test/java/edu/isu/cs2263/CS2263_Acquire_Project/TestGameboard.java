@@ -180,7 +180,7 @@ public class TestGameboard {
     }
 
     @Test
-    void getAdjCorpNames(){
+    void testGetAdjCorpNames(){
         //tile set up for the first corp
         Tile corpATone = new Tile(5,5);
         Tile corpATtwo = new Tile(5,4);

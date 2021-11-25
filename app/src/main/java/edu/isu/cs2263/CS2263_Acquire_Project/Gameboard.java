@@ -42,7 +42,7 @@ import com.google.gson.reflect.TypeToken;
 @Getter
 public class Gameboard {
     public String infoCard;
-    Tile[][] gameboard;
+    private Tile[][] gameboard;
 
     public Gameboard(){
         gameboard = initGameboard();
