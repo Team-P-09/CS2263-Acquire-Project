@@ -45,12 +45,13 @@ public class GameState {
     private int currentPlayerTracker = 0;
     public Boolean hasPlayed = false;
     public Boolean endGame = false;
+    private static GameState instance = null; //making this static was causing tons of problems in testing
 
-    private static GameState instance = null;
     private GameState(Integer numberOfPlayers){
         gameboard = new Gameboard();
         scoreboard = new Scoreboard(numberOfPlayers);
     }
+
     public static GameState getInstance(Integer numberOfPlayers){
         if (instance == null){
             instance = new GameState(numberOfPlayers);
@@ -115,27 +116,44 @@ public class GameState {
 
     /**
      * Iterates through corporations checking if there are any active and unsafe corporations OR if any corporation is equal or greater 41 tiles in size
-     * @return returns a boolean if true the game can end if false the game cannot end
+     * @return automatically exits if there is an unsafe active corporation or if any corporation has a size greater than 41, else checks if at least one corporation is safe and active
      */
-    //todo doesnt work, could be because corporations are not set to inactive after merge
-    //todo need to test equal to or greater than 41, also need to test !isSafe and isActive
+    //todo merge in Corporations is correctly deactivating corps so the error probably lies in the UI or initMerge in Scoreboard
     public boolean checkIfGameCanEnd(){
-        System.out.println("end game checked");
-        boolean canEndBool = true;
+        boolean canEndBool = false;
         boolean isSafe;
         boolean isActive;
-        for(String corpName : getScoreboard().getCorporations().getCorps().keySet()){
+        Set<String> corpNames = getScoreboard().getCorporations().getCorps().keySet();
+        //check if a corp has been founded and is safe, exits and returns if conditions are broken
+        for(String corpName : corpNames){
             isSafe = getScoreboard().getCorporations().getCorp(corpName).isSafe();
             isActive = getScoreboard().getCorporations().getCorp(corpName).isStatus();
-//            System.out.println(corpName + "\n" + isSafe + "\n" + isActive);
-            if(!isSafe && isActive){ //doesnt allow the game to end if there is an active corporation that is not safe
-                canEndBool = false;
+            if(isSafe && isActive){
+                canEndBool = true;
+            }
+
+            //Exit conditions
+            //if any corporation is not safe and is active returns false and exits
+            if(!isSafe && isActive){
+                return false;
             }
             //exits and ends if any corp is over size 41
             if(getScoreboard().getCorporations().getCorp(corpName).getCorpSize() >= 41){
                 return true;
             }
         }
+//
+//        //if there is a corp
+//        if(canEndBool){
+//            for(String corpName : corpNames){
+//                isSafe = getScoreboard().getCorporations().getCorp(corpName).isSafe();
+//                isActive = getScoreboard().getCorporations().getCorp(corpName).isStatus();
+//                System.out.println(corpName + "\n" + isSafe + "\n" + isActive);
+//                if(!isSafe && isActive){ //doesnt allow the game to end if there is an active corporation that is not safe
+//                    canEndBool = false;
+//                }
+//            }
+//        }
         return canEndBool;
     }
 
@@ -180,7 +198,7 @@ public class GameState {
      * @param playerHand
      * @return
      */
-    public List<Tile> getCorpsForRefreshTiles(List<Tile> playerHand){
+    private List<Tile> getCorpsForRefreshTiles(List<Tile> playerHand){
         List<Tile> tilesToRemove = new ArrayList<>();
         for(Tile t : playerHand){
             List<Tile> adjtiles = getGameboard().getAdjacentTiles(t);
@@ -197,7 +215,7 @@ public class GameState {
      * @param corpNames
      * @return  boolean, true if must be refreshed
      */
-    public boolean checkTileRefresh(List<String> corpNames){
+    private boolean checkTileRefresh(List<String> corpNames){
         //RETURNS true IF THE TILE IS ONLY ADJACENT TO SAFE CORPORATIONS
         boolean refreshBool = false;
         Integer safeCounter = 0;

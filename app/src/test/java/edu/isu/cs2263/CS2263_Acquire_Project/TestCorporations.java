@@ -34,7 +34,7 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CorporationsTest {
+public class TestCorporations {
     ArrayList<String> corpNames;
     String domCorpName;
     ArrayList<String> subCorpNames;
@@ -68,6 +68,10 @@ public class CorporationsTest {
         tcorps.addTileToCorp(domCorpName, tileB);
         tcorps.addTileToCorp(corpNames.get(1), tileC);
         tcorps.addTileToCorp(corpNames.get(2), tileD);
+
+        tcorps.getCorp(corp1).setStatus(true);
+        tcorps.getCorp(corp2).setStatus(true);
+        tcorps.getCorp(corp3).setStatus(true);
     }
 
     @AfterEach
@@ -101,6 +105,24 @@ public class CorporationsTest {
     void mergeRemovesTileFromCorp(){
         tcorps.mergeCorps(domCorpName, subCorpNames);
         assertFalse(tcorps.getTilesCorp(tileD).equals(subCorpNames.get(1)));
+    }
+
+    @Test
+    void mergeDeactivatesSubCorps(){
+        tcorps.mergeCorps(domCorpName, subCorpNames);
+        boolean alldeactivated = true;
+        for(String subCName : subCorpNames){
+            if(tcorps.getCorp(subCName).isStatus()){
+                alldeactivated = false;
+            }
+        }
+        assertTrue(alldeactivated);
+    }
+
+    @Test
+    void mergeKeepsDomCorpActive(){
+        tcorps.mergeCorps(domCorpName, subCorpNames);
+        assertTrue(tcorps.getCorp(domCorpName).isStatus());
     }
 
     /**

@@ -178,7 +178,7 @@ public class UIController {
 
         //check end game validity
         Button endButton = (Button) scene.lookup("#endGameButton");
-        if (gameState.checkIfGameCanEnd() == true){ //todo this is being called more than once per player turn
+        if (gameState.checkIfGameCanEnd() == false){
             endButton.setText("Game can not end!");
             endButton.setStyle("-fx-background-color: gray; -fx-fill: black");
         }
@@ -264,9 +264,11 @@ public class UIController {
         if(gameState.getCurrentPlayer().getPHand().getPlayersTiles().size() < 6){
             gameState.drawTileToPlayer(currentPlayer.getPName());
         }
-        gameState.checkPlayerHandForRefresh(currentPlayer.getPName());
 
         gameState.nextPlayer();
+        //tiles must be removed at the start of the players turn else a tile can be played the turn after it becomes unplayable
+        currentPlayer = gameState.getCurrentPlayer();
+        gameState.checkPlayerHandForRefresh(currentPlayer.getPName());
         render(event);
     }
 

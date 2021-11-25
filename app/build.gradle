@@ -96,15 +96,37 @@ jacocoTestReport {
     }
 }
 
+//jacocoTestCoverageVerification {
+//    violationRules {
+//        rule {
+//            element = 'CLASS'
+//
+//            limit {
+//                counter = 'LINE'
+//                value = 'COVEREDRATIO'
+//                minimum = 0.80
+//            }
+//        }
+//    }
+//}
+
 jacocoTestCoverageVerification {
     violationRules {
         rule {
+            limit {
+                minimum = 0.85
+            }
+        }
+
+        rule {
+            enabled = false
             element = 'CLASS'
+            includes = ['org.gradle.*']
 
             limit {
                 counter = 'LINE'
-                value = 'COVEREDRATIO'
-                minimum = 0.80
+                value = 'TOTALCOUNT'
+                maximum = 0.3
             }
         }
     }

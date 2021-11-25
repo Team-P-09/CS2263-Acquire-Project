@@ -54,10 +54,10 @@ public class Corporations {
      * @param subCorpNames
      */
     public void mergeCorps(String domCorpName, ArrayList<String> subCorpNames){
-        for(String corpName : subCorpNames){
-            CorpInfo domCorp = getCorp(domCorpName);
-            HashMap<String, Tile> domTiles = domCorp.getCorpTiles();
+        CorpInfo domCorp = getCorp(domCorpName);
+        HashMap<String, Tile> domTiles = domCorp.getCorpTiles();
 
+        for(String corpName : subCorpNames){
             CorpInfo subCorp = getCorp(corpName);
             HashMap<String, Tile> subTiles = subCorp.popAllTiles();
 
