@@ -66,6 +66,7 @@ public class Scoreboard {
         for(Tile t : tiles){
             if(t.isStatus() && t.getCorp() == null){
                 getCorporations().addTileToCorp(corpName, t);
+                getCorporations().getCorp(corpName).setStatus(true);
             }
         }
 
@@ -387,24 +388,35 @@ public class Scoreboard {
      * @param playerName
      * @param corpName
      */
-    //todo prevent player from buying more than 3 stocks
-    //todo return number of bought tiles
-    public void initBuy(String playerName, String corpName){
-        Integer maxQty = maxBuy(playerName, corpName);
+    public Integer initBuy(String playerName, String corpName, Integer buyLimit){
+        Integer maxQty = maxBuy(playerName, corpName, buyLimit);
         Integer qty = getQty(corpName, maxQty, "Buy");
         int stockVal = getCorporations().getCorp(corpName).getStockPrice();
         getPlayers().buyStock(playerName,corpName, qty, stockVal);
         getCorporations().getCorp(corpName).removeCorpStock(qty);
+        return qty;
     }
 
-    private Integer maxBuy(String playerName, String corpName){
+    /**
+     * Verifies players wallet to find the maximum number of stock to buy
+     * @param playerName
+     * @param corpName
+     * @return
+     */
+    private Integer maxBuy(String playerName, String corpName, Integer buyLimit){
         Integer stockPrice = getCorporations().getCorp(corpName).getStockPrice();
         Integer availableStock = getCorporations().getCorp(corpName).getAvailableStocks();
         Integer pCash = getPlayers().getPlayerByName(playerName).getPWallet().getCash();
+        Integer buyableStock;
         if(pCash/stockPrice > availableStock){
-            return availableStock;
+            buyableStock = availableStock;
         }else{
-            return pCash/stockPrice;
+            buyableStock = pCash/stockPrice;
+        }
+        if(buyableStock > buyLimit){
+            return buyLimit;
+        }else{
+            return buyableStock;
         }
     }
 

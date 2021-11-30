@@ -215,8 +215,8 @@ public class UIController {
         Optional<String> result = dialog.showAndWait();
 
         if (result.isPresent()){
-            gameState.getScoreboard().initBuy(gameState.getCurrentPlayer().getPName(), result.get());
-
+            Integer boughtQty = gameState.getScoreboard().initBuy(gameState.getCurrentPlayer().getPName(), result.get(), 3- gameState.getCurrentBoughtStock());
+            gameState.setCurrentBoughtStock(gameState.getCurrentBoughtStock() + boughtQty);
             render(event);
         }
     }
@@ -269,6 +269,7 @@ public class UIController {
         //tiles must be removed at the start of the players turn else a tile can be played the turn after it becomes unplayable
         currentPlayer = gameState.getCurrentPlayer();
         gameState.checkPlayerHandForRefresh(currentPlayer.getPName());
+        gameState.resetBuyCounter();
         render(event);
     }
 

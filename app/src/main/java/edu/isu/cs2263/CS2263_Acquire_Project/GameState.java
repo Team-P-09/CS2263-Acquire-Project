@@ -46,6 +46,7 @@ public class GameState {
     public Boolean hasPlayed = false;
     public Boolean endGame = false;
     private static GameState instance = null; //making this static was causing tons of problems in testing
+    private Integer currentBoughtStock = 0;
     //todo create variable of tiles played per turn
     //todo prevent player from being able to initiate a buy when the cannot buy any more tiles
 
@@ -73,6 +74,7 @@ public class GameState {
         hasPlayed = false;
         endGame = false;
         instance = null; //making this static was causing tons of problems in testing
+        currentBoughtStock = 0;
     }
 
 
@@ -102,6 +104,10 @@ public class GameState {
         }
         updateAffectedTiles(tList);
         removeTileFromPlayer(playerName, handTile);
+    }
+
+    public void resetBuyCounter(){
+        currentBoughtStock = 0;
     }
 
     /**
@@ -134,7 +140,6 @@ public class GameState {
      * Iterates through corporations checking if there are any active and unsafe corporations OR if any corporation is equal or greater 41 tiles in size
      * @return automatically exits if there is an unsafe active corporation or if any corporation has a size greater than 41, else checks if at least one corporation is safe and active
      */
-    //todo merge in Corporations is correctly deactivating corps so the error probably lies in the UI or initMerge in Scoreboard
     public boolean checkIfGameCanEnd(){
         boolean canEndBool = false;
         boolean isSafe;
@@ -158,18 +163,6 @@ public class GameState {
                 return true;
             }
         }
-//
-//        //if there is a corp
-//        if(canEndBool){
-//            for(String corpName : corpNames){
-//                isSafe = getScoreboard().getCorporations().getCorp(corpName).isSafe();
-//                isActive = getScoreboard().getCorporations().getCorp(corpName).isStatus();
-//                System.out.println(corpName + "\n" + isSafe + "\n" + isActive);
-//                if(!isSafe && isActive){ //doesnt allow the game to end if there is an active corporation that is not safe
-//                    canEndBool = false;
-//                }
-//            }
-//        }
         return canEndBool;
     }
 
