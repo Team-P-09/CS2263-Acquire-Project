@@ -46,6 +46,8 @@ public class GameState {
     public Boolean hasPlayed = false;
     public Boolean endGame = false;
     private static GameState instance = null; //making this static was causing tons of problems in testing
+    //todo create variable of tiles played per turn
+    //todo prevent player from being able to initiate a buy when the cannot buy any more tiles
 
     private GameState(Integer numberOfPlayers){
         gameboard = new Gameboard();
@@ -57,6 +59,20 @@ public class GameState {
             instance = new GameState(numberOfPlayers);
         }
         return instance;
+    }
+
+    /**
+     * This is only used for tests
+     * Because we are using a singleton we need this method to properly test our gamestate
+     */
+    void resetInstance(){
+        Integer pNumb = scoreboard.getPlayers().getActivePlayers().size();
+        gameboard = new Gameboard();
+        scoreboard = new Scoreboard(pNumb);
+        currentPlayerTracker = 0;
+        hasPlayed = false;
+        endGame = false;
+        instance = null; //making this static was causing tons of problems in testing
     }
 
 

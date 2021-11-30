@@ -77,16 +77,24 @@ public class Scoreboard {
         getCorporations().setStockValue(corpName);
     }
 
+    /**
+     * Returns all non active corporations
+     * @return
+     */
     public ArrayList<String> getAvailableCorps(){
         ArrayList<String> availableCorps = new ArrayList<>();
         for(String cName : getCorpNames()){
-            if(!getCorporations().getCorp(cName).isHasBeenFounded()){
+            if(!getCorporations().getCorp(cName).isStatus()){
                 availableCorps.add(cName);
             }
         }
         return availableCorps;
     }
 
+    /**
+     * Returns a list of corps that have not been founded
+     * @return
+     */
     private String getUnfoundedCorps(){
         String unfoundedCorps = "";
         String newCorp;
@@ -104,6 +112,8 @@ public class Scoreboard {
      * tArray will be a size of 5, order of entry is unimportant, Array datatype is used for easy iteration
      * Calls mergeCorps from Corporations
      */
+    //todo reset consumed corporations so that they can be refounded
+    //todo dont include players with 0 tiles of an affected corporation in a merge
     public List<Tile> initMerge(List<Tile> tArray){
         ArrayList<String> mCorps = findCorps(tArray); //We will be used to identify the players who will need to take a merge action
         ArrayList<String> domCorp = findDomCorp(mCorps);
@@ -377,6 +387,8 @@ public class Scoreboard {
      * @param playerName
      * @param corpName
      */
+    //todo prevent player from buying more than 3 stocks
+    //todo return number of bought tiles
     public void initBuy(String playerName, String corpName){
         Integer maxQty = maxBuy(playerName, corpName);
         Integer qty = getQty(corpName, maxQty, "Buy");

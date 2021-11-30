@@ -39,8 +39,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class TestGameState {
-    private GameState initGameState;
-    private GameState tGameState;
+    private GameState tGameState = GameState.getInstance(4);
     private GameState gameStateCopy;
     private String p1Name;
     private String p2Name;
@@ -63,7 +62,6 @@ public class TestGameState {
     @Execution(ExecutionMode.SAME_THREAD)
     @BeforeEach
     void setUp(){
-        tGameState = initGameState.getInstance(4);
         //set up gameboard and players
         p1Name = tGameState.getScoreboard().getPlayers().getActivePlayers().get(0).getPName();
         p2Name = tGameState.getScoreboard().getPlayers().getActivePlayers().get(1).getPName();
@@ -77,7 +75,7 @@ public class TestGameState {
     @AfterEach
     void tearDown(){
         //resets the gamestate to an initial state
-
+        tGameState.resetInstance();
     }
 
 
@@ -221,37 +219,19 @@ public class TestGameState {
 
     @Test
     void gameCannotEndIfConditionIsNotMet(){
-        //Set all corp data to a fail state
-        for(String corpName : tGameState.getScoreboard().getCorporations().getCorps().keySet()){
-            tGameState.getScoreboard().getCorporations().getCorp(corpName).setStatus(false);
-            tGameState.getScoreboard().getCorporations().getCorp(corpName).setSafe(false);
-            tGameState.getScoreboard().getCorporations().getCorp(corpName).popAllTiles(); //THIS WILL SET THE STOCK PRICE
-        }
         assertFalse(tGameState.checkIfGameCanEnd());
     }
 
     @Test
     void endGameReturnsNullWhenGameCannotEnd(){
-        //Set all corp data to a fail state
-        for(String corpName : tGameState.getScoreboard().getCorporations().getCorps().keySet()){
-            tGameState.getScoreboard().getCorporations().getCorp(corpName).setStatus(false);
-            tGameState.getScoreboard().getCorporations().getCorp(corpName).setSafe(false);
-            tGameState.getScoreboard().getCorporations().getCorp(corpName).popAllTiles(); //THIS WILL SET THE STOCK PRICE
-        }
-        //will return p1 in 1st and p2 in second... etc
-        tGameState.getScoreboard().getPlayers().getPlayerByName(p1Name).getPWallet().addCash(5000);
-        tGameState.getScoreboard().getPlayers().getPlayerByName(p2Name).getPWallet().addCash(4000);
-        tGameState.getScoreboard().getPlayers().getPlayerByName(p3Name).getPWallet().addCash(3000);
-        tGameState.getScoreboard().getPlayers().getPlayerByName(p4Name).getPWallet().addCash(2000);
-
         HashMap<String, Integer> places = tGameState.endGame();
         assertEquals(null, places);
     }
 
-    @Test
-    void endGameCorrectlyReturnsPlacesWithTies(){
-        //
-    }
+//    @Test
+//    void endGameCorrectlyReturnsPlacesWithTies(){
+//        //
+//    }
 
     @Test
     void canDrawTileToPlayer(){
