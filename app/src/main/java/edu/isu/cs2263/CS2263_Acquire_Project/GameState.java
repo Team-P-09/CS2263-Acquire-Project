@@ -33,6 +33,8 @@ import java.io.Reader;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
+import javafx.scene.control.Alert;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -107,11 +109,16 @@ public class GameState {
      * If the game cannot end returns null
      * @return
      */
-    public HashMap<String, Integer> endGame(){
+    public void endGame(){
         if(checkIfGameCanEnd()){
-            return getScoreboard().getWinners();
+            HashMap<String, Integer> winners = new HashMap<>(getScoreboard().getWinners());
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Winner!");
+            alert.setHeaderText("Winner!");
+            alert.setContentText(winners.toString());
+
+            alert.showAndWait();
         }
-        return null;
     }
 
     /**
