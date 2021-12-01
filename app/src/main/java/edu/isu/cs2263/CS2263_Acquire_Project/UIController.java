@@ -272,10 +272,6 @@ public class UIController {
             currentPlayer = gameState.getCurrentPlayer();
             gameState.checkPlayerHandForRefresh(currentPlayer.getPName());
 
-            gameState.nextPlayer();
-            currentPlayer = gameState.getCurrentPlayer();
-            gameState.checkPlayerHandForRefresh(currentPlayer.getPName());
-
             gameState.resetBuyCounter();
             render(event);
         }
