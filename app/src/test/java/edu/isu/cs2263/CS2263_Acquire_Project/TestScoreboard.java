@@ -24,24 +24,28 @@
 
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
-import javafx.application.Application;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+import org.testfx.framework.junit5.ApplicationTest;
 import java.util.*;
-
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TestScoreboard {
+
+public class TestScoreboard extends ApplicationTest{
 
     private HashMap<String, Integer[]> testDisplayInfo;
-    Scoreboard s;
-    String p1Name;
-    String p2Name;
-    Tile tileA;
-    Tile tileB;
-    Tile tileC;
-    Tile tileD;
+    private Scoreboard s;
+    private String p1Name;
+    private String p2Name;
+    private Tile tileA;
+    private Tile tileB;
+    private Tile tileC;
+    private Tile tileD;
+    private Scene scene;
 
     @BeforeEach
     void setUp(){
@@ -73,17 +77,23 @@ public class TestScoreboard {
         p2Name = "Player 2";
     }
 
-//    @Test void testDisplayDataSize(){
-//        assertTrue(testDisplayInfo.size() == 7);
+//    @BeforeEach
+//    @Override
+//    public void start(Stage stage) throws Exception {
+//        Circle circ = new Circle(40, 40, 30);
+//        Group root = new Group(circ);
+//        scene = new Scene(root, 400, 300);
+//
+//        stage.setTitle("My JavaFX Application");
+//        stage.setScene(scene);
+//        stage.show();
 //    }
 //
-//    @Test void testDisplayDataFirstVal(){
-//        assertTrue(testDisplayInfo.get("Worldwide")[0] == 2);
-//    }
-
-//    @Test void testinitBuyAddsStock(){
-//        s.initBuy(p1Name, "Worldwide");
-//        assertTrue(s.getCorporations().getCorp("Worldwide").getAvailableStocks() == 12);
+//
+//    @Test
+//    void testinitBuyAddsStock(){
+//        s.initBuy(p1Name, "Worldwide",3);
+//        assertTrue(s.getCorporations().getCorp("Worldwide").getAvailableStocks() == 22);
 //    }
 //
 //    @Test void testinitBuyRemovesCash(){
