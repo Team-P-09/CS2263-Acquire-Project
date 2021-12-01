@@ -56,6 +56,7 @@ public class UIController {
         GameState gameState = GameState.getInstance(null);
 
         //updates the current players hand
+        gameState.checkPlayerHandForRefresh(gameState.getCurrentPlayer().getPName());
         PlayerInfo playerInfo = gameState.getCurrentPlayer();
         Text playerLabel = (Text) scene.lookup("#turnLabel");
         playerLabel.setText(playerInfo.getPName());
@@ -265,10 +266,9 @@ public class UIController {
             gameState.drawTileToPlayer(currentPlayer.getPName());
         }
 
+        gameState.checkPlayerHandForRefresh(currentPlayer.getPName());
         gameState.nextPlayer();
         //tiles must be removed at the start of the players turn else a tile can be played the turn after it becomes unplayable
-        currentPlayer = gameState.getCurrentPlayer();
-        gameState.checkPlayerHandForRefresh(currentPlayer.getPName());
         gameState.resetBuyCounter();
         render(event);
     }

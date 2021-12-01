@@ -55,7 +55,11 @@ public class Scoreboard {
         players = new Players(numberOfPlayers, getCorpNames());
     }
 
-
+    /**
+     * Allows the player to chose and found a tile
+     * @param tiles
+     * @param playerName
+     */
     public void initFounding(List<Tile> tiles, String playerName){
         ArrayList<String> availableCorps = getAvailableCorps();
         String unfoundedCorps = getUnfoundedCorps();
