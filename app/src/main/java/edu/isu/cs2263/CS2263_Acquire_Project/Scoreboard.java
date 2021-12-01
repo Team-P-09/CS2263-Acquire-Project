@@ -113,8 +113,6 @@ public class Scoreboard {
      * tArray will be a size of 5, order of entry is unimportant, Array datatype is used for easy iteration
      * Calls mergeCorps from Corporations
      */
-    //todo reset consumed corporations so that they can be refounded
-    //todo dont include players with 0 tiles of an affected corporation in a merge
     public List<Tile> initMerge(List<Tile> tArray){
         ArrayList<String> mCorps = findCorps(tArray); //We will be used to identify the players who will need to take a merge action
         ArrayList<String> domCorp = findDomCorp(mCorps);
@@ -256,12 +254,19 @@ public class Scoreboard {
         return unsafeCorps;
     }
 
+    /**
+     * Returns a list of player names for all players who have 1 or more stocks in the affected corporation
+     * @param mCorps
+     * @return
+     */
     private List<String> findAffectedPlayers(ArrayList<String> mCorps){
         List<String> affectedPlayers = new ArrayList<>();
         for(String cName : mCorps){
             for(PlayerInfo player : getPlayers().getActivePlayers()){
                 if(player.getPWallet().getStocks().containsKey(cName)){
-                    affectedPlayers.add(player.getPName());
+                    if(player.getPWallet().getStocks().get(cName) > 0){
+                        affectedPlayers.add(player.getPName());
+                    }
                 }
             }
         }
