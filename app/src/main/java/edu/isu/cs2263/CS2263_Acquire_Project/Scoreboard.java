@@ -97,6 +97,20 @@ public class Scoreboard {
     }
 
     /**
+     * Returns a list of buyable corps
+     * @return
+     */
+    public ArrayList<String> getBuyableCorps(){
+        ArrayList<String> availableCorps = new ArrayList<>();
+        for(String cName : getCorpNames()){
+            if(getCorporations().getCorp(cName).isStatus()){
+                availableCorps.add(cName);
+            }
+        }
+        return availableCorps;
+    }
+
+    /**
      * Returns a list of corps that have not been founded
      * @return
      */
