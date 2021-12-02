@@ -137,7 +137,7 @@ public class Scoreboard {
         String domCorpName;
 
         if(checkMergeStatus(domCorp)){
-            domCorpName = getDecision(domCorp, "Chose the dominate corporation", "Corporation names?");//domCorp.get(choiceIndex);
+            domCorpName = getDecision(domCorp, "Corporations tied for merger", "Chose the dominate corporation");//domCorp.get(choiceIndex);
         }else{
             domCorpName = domCorp.get(0);
         }
