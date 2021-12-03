@@ -116,7 +116,6 @@
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
@@ -125,12 +124,11 @@
                      </padding>
                      <children>
                         <Button id="BuyButton" mnemonicParsing="false" onAction="#buyButton" prefHeight="25.0" prefWidth="150.0" text="Buy" />
-                        <Button id="SellButton" mnemonicParsing="false" onAction="#sellButton" prefHeight="25.0" prefWidth="150.0" text="Sell" GridPane.rowIndex="1" />
-                        <Button id="EndTurnButton" alignment="CENTER" mnemonicParsing="false" onAction="#endTurnButton" prefHeight="25.0" prefWidth="150.0" text="End Turn" GridPane.rowIndex="2" />
-                        <Button id="showRulesButton" mnemonicParsing="false" onAction="#ShowRulesButton" prefHeight="25.0" prefWidth="148.0" text="Show Rules" GridPane.rowIndex="3" />
+                        <Button id="EndTurnButton" alignment="CENTER" mnemonicParsing="false" onAction="#endTurnButton" prefHeight="25.0" prefWidth="150.0" text="End Turn" GridPane.rowIndex="1" />
+                        <Button id="showRulesButton" mnemonicParsing="false" onAction="#ShowRulesButton" prefHeight="25.0" prefWidth="148.0" text="Show Rules" GridPane.rowIndex="2" />
                      </children>
                   </GridPane>
-                  <Text fx:id="turnLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="502.13671875" />
+                  <Text id="turnLabel" fx:id="turnLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="502.13671875" />
                </children>
             </GridPane>
             <GridPane GridPane.columnIndex="1">

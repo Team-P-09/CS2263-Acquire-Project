@@ -224,35 +224,6 @@ public class UIController {
     }
 
     @FXML
-    public void sellButton(ActionEvent event) throws IOException {
-        scene = ((Node)event.getSource()).getScene();
-        GameState gameState = GameState.getInstance(null);
-        Button button = (Button) event.getSource();
-
-        //popup to get number of players
-        ArrayList<String> choices = new ArrayList<String>();
-        choices.add("Festival");
-        choices.add("Imperial");
-        choices.add("Worldwide");
-        choices.add("American");
-        choices.add("Sackson");
-        choices.add("Tower");
-        choices.add("Continental");
-
-
-        ChoiceDialog<String> dialog = new ChoiceDialog("Festival", choices);
-        dialog.setTitle("Sell");
-        dialog.setHeaderText("What corporation would you like to sell?");
-
-        Optional<String> result = dialog.showAndWait();
-        if (result.isPresent()){
-            gameState.getScoreboard().initSell(gameState.getCurrentPlayer().getPName(), result.get(), false);
-
-            render(event);
-        }
-    }
-
-    @FXML
     public void endTurnButton(ActionEvent event) throws IOException{
         scene = ((Node)event.getSource()).getScene();
         GameState gameState = GameState.getInstance(null);
