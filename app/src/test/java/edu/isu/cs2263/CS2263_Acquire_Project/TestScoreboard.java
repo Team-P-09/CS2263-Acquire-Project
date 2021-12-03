@@ -90,11 +90,11 @@ public class TestScoreboard extends ApplicationTest{
 //    }
 //
 //
-//    @Test
-//    void testinitBuyAddsStock(){
-//        s.initBuy(p1Name, "Worldwide",3);
-//        assertTrue(s.getCorporations().getCorp("Worldwide").getAvailableStocks() == 22);
-//    }
+    @Test
+    void testinitBuyAddsStock(){
+        s.initBuy(p1Name, "Worldwide",3);
+        assertTrue(s.getCorporations().getCorp("Worldwide").getAvailableStocks() == 22);
+    }
 //
 //    @Test void testinitBuyRemovesCash(){
 //        s.initBuy(p1Name,"Worldwide");
