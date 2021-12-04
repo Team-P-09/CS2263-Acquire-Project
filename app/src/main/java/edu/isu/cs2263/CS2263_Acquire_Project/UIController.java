@@ -56,7 +56,6 @@ public class UIController {
         GameState gameState = GameState.getInstance(null);
 
         //updates the current players hand
-        gameState.checkPlayerHandForRefresh(gameState.getCurrentPlayer().getPName());
         PlayerInfo playerInfo = gameState.getCurrentPlayer();
         Text playerLabel = (Text) scene.lookup("#turnLabel");
         playerLabel.setText(playerInfo.getPName());
@@ -199,55 +198,21 @@ public class UIController {
         Button button = (Button) event.getSource();
 
         //popup to get number of players
-        ArrayList<String> choices = new ArrayList<String>();
-        choices.add("Festival");
-        choices.add("Imperial");
-        choices.add("Worldwide");
-        choices.add("American");
-        choices.add("Sackson");
-        choices.add("Tower");
-        choices.add("Continental");
+        ArrayList<String> choices = gameState.getScoreboard().getBuyableCorps();
 
 
-        ChoiceDialog<String> dialog = new ChoiceDialog("Festival", choices);
-        dialog.setTitle("Buy");
-        dialog.setHeaderText("What corporation would you like to buy?");
+        if(choices.size() > 0){
+            ChoiceDialog<String> dialog = new ChoiceDialog(choices.get(0), choices);
+            dialog.setTitle("Buy");
+            dialog.setHeaderText("What corporation would you like to buy?");
 
-        Optional<String> result = dialog.showAndWait();
+            Optional<String> result = dialog.showAndWait();
 
-        if (result.isPresent()){
-            Integer boughtQty = gameState.getScoreboard().initBuy(gameState.getCurrentPlayer().getPName(), result.get(), 3- gameState.getCurrentBoughtStock());
-            gameState.setCurrentBoughtStock(gameState.getCurrentBoughtStock() + boughtQty);
-            render(event);
-        }
-    }
-
-    @FXML
-    public void sellButton(ActionEvent event) throws IOException {
-        scene = ((Node)event.getSource()).getScene();
-        GameState gameState = GameState.getInstance(null);
-        Button button = (Button) event.getSource();
-
-        //popup to get number of players
-        ArrayList<String> choices = new ArrayList<String>();
-        choices.add("Festival");
-        choices.add("Imperial");
-        choices.add("Worldwide");
-        choices.add("American");
-        choices.add("Sackson");
-        choices.add("Tower");
-        choices.add("Continental");
-
-
-        ChoiceDialog<String> dialog = new ChoiceDialog("Festival", choices);
-        dialog.setTitle("Sell");
-        dialog.setHeaderText("What corporation would you like to sell?");
-
-        Optional<String> result = dialog.showAndWait();
-        if (result.isPresent()){
-            gameState.getScoreboard().initSell(gameState.getCurrentPlayer().getPName(), result.get(), false);
-
-            render(event);
+            if (result.isPresent()){
+                Integer boughtQty = gameState.buyController(gameState.getCurrentPlayer().getPName(), result.get(), 3- gameState.getCurrentBoughtStock());
+                gameState.setCurrentBoughtStock(gameState.getCurrentBoughtStock() + boughtQty);
+                render(event);
+            }
         }
     }
 
@@ -270,14 +235,10 @@ public class UIController {
             //tiles must be removed at the start of the players turn else a tile can be played the turn after it becomes unplayable
             currentPlayer = gameState.getCurrentPlayer();
             gameState.checkPlayerHandForRefresh(currentPlayer.getPName());
+
+            gameState.resetBuyCounter();
             render(event);
         }
-
-        gameState.checkPlayerHandForRefresh(gameState.getCurrentPlayer().getPName());
-        gameState.nextPlayer();
-        //tiles must be removed at the start of the players turn else a tile can be played the turn after it becomes unplayable
-        gameState.resetBuyCounter();
-        render(event);
     }
 
 

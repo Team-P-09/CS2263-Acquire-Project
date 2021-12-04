@@ -24,17 +24,11 @@
 
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import java.io.File;
 import java.io.IOException;
-import java.io.Reader;
-import java.lang.reflect.Type;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import javafx.scene.control.Alert;
+import javafx.scene.control.ChoiceDialog;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -52,8 +46,6 @@ public class GameState {
     public Boolean endGame = false;
     private static GameState instance = null; //making this static was causing tons of problems in testing
     private Integer currentBoughtStock = 0;
-    //todo create variable of tiles played per turn
-    //todo prevent player from being able to initiate a buy when the cannot buy any more tiles
 
     public File savedScoreB;
     public File savedGameB;
@@ -104,10 +96,10 @@ public class GameState {
             if(action.equals("Add to Corp")) {
                 tList =  getScoreboard().initCorpTileAdd(tList);
             }else if(action.equals("Merge")){
-                tList = getScoreboard().initMerge(tList);
+                tList = mergeController(tList);
             }else if(action.equals("Founding Tile")){
-                if(getScoreboard().getAvailableCorps().size() > 0) {
-                    getScoreboard().initFounding(tList, playerName);
+                if(getScoreboard().getNonActiveCorps().size() > 0) {
+                    foundingController(tList, playerName);
                 }
             }
             //The tag "Nothing" is not accounted for as nothing would change from the initialized tile object
@@ -256,8 +248,66 @@ public class GameState {
     }
 
     /**
-     * //@param current scoreboard state to save
-     * //@param currentGameboard current gameboard state to save
+<<<<<<< HEAD
+     * Gets an ArrayList of available corp names then runs initializes the founding of a corporation
+     * @param tList
+     * @param playerName
+     */
+    public void foundingController(List<Tile> tList, String playerName){
+        ArrayList<String> availableCorps = scoreboard.getNonActiveCorps();
+        String title = "Chose a corporation to start";
+        String header = "Unfounded Corporations:";
+        String corpName = getDecision(availableCorps, title, header);
+        scoreboard.initFounding(tList, playerName, corpName);
+    }
+
+    public Integer buyController(String playerName, String corpName, Integer buyLimit){
+        Integer maxQty = scoreboard.maxBuy(playerName, corpName, buyLimit);
+        Integer qty = scoreboard.getQty(corpName, maxQty, "Buy");
+        return scoreboard.initBuy(playerName, corpName, qty);
+    }
+
+    public List<Tile> mergeController(List<Tile> tList){
+        ArrayList<String> mCorps = scoreboard.findCorps(tList); //We will be used to identify the players who will need to take a merge action
+        String domCorpName = scoreboard.getDomCorpName(mCorps);
+        mCorps.remove(domCorpName);
+        mCorps = scoreboard.removeSafeCorps(mCorps);
+        //only runs the merge turn if there are sub corps to merge into the dom corp
+        if(mCorps.size() > 0){
+            List<String> affectedPlayers = scoreboard.findAffectedPlayers(mCorps);
+            scoreboard.runMergeTurn(mCorps, domCorpName, affectedPlayers);
+            scoreboard.initMerge(mCorps, domCorpName, affectedPlayers);
+        }
+        scoreboard.addUnassignedTilesToCorp(tList, domCorpName);
+        return scoreboard.retrieveTiles(scoreboard.getCorporations().getCorp(domCorpName).getCorpTiles());
+    }
+
+    /**
+     * Grabs a user input using a choice dialogue box
+     * @param choiceList
+     * @param title
+     * @param header
+     * @param <T>
+     * @return
+     */
+    private <T> T getDecision(List<T> choiceList, String title, String header){
+        ArrayList<T> choices = new ArrayList<>();
+        for(T choice : choiceList){
+            choices.add(choice);
+        }
+
+        ChoiceDialog<T> dialog = new ChoiceDialog<>(choiceList.get(0), choices);
+        dialog.setTitle(title);
+        dialog.setHeaderText(header);
+
+        Optional<T> pChoice = dialog.showAndWait();
+        while(!pChoice.isPresent()){
+            pChoice = dialog.showAndWait();
+        }
+        return dialog.getSelectedItem();
+    }
+
+    /**
      * @return returns a list of files that will need to be reloaded to get gamestate back
      */
     public void saveGameState(){ //NEED TO BE ABLE TO SAVE NUMBER OF PLAYERS

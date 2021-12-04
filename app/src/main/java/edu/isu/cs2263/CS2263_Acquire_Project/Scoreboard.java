@@ -24,11 +24,8 @@
 
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
-import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
-import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -58,23 +55,21 @@ public class Scoreboard {
     }
 
     /**
-     * Allows the player to chose and found a tile
+     * Takes corp and player names as well as affected tiles and founds a corporation for the corpName
+     * Gives founder an additional tile if corporation had not yet been founded
      * @param tiles
      * @param playerName
      */
-    public void initFounding(List<Tile> tiles, String playerName){
-        ArrayList<String> availableCorps = getAvailableCorps();
+    public void initFounding(List<Tile> tiles, String playerName, String corpName){
         String unfoundedCorps = getUnfoundedCorps();
-        String title = "Chose a corporation to start";
-        String header = "Unfounded Corporations:";
-        String corpName = getDecision(availableCorps, title, header);
 
-        for(Tile t : tiles){
-            if(t.isStatus() && t.getCorp() == null){
-                getCorporations().addTileToCorp(corpName, t);
-                getCorporations().getCorp(corpName).setStatus(true);
-            }
-        }
+        addUnassignedTilesToCorp(tiles, corpName);
+//        for(Tile t : tiles){
+//            if(t.isStatus() && t.getCorp() == null){
+//                getCorporations().addTileToCorp(corpName, t);
+//            }
+//        }
+        getCorporations().getCorp(corpName).setStatus(true);
 
         if(unfoundedCorps.contains(corpName)){
             getPlayers().getPlayerByName(playerName).getPWallet().addStock(corpName, 1);
@@ -88,10 +83,24 @@ public class Scoreboard {
      * Returns all non active corporations
      * @return
      */
-    public ArrayList<String> getAvailableCorps(){
+    public ArrayList<String> getNonActiveCorps(){
         ArrayList<String> availableCorps = new ArrayList<>();
         for(String cName : getCorpNames()){
             if(!getCorporations().getCorp(cName).isStatus()){
+                availableCorps.add(cName);
+            }
+        }
+        return availableCorps;
+    }
+
+    /**
+     * Returns a list of corps that can be bought from
+     * @return
+     */
+    public ArrayList<String> getBuyableCorps(){
+        ArrayList<String> availableCorps = new ArrayList<>();
+        for(String cName : getCorpNames()){
+            if(getCorporations().getCorp(cName).isStatus()){
                 availableCorps.add(cName);
             }
         }
@@ -114,54 +123,63 @@ public class Scoreboard {
         return unfoundedCorps;
     }
 
+    public void initMerge(List<String> mCorps, String domCorpName, List<String> affectedPlayers){
+        for(String mcorp : mCorps){
+            HashMap<String, List<String>> stockHolderRankings = getStockHolderRankings(affectedPlayers, mcorp);
+            divyOutBonuses(stockHolderRankings,mcorp,"Majority");
+            divyOutBonuses(stockHolderRankings,mcorp,"Minority");
+        }
+
+        //Runs the merge function changing the number of tiles
+        getCorporations().mergeCorps(domCorpName, mCorps);
+
+        //Update stock prices
+        for(String subCName : mCorps){
+            getCorporations().setStockValue(subCName);
+        }
+        getCorporations().setStockValue(domCorpName);
+    }
+
+    public void addUnassignedTilesToCorp(List<Tile> tList, String corpName){
+        for(Tile t : tList){
+            if(t.isStatus() && t.getCorp() == null){
+                getCorporations().addTileToCorp(corpName, t);
+            }
+        }
+    }
+
     /**
-     * Merges the corporations on the tiles from the given tile array
-     * tArray will be a size of 5, order of entry is unimportant, Array datatype is used for easy iteration
-     * Calls mergeCorps from Corporations
+     * Returns the name of the corporation with the greatest size
+     * If there is a tie it prompts the user for input
+     * @param mCorps
+     * @return
      */
-    public List<Tile> initMerge(List<Tile> tArray){
-        ArrayList<String> mCorps = findCorps(tArray); //We will be used to identify the players who will need to take a merge action
-        ArrayList<String> domCorp = findDomCorp(mCorps);
+    public String getDomCorpName(List<String> mCorps){
+        List<String> domCorp = findDomCorp(mCorps);
         String domCorpName;
 
         if(checkMergeStatus(domCorp)){
-            domCorpName = getDecision(domCorp, "Chose the dominate corporation", "Corporation names?");//domCorp.get(choiceIndex);
+            domCorpName = getDecision(domCorp, "Corporations tied for merger", "Chose the dominate corporation");//domCorp.get(choiceIndex);
         }else{
             domCorpName = domCorp.get(0);
         }
-        mCorps.remove(domCorpName);
-        mCorps = removeSafeCorps(mCorps);
-        //only runs the merge turn if there are sub corps to merge into the dom corp
-        if(mCorps.size() > 0){
-            List<String> affectedPlayers = findAffectedPlayers(mCorps);
-            for(String player : affectedPlayers){
-                mergeTurn(player, domCorpName, mCorps);
-            }
-            for(String mcorp : mCorps){
-                HashMap<String, List<String>> stockHolderRankings = getStockHolderRankings(affectedPlayers, mcorp);
-                divyOutBonuses(stockHolderRankings,mcorp,"Majority");
-                divyOutBonuses(stockHolderRankings,mcorp,"Minority");
-            }
-
-            //Runs the merge function changing the number of tiles
-            getCorporations().mergeCorps(domCorpName, mCorps);
-
-            //Update stock prices
-            for(String subCName : mCorps){
-                getCorporations().setStockValue(subCName);
-            }
-            getCorporations().setStockValue(domCorpName);
-        }
-
-        for(Tile t : tArray){
-            if(t.isStatus() && t.getCorp() == null){
-                getCorporations().addTileToCorp(domCorpName, t);
-            }
-        }
-        return retrieveTiles(getCorporations().getCorp(domCorpName).getCorpTiles());
+        return domCorpName;
     }
 
-    private List<Tile> retrieveTiles(HashMap<String, Tile> corpTiles){
+    /**
+     * Runs merge tern for affected players
+     * Calls mergeTurn which utilizes the ChoiceDialogue box
+     * @param mCorps
+     * @param domCorpName
+     * @param affectedPlayers
+     */
+    public void runMergeTurn(List<String> mCorps, String domCorpName, List<String> affectedPlayers) {
+        for(String player : affectedPlayers){
+            mergeTurn(player, domCorpName, mCorps);
+        }
+    }
+
+    public List<Tile> retrieveTiles(HashMap<String, Tile> corpTiles){
         List<Tile> outTiles = new ArrayList<>();
         for(String tileLoc : corpTiles.keySet()){
             outTiles.add(corpTiles.get(tileLoc));
@@ -222,19 +240,23 @@ public class Scoreboard {
         for(String pName : sortedScores.keySet()){
             pScore = scoreResults.get(pName);
 
-            if(pScore != lastValue){
-                if(majorityBool || lastValue == 0){
+            //If the current score does not equal the last score then it must be less
+            //if the last value is 0 then this is the first iteration and the player will be in the majority
+            //if the values are not the same then the next true boolean (majority or minority) will be turned to false
+            //if both majority and minority booleans are false then it breaks as we dont divy bonuses to those players
+            if(pScore != lastValue && lastValue != 0){
+                if(majorityBool){
                     majorityBool = false;
                 }else if(minorityBool){
                     minorityBool = false;
                 }
             }
-
             if(majorityBool){
                 majPlayers.add(pName);
             }else if(minorityBool){
                 minPlayers.add(pName);
             }else{break;}
+
             lastValue = pScore;
         }
         playerPlaces.put("Majority", majPlayers);
@@ -250,7 +272,7 @@ public class Scoreboard {
      * @param mCorps
      * @return ArrayList of Strings containing the names of unsafe corporations
      */
-    private ArrayList<String> removeSafeCorps(ArrayList<String> mCorps){
+    public ArrayList<String> removeSafeCorps(ArrayList<String> mCorps){
         ArrayList<String> unsafeCorps = new ArrayList<>();
         for(String corpName : mCorps){
             if(!getCorporations().getCorp(corpName).isSafe()){
@@ -265,7 +287,7 @@ public class Scoreboard {
      * @param mCorps
      * @return
      */
-    private List<String> findAffectedPlayers(ArrayList<String> mCorps){
+    public List<String> findAffectedPlayers(List<String> mCorps){
         List<String> affectedPlayers = new ArrayList<>();
         for(String cName : mCorps){
             for(PlayerInfo player : getPlayers().getActivePlayers()){
@@ -279,9 +301,9 @@ public class Scoreboard {
         return affectedPlayers;
     }
 
-    private void mergeTurn(String playerName, String domCorpName, ArrayList<String> subCorps){
+    private void mergeTurn(String playerName, String domCorpName, List<String> subCorps){
         PlayerInfo affectedPlayer = getPlayers().getPlayerByName(playerName);
-        ArrayList<String> choiceList = new ArrayList<>(Arrays.asList("Sell", "Trade", "Hold"));
+        List<String> choiceList = new ArrayList<>(Arrays.asList("Sell", "Trade", "Hold"));
         String choiceTitle  = "Merge Turn for " + playerName;
         String choiceHeader;
         String decision;
@@ -324,7 +346,7 @@ public class Scoreboard {
         }
     }
 
-    private Integer getQty(String corpName, Integer maxVal, String operation){
+    public Integer getQty(String corpName, Integer maxVal, String operation){
         Integer qty = 0;
         boolean canBeInt = false;
         if(maxVal > 0){
@@ -351,7 +373,7 @@ public class Scoreboard {
         return qty;
     }
 
-    private <T> T getDecision(ArrayList<T> choiceList, String title, String header){
+    private <T> T getDecision(List<T> choiceList, String title, String header){
         ArrayList<T> choices = new ArrayList<>();
         for(T choice : choiceList){
             choices.add(choice);
@@ -399,9 +421,9 @@ public class Scoreboard {
      * @param playerName
      * @param corpName
      */
-    public Integer initBuy(String playerName, String corpName, Integer buyLimit){
-        Integer maxQty = maxBuy(playerName, corpName, buyLimit);
-        Integer qty = getQty(corpName, maxQty, "Buy");
+    public Integer initBuy(String playerName, String corpName, Integer qty){
+//        Integer maxQty = maxBuy(playerName, corpName, buyLimit);
+//        Integer qty = getQty(corpName, maxQty, "Buy");
         int stockVal = getCorporations().getCorp(corpName).getStockPrice();
         getPlayers().buyStock(playerName,corpName, qty, stockVal);
         getCorporations().getCorp(corpName).removeCorpStock(qty);
@@ -414,7 +436,7 @@ public class Scoreboard {
      * @param corpName
      * @return
      */
-    private Integer maxBuy(String playerName, String corpName, Integer buyLimit){
+    public Integer maxBuy(String playerName, String corpName, Integer buyLimit){
         Integer stockPrice = getCorporations().getCorp(corpName).getStockPrice();
         Integer availableStock = getCorporations().getCorp(corpName).getAvailableStocks();
         Integer pCash = getPlayers().getPlayerByName(playerName).getPWallet().getCash();
@@ -437,7 +459,7 @@ public class Scoreboard {
      * @param domList
      * @return
      */
-    private boolean checkMergeStatus(ArrayList<String> domList){
+    private boolean checkMergeStatus(List<String> domList){
         if(domList.size() > 1){
             return true;
         }
@@ -451,7 +473,7 @@ public class Scoreboard {
      * @param tArray
      * @return
      */
-    private ArrayList<String> findCorps(List<Tile> tArray){
+    public ArrayList<String> findCorps(List<Tile> tArray){
         ArrayList<String> cNames = new ArrayList<>();
         String cName;
         for(Tile t : tArray){
@@ -471,9 +493,9 @@ public class Scoreboard {
      * @param mCorps
      * @return      Returns the dominate corp name(s)
      */
-    private ArrayList<String> findDomCorp(ArrayList<String> mCorps){
+    private List<String> findDomCorp(List<String> mCorps){
         int leadingCorpSize = 0;
-        ArrayList<String> domCorpList = new ArrayList<>();
+        List<String> domCorpList = new ArrayList<>();
         int cSize;
         for(String s : mCorps){
             cSize = getCorporations().getCorp(s).getCorpSize();

@@ -32,7 +32,6 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,15 +44,6 @@ public class TestGameState {
     private String p2Name;
     private String p3Name;
     private String p4Name;
-
-//    org.junit.jupiter.execution.parallel.enabled = true;
-//    org.junit.jupiter.execution.parallel.mode.default = concurrent;
-//
-//    @Extensions()
-
-//    @Rule
-//    public RunInThreadRule runInThread = new RunInThreadRule();
-//    @TestInstance()
 
 
     /**
@@ -76,6 +66,64 @@ public class TestGameState {
     void tearDown(){
         //resets the gamestate to an initial state
         tGameState.resetInstance();
+    }
+
+    /**
+     * Tests for getters/setters
+     */
+    @Test
+    void testGetCurrentPlayer(){
+        assertTrue(tGameState.getCurrentPlayer() != null);
+    }
+    @Test
+    void testSetGameboard(){
+        tGameState.setGameboard(new Gameboard());
+        assertTrue(tGameState.getGameboard() != null);
+    }
+    @Test
+    void testSetScoreboard(){
+        tGameState.setScoreboard(new Scoreboard(4));
+        assertTrue(tGameState.getGameboard() != null);
+    }
+    @Test
+    void testHasPlayed(){
+        tGameState.setHasPlayed(false);
+        assertTrue(tGameState.getHasPlayed() == false);
+        tGameState.hasPlayed();
+        assertTrue(tGameState.getHasPlayed() == true);
+    }
+    @Test
+    void testSetHasPlayed(){
+        tGameState.setHasPlayed(false);
+        assertTrue(tGameState.getHasPlayed() == false);
+        tGameState.setHasPlayed(true);
+        assertTrue(tGameState.getHasPlayed() == true);
+    }
+    @Test
+    void testSetEndGame(){
+        assertTrue(tGameState.getEndGame() == false);
+        tGameState.setEndGame();
+        assertTrue(tGameState.getEndGame() == true);
+        tGameState.setEndGame(false);
+        assertTrue(tGameState.getEndGame() == false);
+    }
+    @Test
+    void testSetBuyCounter(){
+        tGameState.setCurrentBoughtStock(3);
+        assertTrue(tGameState.getCurrentBoughtStock() == 3);
+    }
+    @Test
+    void testResetBuyCounter(){
+        tGameState.setCurrentBoughtStock(2);
+        assertTrue(tGameState.getCurrentBoughtStock() == 2);
+        tGameState.resetBuyCounter();
+        assertTrue(tGameState.getCurrentBoughtStock() == 0);
+    }
+    @Test
+    void testSetCurrentPlayerTracker(){
+        assertTrue(tGameState.getCurrentPlayerTracker() == 0);
+        tGameState.setCurrentPlayerTracker(2);
+        assertTrue(tGameState.getCurrentPlayerTracker() == 2);
     }
 
 
