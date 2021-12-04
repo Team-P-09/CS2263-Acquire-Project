@@ -145,16 +145,20 @@ public class TestScoreboard extends ApplicationTest{
     }
 
     @Test
-    void testSaveScoreboard() throws IOException {
+    void testJsonFileCreated() throws IOException {
         String jsonFile = "savedScoreboard";
-        Scoreboard testScoreboard = new Scoreboard(2);
-        testScoreboard.saveScoreboard(jsonFile, testScoreboard);
-        assertNotNull(jsonFile);
+        assertNotNull(s.saveScoreboard(jsonFile,s)) ;
+    }
+
+    @Test
+    void testForNullSaveFile() throws IOException {
+        String nullFile = "";
+        assertTrue(s.saveScoreboard(nullFile,s) == null);
     }
 
     @Test
     void testLoadScoreboard(){
         String jsonFile = "savedScoreboard";
-        loadScoreboard(jsonFile);
+        assertNotNull(loadScoreboard(jsonFile));
     }
 }

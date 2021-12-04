@@ -135,13 +135,7 @@ public class Players {
         getPlayerByName(pName).getPWallet().addCash(qty * stockVal);
     }
 
-    /**
-     * @param jsonFile (string to become json file)
-     * @param players_obj (Players obj to save)
-     * @return File (jsonFile to later be deserialized)
-     * @throws IOException
-     */
-
+/*
     public static File savePlayers(String jsonFile, Players players_obj) throws IOException {
         //create Gson instance
         Gson gson = new Gson();
@@ -168,11 +162,12 @@ public class Players {
         }
         return null;
     }
-
+*/
     /**
      * @param jsonFile (jsonFile string that was created in savePlayers)
      * @return returns a Players object that was previously saved
      */
+    /*
     public Players loadPlayers(String jsonFile){
         try {
             //create Gson instance
@@ -195,5 +190,5 @@ public class Players {
             ex.printStackTrace();
         }
         return null;
-    }
+    }*/
 }

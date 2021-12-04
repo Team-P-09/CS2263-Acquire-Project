@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import static edu.isu.cs2263.CS2263_Acquire_Project.Scoreboard.loadScoreboard;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestGameboard {
@@ -215,7 +216,19 @@ public class TestGameboard {
     void testSaveGameboard() throws IOException{
         String jsonFile = "savedGameboard";
         Gameboard testGameboard = new Gameboard();
-        testGameboard.saveGameboard(jsonFile, testGameboard);
-        assertNotNull(jsonFile);
-        }
+        assertNotNull(testGameboard.saveGameboard(jsonFile, testGameboard));
+    }
+
+
+    @Test
+    void testForNullSaveFile() throws IOException {
+        String nullFile = "";
+        assertTrue(testGameboard.saveGameboard(nullFile,testGameboard) == null);
+    }
+
+    @Test
+    void testLoadGameboard(){
+        String jsonFile = "savedGameboard";
+        assertNotNull(testGameboard.loadGameboard(jsonFile));
+    }
 }
