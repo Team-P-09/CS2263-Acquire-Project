@@ -94,6 +94,20 @@ public class Scoreboard {
     }
 
     /**
+     * Returns a list of buyable corps
+     * @return
+     */
+    public ArrayList<String> getBuyableCorps(){
+        ArrayList<String> availableCorps = new ArrayList<>();
+        for(String cName : getCorpNames()){
+            if(getCorporations().getCorp(cName).isStatus()){
+                availableCorps.add(cName);
+            }
+        }
+        return availableCorps;
+    }
+
+    /**
      * Returns a list of corps that have not been founded
      * @return
      */
@@ -145,7 +159,7 @@ public class Scoreboard {
         String domCorpName;
 
         if(checkMergeStatus(domCorp)){
-            domCorpName = getDecision(domCorp, "Chose the dominate corporation", "Corporation names?");//domCorp.get(choiceIndex);
+            domCorpName = getDecision(domCorp, "Corporations tied for merger", "Chose the dominate corporation");//domCorp.get(choiceIndex);
         }else{
             domCorpName = domCorp.get(0);
         }
