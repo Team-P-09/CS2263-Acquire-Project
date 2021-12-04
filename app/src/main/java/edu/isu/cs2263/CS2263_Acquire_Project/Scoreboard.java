@@ -24,11 +24,8 @@
 
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
-import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextInputDialog;
-import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -64,12 +61,13 @@ public class Scoreboard {
     public void initFounding(List<Tile> tiles, String playerName, String corpName){
         String unfoundedCorps = getUnfoundedCorps();
 
-        for(Tile t : tiles){
-            if(t.isStatus() && t.getCorp() == null){
-                getCorporations().addTileToCorp(corpName, t);
-                getCorporations().getCorp(corpName).setStatus(true);
-            }
-        }
+        addUnassignedTilesToCorp(tiles, corpName);
+//        for(Tile t : tiles){
+//            if(t.isStatus() && t.getCorp() == null){
+//                getCorporations().addTileToCorp(corpName, t);
+//            }
+//        }
+        getCorporations().getCorp(corpName).setStatus(true);
 
         if(unfoundedCorps.contains(corpName)){
             getPlayers().getPlayerByName(playerName).getPWallet().addStock(corpName, 1);
@@ -83,7 +81,7 @@ public class Scoreboard {
      * Returns all non active corporations
      * @return
      */
-    public ArrayList<String> getAvailableCorps(){
+    public ArrayList<String> getNonActiveCorps(){
         ArrayList<String> availableCorps = new ArrayList<>();
         for(String cName : getCorpNames()){
             if(!getCorporations().getCorp(cName).isStatus()){
@@ -94,7 +92,7 @@ public class Scoreboard {
     }
 
     /**
-     * Returns a list of buyable corps
+     * Returns a list of corps that can be bought from
      * @return
      */
     public ArrayList<String> getBuyableCorps(){
@@ -140,7 +138,7 @@ public class Scoreboard {
         getCorporations().setStockValue(domCorpName);
     }
 
-    public void addTilesToCorp(List<Tile> tList, String corpName){
+    public void addUnassignedTilesToCorp(List<Tile> tList, String corpName){
         for(Tile t : tList){
             if(t.isStatus() && t.getCorp() == null){
                 getCorporations().addTileToCorp(corpName, t);
@@ -166,6 +164,13 @@ public class Scoreboard {
         return domCorpName;
     }
 
+    /**
+     * Runs merge tern for affected players
+     * Calls mergeTurn which utilizes the ChoiceDialogue box
+     * @param mCorps
+     * @param domCorpName
+     * @param affectedPlayers
+     */
     public void runMergeTurn(List<String> mCorps, String domCorpName, List<String> affectedPlayers) {
         for(String player : affectedPlayers){
             mergeTurn(player, domCorpName, mCorps);
@@ -233,19 +238,23 @@ public class Scoreboard {
         for(String pName : sortedScores.keySet()){
             pScore = scoreResults.get(pName);
 
-            if(pScore != lastValue){
-                if(majorityBool || lastValue == 0){
+            //If the current score does not equal the last score then it must be less
+            //if the last value is 0 then this is the first iteration and the player will be in the majority
+            //if the values are not the same then the next true boolean (majority or minority) will be turned to false
+            //if both majority and minority booleans are false then it breaks as we dont divy bonuses to those players
+            if(pScore != lastValue && lastValue != 0){
+                if(majorityBool){
                     majorityBool = false;
                 }else if(minorityBool){
                     minorityBool = false;
                 }
             }
-
             if(majorityBool){
                 majPlayers.add(pName);
             }else if(minorityBool){
                 minPlayers.add(pName);
             }else{break;}
+
             lastValue = pScore;
         }
         playerPlaces.put("Majority", majPlayers);

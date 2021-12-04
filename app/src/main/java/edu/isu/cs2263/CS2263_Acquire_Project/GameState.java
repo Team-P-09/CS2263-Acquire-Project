@@ -24,15 +24,8 @@
 
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import java.io.File;
 import java.io.IOException;
-import java.io.Reader;
-import java.lang.reflect.Type;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceDialog;
@@ -50,8 +43,6 @@ public class GameState {
     public Boolean endGame = false;
     private static GameState instance = null; //making this static was causing tons of problems in testing
     private Integer currentBoughtStock = 0;
-    //todo create variable of tiles played per turn
-    //todo prevent player from being able to initiate a buy when the cannot buy any more tiles
 
     private GameState(Integer numberOfPlayers){
         gameboard = new Gameboard();
@@ -99,7 +90,7 @@ public class GameState {
             }else if(action.equals("Merge")){
                 tList = mergeController(tList);
             }else if(action.equals("Founding Tile")){
-                if(getScoreboard().getAvailableCorps().size() > 0) {
+                if(getScoreboard().getNonActiveCorps().size() > 0) {
                     foundingController(tList, playerName);
                 }
             }
@@ -254,7 +245,7 @@ public class GameState {
      * @param playerName
      */
     public void foundingController(List<Tile> tList, String playerName){
-        ArrayList<String> availableCorps = scoreboard.getAvailableCorps();
+        ArrayList<String> availableCorps = scoreboard.getNonActiveCorps();
         String title = "Chose a corporation to start";
         String header = "Unfounded Corporations:";
         String corpName = getDecision(availableCorps, title, header);
@@ -278,7 +269,7 @@ public class GameState {
             scoreboard.runMergeTurn(mCorps, domCorpName, affectedPlayers);
             scoreboard.initMerge(mCorps, domCorpName, affectedPlayers);
         }
-        scoreboard.addTilesToCorp(tList, domCorpName);
+        scoreboard.addUnassignedTilesToCorp(tList, domCorpName);
         return scoreboard.retrieveTiles(scoreboard.getCorporations().getCorp(domCorpName).getCorpTiles());
     }
 

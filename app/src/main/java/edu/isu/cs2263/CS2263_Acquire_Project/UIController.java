@@ -198,14 +198,7 @@ public class UIController {
         Button button = (Button) event.getSource();
 
         //popup to get number of players
-        ArrayList<String> choices = gameState.getScoreboard().getBuyableCorps();//new ArrayList<String>();
-//        choices.add("Festival");
-//        choices.add("Imperial");
-//        choices.add("Worldwide");
-//        choices.add("American");
-//        choices.add("Sackson");
-//        choices.add("Tower");
-//        choices.add("Continental");
+        ArrayList<String> choices = gameState.getScoreboard().getBuyableCorps();
 
 
         if(choices.size() > 0){
@@ -216,7 +209,7 @@ public class UIController {
             Optional<String> result = dialog.showAndWait();
 
             if (result.isPresent()){
-                Integer boughtQty = gameState.getScoreboard().initBuy(gameState.getCurrentPlayer().getPName(), result.get(), 3- gameState.getCurrentBoughtStock());
+                Integer boughtQty = gameState.buyController(gameState.getCurrentPlayer().getPName(), result.get(), 3- gameState.getCurrentBoughtStock());
                 gameState.setCurrentBoughtStock(gameState.getCurrentBoughtStock() + boughtQty);
                 render(event);
             }

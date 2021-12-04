@@ -32,7 +32,6 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,15 +44,6 @@ public class TestGameState {
     private String p2Name;
     private String p3Name;
     private String p4Name;
-
-//    org.junit.jupiter.execution.parallel.enabled = true;
-//    org.junit.jupiter.execution.parallel.mode.default = concurrent;
-//
-//    @Extensions()
-
-//    @Rule
-//    public RunInThreadRule runInThread = new RunInThreadRule();
-//    @TestInstance()
 
 
     /**
@@ -104,6 +94,7 @@ public class TestGameState {
     }
     @Test
     void testSetHasPlayed(){
+        tGameState.setHasPlayed(false);
         assertTrue(tGameState.getHasPlayed() == false);
         tGameState.setHasPlayed(true);
         assertTrue(tGameState.getHasPlayed() == true);
