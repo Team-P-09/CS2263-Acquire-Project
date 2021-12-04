@@ -46,10 +46,12 @@ public class Scoreboard {
     private Players players;
     public ArrayList<String> corpNames = new ArrayList<>(Arrays.asList("Worldwide", "Sackson", "Festival", "Imperial", "American", "Tower", "Continental"));
     private Corporations corporations;
+    Integer numofPlayers;
 
     public Scoreboard(Integer numberOfPlayers) {
         corporations = new Corporations(getCorpNames());
         players = new Players(numberOfPlayers, getCorpNames());
+        numofPlayers = numberOfPlayers;
     }
 
     /**
@@ -633,15 +635,17 @@ public class Scoreboard {
 
         try {
             //create the jsonFile
-            File file = new File(jsonFile);
+            File sboardFile = new File(jsonFile);
 
             //write the json string into the json file
-            FileWriter fileWriter = new FileWriter(file);
+            FileWriter fileWriter = new FileWriter(sboardFile);
             fileWriter.write(jsonString);
 
             //close the file
             fileWriter.flush();
             fileWriter.close();
+
+            return sboardFile;
 
         } catch(IOException e){
             e.printStackTrace();

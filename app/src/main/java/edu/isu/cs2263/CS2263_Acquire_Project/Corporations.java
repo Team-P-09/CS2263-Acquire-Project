@@ -194,18 +194,18 @@ public class Corporations {
 
         try {
             //create the jsonFile
-            File file = new File(jsonFile);
+            File corpsFile = new File(jsonFile);
             // file.createNewFile();
 
             //write the json string into the json file
-            FileWriter fileWriter = new FileWriter(file);
+            FileWriter fileWriter = new FileWriter(corpsFile);
             fileWriter.write(jsonString);
 
             //close the file
             fileWriter.flush();
             fileWriter.close();
 
-            return file;
+            return corpsFile;
 
         } catch(IOException e){
             e.printStackTrace();

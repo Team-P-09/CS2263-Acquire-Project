@@ -38,11 +38,19 @@ import java.util.*;
 public class GameState {
     private Gameboard gameboard;
     private Scoreboard scoreboard;
+
+    private Integer numOfPlayers;
+
     private int currentPlayerTracker = 0;
     public Boolean hasPlayed = false;
     public Boolean endGame = false;
     private static GameState instance = null; //making this static was causing tons of problems in testing
     private Integer currentBoughtStock = 0;
+
+    public File savedScoreB;
+    public File savedGameB;
+    public File savedGamePlayers;
+   // public Integer savedGamePlayers;
 
     private GameState(Integer numberOfPlayers){
         gameboard = new Gameboard();
@@ -240,6 +248,7 @@ public class GameState {
     }
 
     /**
+<<<<<<< HEAD
      * Gets an ArrayList of available corp names then runs initializes the founding of a corporation
      * @param tList
      * @param playerName
@@ -299,73 +308,55 @@ public class GameState {
     }
 
     /**
-     * @param currentScoreboard current scoreboard state to save
-     * @param currentGameboard current gameboard state to save
      * @return returns a list of files that will need to be reloaded to get gamestate back
      */
-    public List<File> saveGameState(Scoreboard currentScoreboard, Gameboard currentGameboard) {
+    public void saveGameState(){ //NEED TO BE ABLE TO SAVE NUMBER OF PLAYERS
         try {
+
             //empty files that will be filled with saved data
-            String jsonFileTileStack = null;
-            String jsonFilePlayers = null;
-            String jsonFileCorporations = null;
-            String jsonFileGameboard = null;
-            String jsonFileScoreboard = null;
-            List<File> savedGameFiles = null;
+            String jsonFileGameboard = "savedGameB";
+            String jsonFileScoreboard = "savedScoreB";
 
             //getting data from scoreboard and gameboard to be saved
-            //tilestack, players, and corporations data come from scoreboard
-            File savedTileS = TileStack.saveTileStack(jsonFileTileStack, currentScoreboard.getPlayers().getTStack());
-            File savedPlay = Players.savePlayers(jsonFilePlayers, currentScoreboard.getPlayers());
-            File savedCorp = Corporations.saveCorporations(jsonFileCorporations, currentScoreboard.getCorporations());
-
-            File savedScoreB = Scoreboard.saveScoreboard(jsonFileScoreboard, currentScoreboard);
-            File savedGameB = Gameboard.saveGameboard(jsonFileGameboard, currentGameboard);
-
-            //add saved json files to list to be deserialized later
-            savedGameFiles.add(savedTileS);
-            savedGameFiles.add(savedPlay);
-            savedGameFiles.add(savedCorp);
-            savedGameFiles.add(savedScoreB);
-            savedGameFiles.add(savedGameB);
-
-            //return the list of saved game files
-            return savedGameFiles;
+            savedScoreB = Scoreboard.saveScoreboard(jsonFileScoreboard, scoreboard);
+            savedGameB = Gameboard.saveGameboard(jsonFileGameboard, gameboard);
+         //   savedGamePlayers = Players.savePlayers(jsonFilePlayers, players);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
     }
 
     /**
-     * @param gameFiles list of files that need to be reloaded
+     * //@param gameFiles list of files that need to be reloaded
      * @return returns gamestate object that will reload previous games
      */
-    public GameState loadGameState(List<File> gameFiles) {
+    public GameState loadGameState(){ //NEED TO BE ABLE TO SAVE NUMBER OF PLAYERS
+
+        ArrayList<File> savedGameFiles = new ArrayList<File>();
+
+        savedGameFiles.add(savedScoreB);
+        savedGameFiles.add(savedGameB);
+      //  savedGameFiles.add(savedGamePlayers);
+
         //create empty objects to hold saved data
-        TileStack tileS = null;
-        Players play = null;
-        Corporations corp = null;
         Scoreboard scoreb = null;
         Gameboard gameb = null;
-        GameState savedGame = null;
+        //Players gameplayers = null;
+        GameState savedGame = new GameState(2);
+    //    Integer numberOfPs = 0;
 
         //retrieving data from json files using load methods from each class
-        tileS.loadTileStack(gameFiles.get(0).toString());
-        play.loadPlayers(gameFiles.get(1).toString());
-        corp.loadCorporations(gameFiles.get(2).toString());
-        scoreb.loadScoreboard(gameFiles.get(3).toString());
-        gameb.loadGameboard(gameFiles.get(4).toString());
+        scoreb.loadScoreboard(savedGameFiles.get(0).toString());
+        gameb.loadGameboard(savedGameFiles.get(1).toString());
+    //    gameplayers.loadPlayers(savedGameFiles.get(2).toString());
 
-        //save tilestack, players, and corps back into scoreboard
-        //MAYBE ADD TILESTACK TO SCOREBOARD PARAMS SO IT CAN BE RECALLED?
-        scoreb.setPlayers(play);
-        scoreb.setCorporations(corp);
+     //   numberOfPs = numOfPlayers;
 
         //load up params into gamestate object
         savedGame.scoreboard = scoreb;
         savedGame.gameboard = gameb;
+      //  savedGame.players = gameplayers;
 
         //return the loaded GameState object
         return savedGame;

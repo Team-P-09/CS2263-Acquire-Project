@@ -289,15 +289,17 @@ public class Gameboard {
 
         try {
             //create the jsonFile
-            File file = new File(jsonFile);
+            File gboardFile = new File(jsonFile);
 
             //write the json string into the json file
-            FileWriter fileWriter = new FileWriter(file);
+            FileWriter fileWriter = new FileWriter(gboardFile);
             fileWriter.write(jsonString);
 
             //close the file
             fileWriter.flush();
             fileWriter.close();
+
+            return gboardFile;
 
         } catch(IOException e){
             e.printStackTrace();
