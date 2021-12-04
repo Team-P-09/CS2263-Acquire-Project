@@ -295,10 +295,17 @@ public class UIController {
 
     @FXML
     public void handleSaveGameButton(ActionEvent event){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Saving game...");
+        alert.setHeaderText("Game is saved!");
+        alert.setContentText("You can now exit and later reload this game.");
+        alert.showAndWait();
+
         scene = ((Node)event.getSource()).getScene();
         GameState gameState = GameState.getInstance(null);
         Button button = (Button) event.getSource();
-        gameState.saveGameState(gameState.getScoreboard(), gameState.getGameboard());
+        gameState.saveGameState();
+      //  gameState.saveGameState(gameState.getScoreboard(), gameState.getGameboard());
     }
 
     @FXML
@@ -343,10 +350,9 @@ public class UIController {
     @FXML
     public void handleLoadGameButton(ActionEvent event){
         scene = ((Node)event.getSource()).getScene();
-        GameState gameState = GameState.getInstance(null);
+        GameState gameState = GameState.getInstance(2);
         Button button = (Button) event.getSource();
-
-//        gameState.loadGameState();
+        gameState.loadGameState();
 
     }
 

@@ -44,9 +44,11 @@ import com.google.gson.reflect.TypeToken;
 public class Players {
     private ArrayList<PlayerInfo> activePlayers; //ORDER OF PLAYERS AND PLAYER NAMES
     private TileStack tStack;
+    private Integer num;
 
 
     public Players(Integer number, ArrayList<String> corpNames){
+        num = number;
         tStack = new TileStack();
         activePlayers = initPlayers(number, corpNames);
     }
@@ -139,6 +141,7 @@ public class Players {
      * @return File (jsonFile to later be deserialized)
      * @throws IOException
      */
+
     public static File savePlayers(String jsonFile, Players players_obj) throws IOException {
         //create Gson instance
         Gson gson = new Gson();
@@ -147,18 +150,18 @@ public class Players {
 
         try {
             //create the jsonFile
-            File file = new File(jsonFile);
+            File playersFile = new File(jsonFile);
             // file.createNewFile();
 
             //write the json string into the json file
-            FileWriter fileWriter = new FileWriter(file);
+            FileWriter fileWriter = new FileWriter(playersFile);
             fileWriter.write(jsonString);
 
             //close the file
             fileWriter.flush();
             fileWriter.close();
 
-            return file;
+            return playersFile;
 
         } catch(IOException e){
             e.printStackTrace();

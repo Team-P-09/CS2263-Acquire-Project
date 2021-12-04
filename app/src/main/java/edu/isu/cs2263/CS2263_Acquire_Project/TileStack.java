@@ -86,6 +86,8 @@ public class TileStack {
      * @return File (json File to be later deserialized)
      * @throws IOException
      */
+
+
     public static File saveTileStack(String jsonFile, TileStack tilePool) throws IOException {
         //create Gson instance
         Gson gson = new Gson();
@@ -94,29 +96,29 @@ public class TileStack {
 
         try {
             //create the jsonFile
-            File file = new File(jsonFile);
+            File TStackfile = new File(jsonFile);
             // file.createNewFile();
 
             //write the json string into the json file
-            FileWriter fileWriter = new FileWriter(file);
+            FileWriter fileWriter = new FileWriter(TStackfile);
             fileWriter.write(jsonString);
 
             //close the file
             fileWriter.flush();
             fileWriter.close();
 
-            return file;
+            return TStackfile;
 
         } catch(IOException e){
             e.printStackTrace();
         }
         return null;
     }
-
     /**
      * @param jsonFile (jsonFile string that was created in saveTileStack)
      * @return returns a TileStack object that was previously saved
      */
+
     public TileStack loadTileStack(String jsonFile){
         try {
             //create Gson instance
