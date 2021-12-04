@@ -56,6 +56,7 @@ public class UIController {
         GameState gameState = GameState.getInstance(null);
 
         //updates the current players hand
+        gameState.checkPlayerHandForRefresh(gameState.getCurrentPlayer().getPName());
         PlayerInfo playerInfo = gameState.getCurrentPlayer();
         Text playerLabel = (Text) scene.lookup("#turnLabel");
         playerLabel.setText(playerInfo.getPName());
@@ -215,8 +216,8 @@ public class UIController {
         Optional<String> result = dialog.showAndWait();
 
         if (result.isPresent()){
-            gameState.getScoreboard().initBuy(gameState.getCurrentPlayer().getPName(), result.get());
-
+            Integer boughtQty = gameState.getScoreboard().initBuy(gameState.getCurrentPlayer().getPName(), result.get(), 3- gameState.getCurrentBoughtStock());
+            gameState.setCurrentBoughtStock(gameState.getCurrentBoughtStock() + boughtQty);
             render(event);
         }
     }
@@ -255,20 +256,27 @@ public class UIController {
         scene = ((Node)event.getSource()).getScene();
         GameState gameState = GameState.getInstance(null);
         Button button = (Button) event.getSource();
+        if (gameState.getHasPlayed() == true) {
+            if (gameState.getEndGame() == true) {
+                gameState.endGame();
+            }
 
-        if(gameState.getEndGame() == true){
-            gameState.endGame();
+            PlayerInfo currentPlayer = gameState.getCurrentPlayer();
+            if (gameState.getCurrentPlayer().getPHand().getPlayersTiles().size() < 6) {
+                gameState.drawTileToPlayer(currentPlayer.getPName());
+            }
+
+            gameState.nextPlayer();
+            //tiles must be removed at the start of the players turn else a tile can be played the turn after it becomes unplayable
+            currentPlayer = gameState.getCurrentPlayer();
+            gameState.checkPlayerHandForRefresh(currentPlayer.getPName());
+            render(event);
         }
 
-        PlayerInfo currentPlayer = gameState.getCurrentPlayer();
-        if(gameState.getCurrentPlayer().getPHand().getPlayersTiles().size() < 6){
-            gameState.drawTileToPlayer(currentPlayer.getPName());
-        }
-
+        gameState.checkPlayerHandForRefresh(gameState.getCurrentPlayer().getPName());
         gameState.nextPlayer();
         //tiles must be removed at the start of the players turn else a tile can be played the turn after it becomes unplayable
-        currentPlayer = gameState.getCurrentPlayer();
-        gameState.checkPlayerHandForRefresh(currentPlayer.getPName());
+        gameState.resetBuyCounter();
         render(event);
     }
 

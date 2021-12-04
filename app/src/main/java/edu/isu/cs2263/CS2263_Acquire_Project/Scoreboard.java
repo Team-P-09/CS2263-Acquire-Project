@@ -57,7 +57,11 @@ public class Scoreboard {
         numofPlayers = numberOfPlayers;
     }
 
-
+    /**
+     * Allows the player to chose and found a tile
+     * @param tiles
+     * @param playerName
+     */
     public void initFounding(List<Tile> tiles, String playerName){
         ArrayList<String> availableCorps = getAvailableCorps();
         String unfoundedCorps = getUnfoundedCorps();
@@ -68,6 +72,7 @@ public class Scoreboard {
         for(Tile t : tiles){
             if(t.isStatus() && t.getCorp() == null){
                 getCorporations().addTileToCorp(corpName, t);
+                getCorporations().getCorp(corpName).setStatus(true);
             }
         }
 
@@ -79,16 +84,24 @@ public class Scoreboard {
         getCorporations().setStockValue(corpName);
     }
 
+    /**
+     * Returns all non active corporations
+     * @return
+     */
     public ArrayList<String> getAvailableCorps(){
         ArrayList<String> availableCorps = new ArrayList<>();
         for(String cName : getCorpNames()){
-            if(!getCorporations().getCorp(cName).isHasBeenFounded()){
+            if(!getCorporations().getCorp(cName).isStatus()){
                 availableCorps.add(cName);
             }
         }
         return availableCorps;
     }
 
+    /**
+     * Returns a list of corps that have not been founded
+     * @return
+     */
     private String getUnfoundedCorps(){
         String unfoundedCorps = "";
         String newCorp;
@@ -247,12 +260,19 @@ public class Scoreboard {
         return unsafeCorps;
     }
 
+    /**
+     * Returns a list of player names for all players who have 1 or more stocks in the affected corporation
+     * @param mCorps
+     * @return
+     */
     private List<String> findAffectedPlayers(ArrayList<String> mCorps){
         List<String> affectedPlayers = new ArrayList<>();
         for(String cName : mCorps){
             for(PlayerInfo player : getPlayers().getActivePlayers()){
                 if(player.getPWallet().getStocks().containsKey(cName)){
-                    affectedPlayers.add(player.getPName());
+                    if(player.getPWallet().getStocks().get(cName) > 0){
+                        affectedPlayers.add(player.getPName());
+                    }
                 }
             }
         }
@@ -379,22 +399,35 @@ public class Scoreboard {
      * @param playerName
      * @param corpName
      */
-    public void initBuy(String playerName, String corpName){
-        Integer maxQty = maxBuy(playerName, corpName);
+    public Integer initBuy(String playerName, String corpName, Integer buyLimit){
+        Integer maxQty = maxBuy(playerName, corpName, buyLimit);
         Integer qty = getQty(corpName, maxQty, "Buy");
         int stockVal = getCorporations().getCorp(corpName).getStockPrice();
         getPlayers().buyStock(playerName,corpName, qty, stockVal);
         getCorporations().getCorp(corpName).removeCorpStock(qty);
+        return qty;
     }
 
-    private Integer maxBuy(String playerName, String corpName){
+    /**
+     * Verifies players wallet to find the maximum number of stock to buy
+     * @param playerName
+     * @param corpName
+     * @return
+     */
+    private Integer maxBuy(String playerName, String corpName, Integer buyLimit){
         Integer stockPrice = getCorporations().getCorp(corpName).getStockPrice();
         Integer availableStock = getCorporations().getCorp(corpName).getAvailableStocks();
         Integer pCash = getPlayers().getPlayerByName(playerName).getPWallet().getCash();
+        Integer buyableStock;
         if(pCash/stockPrice > availableStock){
-            return availableStock;
+            buyableStock = availableStock;
         }else{
-            return pCash/stockPrice;
+            buyableStock = pCash/stockPrice;
+        }
+        if(buyableStock > buyLimit){
+            return buyLimit;
+        }else{
+            return buyableStock;
         }
     }
 

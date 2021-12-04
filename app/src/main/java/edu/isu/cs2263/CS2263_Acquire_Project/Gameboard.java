@@ -245,17 +245,6 @@ public class Gameboard {
             }else{action = "Founding Tile";}
         } else{ action = "Nothing";}
 
-//        if(adjCorps.size() > 1){
-//            action = "Merge";
-//        }else if(adjCorps.size() == 1){
-//            //ADD TO CORP OR FOUNDING
-//            corpNameForAdding = (new ArrayList<>(adjCorps.keySet())).get(0); //Name of the corporation for the adjacent tile(s)
-//            //System.out.println(corpNameForAdding);
-//            if(corpNameForAdding != null){
-//                action = "Add to Corp";
-//            }else{action = "Founding Tile";}
-//        } else{ action = "Nothing";}
-
         return action;
     }
 

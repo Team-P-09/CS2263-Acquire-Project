@@ -143,6 +143,11 @@ public class Corporations {
         return bonusAmt;
     }
 
+    /**
+     * Gets corps base tier adjustment
+     * @param corpName
+     * @return
+     */
     private Integer getCorpBaseTier(String corpName){
         Integer bonusTier;
         if(corpName.equals("Imperial") || corpName.equals("Continental")){
