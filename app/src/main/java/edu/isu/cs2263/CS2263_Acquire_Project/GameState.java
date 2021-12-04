@@ -35,6 +35,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import javafx.scene.control.Alert;
+import javafx.scene.control.ChoiceDialog;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -96,10 +97,10 @@ public class GameState {
             if(action.equals("Add to Corp")) {
                 tList =  getScoreboard().initCorpTileAdd(tList);
             }else if(action.equals("Merge")){
-                tList = getScoreboard().initMerge(tList);
+                tList = mergeController(tList);
             }else if(action.equals("Founding Tile")){
                 if(getScoreboard().getAvailableCorps().size() > 0) {
-                    getScoreboard().initFounding(tList, playerName);
+                    foundingController(tList, playerName);
                 }
             }
             //The tag "Nothing" is not accounted for as nothing would change from the initialized tile object
@@ -245,6 +246,65 @@ public class GameState {
             }
         }
         return refreshBool;
+    }
+
+    /**
+     * Gets an ArrayList of available corp names then runs initializes the founding of a corporation
+     * @param tList
+     * @param playerName
+     */
+    public void foundingController(List<Tile> tList, String playerName){
+        ArrayList<String> availableCorps = scoreboard.getAvailableCorps();
+        String title = "Chose a corporation to start";
+        String header = "Unfounded Corporations:";
+        String corpName = getDecision(availableCorps, title, header);
+        scoreboard.initFounding(tList, playerName, corpName);
+    }
+
+    public Integer buyController(String playerName, String corpName, Integer buyLimit){
+        Integer maxQty = scoreboard.maxBuy(playerName, corpName, buyLimit);
+        Integer qty = scoreboard.getQty(corpName, maxQty, "Buy");
+        return scoreboard.initBuy(playerName, corpName, qty);
+    }
+
+    public List<Tile> mergeController(List<Tile> tList){
+        ArrayList<String> mCorps = scoreboard.findCorps(tList); //We will be used to identify the players who will need to take a merge action
+        String domCorpName = scoreboard.getDomCorpName(mCorps);
+        mCorps.remove(domCorpName);
+        mCorps = scoreboard.removeSafeCorps(mCorps);
+        //only runs the merge turn if there are sub corps to merge into the dom corp
+        if(mCorps.size() > 0){
+            List<String> affectedPlayers = scoreboard.findAffectedPlayers(mCorps);
+            scoreboard.runMergeTurn(mCorps, domCorpName, affectedPlayers);
+            scoreboard.initMerge(mCorps, domCorpName, affectedPlayers);
+        }
+        scoreboard.addTilesToCorp(tList, domCorpName);
+        return scoreboard.retrieveTiles(scoreboard.getCorporations().getCorp(domCorpName).getCorpTiles());
+    }
+
+    /**
+     * Grabs a user input using a choice dialogue box
+     * @param choiceList
+     * @param title
+     * @param header
+     * @param <T>
+     * @return
+     */
+    private <T> T getDecision(List<T> choiceList, String title, String header){
+        ArrayList<T> choices = new ArrayList<>();
+        for(T choice : choiceList){
+            choices.add(choice);
+        }
+
+        ChoiceDialog<T> dialog = new ChoiceDialog<>(choiceList.get(0), choices);
+        dialog.setTitle(title);
+        dialog.setHeaderText(header);
+
+        Optional<T> pChoice = dialog.showAndWait();
+        while(!pChoice.isPresent()){
+            pChoice = dialog.showAndWait();
+        }
+        return dialog.getSelectedItem();
     }
 
     /**
