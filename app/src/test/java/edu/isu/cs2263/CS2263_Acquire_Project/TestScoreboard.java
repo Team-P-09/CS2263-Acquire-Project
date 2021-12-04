@@ -31,7 +31,12 @@ import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
+
+import java.io.IOException;
 import java.util.*;
+
+import static edu.isu.cs2263.CS2263_Acquire_Project.Scoreboard.loadScoreboard;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
@@ -137,5 +142,19 @@ public class TestScoreboard extends ApplicationTest{
         s.getPlayers().getPlayerByName(p1Name).getPWallet().addStock("Worldwide", 5);
         Integer wwStockValue = s.getCorporations().getCorp("Worldwide").getStockPrice();
         assertTrue(s.getPlayerScore(p1Name) == 6000 + 5*wwStockValue);
+    }
+
+    @Test
+    void testSaveScoreboard() throws IOException {
+        String jsonFile = "savedScoreboard";
+        Scoreboard testScoreboard = new Scoreboard(2);
+        testScoreboard.saveScoreboard(jsonFile, testScoreboard);
+        assertNotNull(jsonFile);
+    }
+
+    @Test
+    void testLoadScoreboard(){
+        String jsonFile = "savedScoreboard";
+        loadScoreboard(jsonFile);
     }
 }

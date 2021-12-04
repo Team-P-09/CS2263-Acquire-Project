@@ -303,4 +303,15 @@ public class TestGameState {
                 ()-> assertFalse(tGameState.getScoreboard().getPlayers().getPlayerByName(p1Name).getPHand().getPlayersTiles().contains(removeTtwo))
         );
     }
+
+    @Test
+    void testSaveGamestate(){
+        Gameboard testGboard = new Gameboard();
+        Scoreboard testSboard = new Scoreboard(2);
+        tGameState.setGameboard(testGboard);
+        tGameState.setScoreboard(testSboard);
+        tGameState.saveGameState();
+        assertNotNull("savedGameB");
+        assertNotNull("savedScoreB");
+    }
 }

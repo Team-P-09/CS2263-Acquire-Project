@@ -28,6 +28,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -210,4 +211,11 @@ public class TestGameboard {
                 () -> assertEquals("Tower", corpNames.get(0))
                 );
     }
+    @Test
+    void testSaveGameboard() throws IOException{
+        String jsonFile = "savedGameboard";
+        Gameboard testGameboard = new Gameboard();
+        testGameboard.saveGameboard(jsonFile, testGameboard);
+        assertNotNull(jsonFile);
+        }
 }

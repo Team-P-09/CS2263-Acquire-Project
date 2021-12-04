@@ -270,7 +270,6 @@ public class GameState {
             //getting data from scoreboard and gameboard to be saved
             savedScoreB = Scoreboard.saveScoreboard(jsonFileScoreboard, scoreboard);
             savedGameB = Gameboard.saveGameboard(jsonFileGameboard, gameboard);
-         //   savedGamePlayers = Players.savePlayers(jsonFilePlayers, players);
 
         } catch (IOException e) {
             e.printStackTrace();
