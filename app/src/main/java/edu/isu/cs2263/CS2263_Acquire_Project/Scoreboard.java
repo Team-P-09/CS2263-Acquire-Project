@@ -38,6 +38,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -204,8 +206,7 @@ public class Scoreboard {
     }
 
     /**
-     * REFACTOR THIS WITH GET WINNERS THEY ARE THE SAME CODE WITH 10% CHANGE
-     * Returns a hashmap of winners and their position
+     * Returns a hashmap of stock holders and their rankings
      * @param players
      * @param corpName
      * @return
@@ -222,22 +223,14 @@ public class Scoreboard {
             scoreResults.put(player, playerScore);
         }
 
-        //THIS CODE WAS FOUND AT https://stackabuse.com/how-to-sort-a-hashmap-by-value-in-java/
-        Map<String, Integer> sortedScores = scoreResults.entrySet().stream()
-                .sorted(Comparator.comparingInt(e -> -e.getValue()))
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (a, b) -> { throw new AssertionError(); },
-                        LinkedHashMap::new
-                ));
+        HashMap<String, Integer> sortedPlayers = sortHashmapByValuesInDescendingOrder(scoreResults);
 
         Integer lastValue = 0;
         Integer pScore;
         Boolean majorityBool = true;
         Boolean minorityBool = true;
 
-        for(String pName : sortedScores.keySet()){
+        for(String pName : sortedPlayers.keySet()){
             pScore = scoreResults.get(pName);
 
             //If the current score does not equal the last score then it must be less
@@ -272,8 +265,8 @@ public class Scoreboard {
      * @param mCorps
      * @return ArrayList of Strings containing the names of unsafe corporations
      */
-    public ArrayList<String> removeSafeCorps(ArrayList<String> mCorps){
-        ArrayList<String> unsafeCorps = new ArrayList<>();
+    public List<String> removeSafeCorps(List<String> mCorps){
+        List<String> unsafeCorps = new ArrayList<>();
         for(String corpName : mCorps){
             if(!getCorporations().getCorp(corpName).isSafe()){
                 unsafeCorps.add(corpName);
@@ -373,7 +366,7 @@ public class Scoreboard {
         return qty;
     }
 
-    private <T> T getDecision(List<T> choiceList, String title, String header){
+    public <T> T getDecision(List<T> choiceList, String title, String header){
         ArrayList<T> choices = new ArrayList<>();
         for(T choice : choiceList){
             choices.add(choice);
@@ -511,36 +504,6 @@ public class Scoreboard {
         return domCorpList;
     }
 
-
-
-//    /**
-//     * Returns a HashMap with a corpName as a key and an Array of Integer[3]
-//     * The Array has positions [CorpInfo size, CorpInfo Stock Price, CorpInfo Available Stocks]
-//     * @return      HashMap String, Integer[] of CorpInfo for display
-//     */
-//    public HashMap<String, Integer[]> displayCorpInfo(){
-//        HashMap<String, Integer[]> displayInfo = new HashMap<>();
-//        int cSize;
-//        int cPrice;
-//        int cStocks;
-//
-//        for(Map.Entry<String, CorpInfo> c : getCorporations().getCorps().entrySet()){
-//            Integer[] infoArray = new Integer[3];
-//            String cName = c.getKey();
-//            cSize = c.getValue().getCorpSize();
-//            cPrice = c.getValue().getStockPrice();
-//            cStocks = c.getValue().getAvailableStocks();
-//
-//            infoArray[0] = cSize;
-//            infoArray[1] = cPrice;
-//            infoArray[2] = cStocks;
-//
-//            //ArrayList<Tile> cTiles = c.getValue().getCorpTiles(); //not addding in the tiles as this information is readily available to the player
-//            displayInfo.put(cName, infoArray);
-//        }
-//        return displayInfo;
-//    }
-
     public HashMap<String, Integer> getWinners(){
         Integer playerScore;
         String playerName;
@@ -553,15 +516,7 @@ public class Scoreboard {
             scoreResults.put(playerName, playerScore);
         }
 
-        //THIS CODE WAS FOUND AT https://stackabuse.com/how-to-sort-a-hashmap-by-value-in-java/
-        Map<String, Integer> sortedScores = scoreResults.entrySet().stream()
-                .sorted(Comparator.comparingInt(e -> -e.getValue()))
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (a, b) -> { throw new AssertionError(); },
-                        LinkedHashMap::new
-                ));
+        HashMap<String, Integer> sortedScores = sortHashmapByValuesInDescendingOrder(scoreResults);
 
         Integer currentPlace = 1;
         Integer newPlace = currentPlace;
@@ -579,6 +534,29 @@ public class Scoreboard {
         }
 
         return playerPlaces;
+    }
+
+    /**
+     * Return a sorted (descending) LinkedHashMap of any hashmap with values of Integers
+     * @param scoreResults
+     * @return
+     */
+    private HashMap<String, Integer> sortHashmapByValuesInDescendingOrder(Map<String, Integer> scoreResults){
+        //stream has a sorted method that we will utilize
+        Stream<Map.Entry<String, Integer>> scoreResultsStream = scoreResults.entrySet().stream();
+        //we utilize the sorted method of a stream to iterate through the map then use comparator to compare the values
+        //sort naturally returns in ascending order, negative value used to invert the order into decending
+        Stream<Map.Entry<String, Integer>> scoreResultsSteamSorted = scoreResultsStream.sorted(Comparator.comparingInt(p -> -p.getValue()));
+        HashMap<String, Integer> sortedPlayers = scoreResultsSteamSorted.collect(Collectors.toMap(
+                //using :: get each key and value from the stream that we will have sorted by value (integer)
+                Map.Entry::getKey,
+                Map.Entry::getValue,
+                //if we run into any errors assigning our player/scoreboard pairs we'll throw an assertion error
+                (k, v) -> {throw new AssertionError();},
+                //Creating a new Linked hashmap that will have all of our players and their number of stocks sorted by stock value decending
+                LinkedHashMap::new
+        ));
+        return sortedPlayers;
     }
 
     /**
