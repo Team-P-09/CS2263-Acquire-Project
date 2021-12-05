@@ -36,6 +36,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -53,7 +54,7 @@ public class Corporations {
      * @param domCorpName
      * @param subCorpNames
      */
-    public void mergeCorps(String domCorpName, ArrayList<String> subCorpNames){
+    public void mergeCorps(String domCorpName, List<String> subCorpNames){
         CorpInfo domCorp = getCorp(domCorpName);
         HashMap<String, Tile> domTiles = domCorp.getCorpTiles();
 
