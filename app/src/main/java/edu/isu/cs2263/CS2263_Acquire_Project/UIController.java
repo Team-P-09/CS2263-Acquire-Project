@@ -37,6 +37,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -356,17 +357,16 @@ public class UIController {
     }
 
     @FXML
-    public void handleLoadGameButton(ActionEvent event){
+    public void handleLoadGameButton(ActionEvent event) throws IOException {
         scene = ((Node)event.getSource()).getScene();
-        GameState gameState = GameState.getInstance(2);
+        GameState gameState = GameState.getInstance(null);
         Button button = (Button) event.getSource();
         gameState.loadGameState();
-
+        render(event);
     }
 
     @FXML
     public void handleExitGameButton(ActionEvent event){
-
         System.exit(0);
     }
 }

@@ -159,6 +159,7 @@ public class TestScoreboard extends ApplicationTest{
     @Test
     void testLoadScoreboard(){
         String jsonFile = "savedScoreboard";
-        assertNotNull(loadScoreboard(jsonFile));
+        s = loadScoreboard(jsonFile);
+        assertNotNull(s);
     }
 }

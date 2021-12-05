@@ -27,9 +27,7 @@ package edu.isu.cs2263.CS2263_Acquire_Project;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -57,8 +55,7 @@ public class GameState {
 
     public File savedScoreB;
     public File savedGameB;
-    public File savedGamePlayers;
-   // public Integer savedGamePlayers;
+    public File savedNumOfPlayers;
 
     private GameState(Integer numberOfPlayers){
         gameboard = new Gameboard();
@@ -262,10 +259,15 @@ public class GameState {
      */
     public void saveGameState(){ //NEED TO BE ABLE TO SAVE NUMBER OF PLAYERS
         try {
-
+            numOfPlayers = scoreboard.getNumofPlayers();
             //empty files that will be filled with saved data
             String jsonFileGameboard = "savedGameB";
             String jsonFileScoreboard = "savedScoreB";
+
+            //writing number of players to a file
+            Writer wr = new FileWriter("savedNumOfPlayers");
+            wr.write(Integer.toString(numOfPlayers));
+            wr.close();
 
             //getting data from scoreboard and gameboard to be saved
             savedScoreB = Scoreboard.saveScoreboard(jsonFileScoreboard, scoreboard);
@@ -280,32 +282,31 @@ public class GameState {
      * //@param gameFiles list of files that need to be reloaded
      * @return returns gamestate object that will reload previous games
      */
-    public GameState loadGameState(){ //NEED TO BE ABLE TO SAVE NUMBER OF PLAYERS
+    public GameState loadGameState() throws FileNotFoundException { //NEED TO BE ABLE TO SAVE NUMBER OF PLAYERS
 
-        ArrayList<File> savedGameFiles = new ArrayList<File>();
+        File savedPlayerCount = new File("savedNumOfPlayers");
 
-        savedGameFiles.add(savedScoreB);
-        savedGameFiles.add(savedGameB);
-      //  savedGameFiles.add(savedGamePlayers);
+        Integer numPlayers = 0;
 
         //create empty objects to hold saved data
         Scoreboard scoreb = null;
-        Gameboard gameb = null;
-        //Players gameplayers = null;
-        GameState savedGame = new GameState(2);
-    //    Integer numberOfPs = 0;
+        Gameboard gameb = new Gameboard();
+
+        Scanner sc = new Scanner(savedPlayerCount);
+
+        while(sc.hasNextLine()) {
+            numPlayers = Integer.valueOf(sc.nextLine());
+        }
+
+        GameState savedGame = new GameState(numPlayers);
 
         //retrieving data from json files using load methods from each class
-        scoreb.loadScoreboard(savedGameFiles.get(0).toString());
-        gameb.loadGameboard(savedGameFiles.get(1).toString());
-    //    gameplayers.loadPlayers(savedGameFiles.get(2).toString());
-
-     //   numberOfPs = numOfPlayers;
+        scoreb.loadScoreboard("savedScoreBoard");
+        gameb.loadGameboard("savedGameBoard");
 
         //load up params into gamestate object
         savedGame.scoreboard = scoreb;
         savedGame.gameboard = gameb;
-      //  savedGame.players = gameplayers;
 
         //return the loaded GameState object
         return savedGame;
