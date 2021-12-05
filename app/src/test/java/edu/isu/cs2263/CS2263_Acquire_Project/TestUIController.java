@@ -1,6 +1,7 @@
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
 
+import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
@@ -8,6 +9,9 @@ import org.junit.jupiter.api.*;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.matcher.base.NodeMatchers;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testfx.api.FxAssert.verifyThat;
@@ -29,6 +33,29 @@ public class TestUIController extends ApplicationTest {
         FxToolkit.hideStage();
         release(new KeyCode[]{});
         release(new MouseButton[]{});
+    }
+
+    @Test
+    public void  testMergeTurn() throws InterruptedException {
+        clickOn("#newGameButton");
+        clickOn("2");
+        clickOn("4");
+        clickOn("OK");
+
+        List<String> mergePlayers = new ArrayList<>();
+        mergePlayers.add("Player 1");
+
+        List<String> mergeCorps = new ArrayList<>();
+        mergeCorps.add("American");
+
+        GameState gameState = GameState.getInstance(null);
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                gameState.getScoreboard().runMergeTurn(mergeCorps, "Luxor", mergePlayers);
+            }
+        });
     }
 
     @Test
