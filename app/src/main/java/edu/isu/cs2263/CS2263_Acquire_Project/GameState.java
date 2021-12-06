@@ -28,10 +28,15 @@ import java.io.*;
 import java.io.File;
 import java.io.IOException;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import javafx.scene.control.Alert;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 @Getter @Setter
@@ -282,8 +287,8 @@ public class GameState {
         try {
             numOfPlayers = scoreboard.getNumofPlayers();
             //empty files that will be filled with saved data
-            String jsonFileGameboard = "savedGameB";
-            String jsonFileScoreboard = "savedScoreB";
+            String jsonFileGameboard = "savedGameBoard";
+            String jsonFileScoreboard = "savedScoreBoard";
 
             //writing number of players to a file
             Writer wr = new FileWriter("savedNumOfPlayers");
@@ -329,7 +334,7 @@ public class GameState {
      * //@param gameFiles list of files that need to be reloaded
      * @return returns gamestate object that will reload previous games
      */
-    public void loadGameState(GameState savedGame) throws FileNotFoundException {
+    public void loadGameState() throws FileNotFoundException {
         int savedCPTracker = 0;
         Boolean savedHasPlayed = null;
         Boolean savedEndGame = null;
@@ -378,13 +383,13 @@ public class GameState {
         }
 
         //retrieving data from json files using load methods from each class
-        savedGame.numOfPlayers = numPlayers;
-        savedGame.scoreboard = Scoreboard.loadScoreboard("savedScoreboard");
-        savedGame.gameboard = Gameboard.loadGameboard("savedGameboard");
-        savedGame.hasPlayed = savedHasPlayed;
-        savedGame.currentPlayerTracker = savedCPTracker;
-        savedGame.endGame = savedEndGame;
-        savedGame.currentBoughtStock = savedCBS;
+        numOfPlayers = numPlayers;
+        scoreboard = scoreboard.loadScoreboard("savedScoreboard");
+        gameboard = Gameboard.loadGameboard("savedGameboard");
+        hasPlayed = savedHasPlayed;
+        currentPlayerTracker = savedCPTracker;
+        endGame = savedEndGame;
+        currentBoughtStock = savedCBS;
     }
 
     public PlayerInfo getCurrentPlayer(){

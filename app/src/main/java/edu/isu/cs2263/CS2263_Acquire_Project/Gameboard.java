@@ -31,17 +31,13 @@ import java.io.Reader;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
 import lombok.Getter;
-
 import java.util.*;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 @Getter
 public class Gameboard {
-    public String infoCard;
     private Tile[][] gameboard;
 
     public Gameboard(){
@@ -305,7 +301,7 @@ public class Gameboard {
      * @param jsonFile (jsonFile string that was created in saveGameboard)
      * @return returns a Gameboard object that was previously saved
      */
-    public static Gameboard loadGameboard(String jsonFile) {
+    public static Gameboard loadGameboard(String jsonFile) { //Gameboard static
         try {
             //create Gson instance
             Gson gson = new Gson();
@@ -318,6 +314,7 @@ public class Gameboard {
 
             //convert JSON string to gameboard object
             Gameboard gameboard_obj = gson.fromJson(reader, gameboardType);
+//            gameboard = gameboard_obj.getGameboard();
 
             //close reader
             reader.close();

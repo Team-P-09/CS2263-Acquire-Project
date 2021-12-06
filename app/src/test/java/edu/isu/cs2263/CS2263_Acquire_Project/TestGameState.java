@@ -33,6 +33,7 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -339,6 +340,7 @@ public class TestGameState {
         tGameState.saveGameState();
         assertNotNull(new File("savedGameboard"));
     }
+
     @Test
     void testSaveGamestateSaveScoreboard(){
         Gameboard testGboard = new Gameboard();
@@ -346,16 +348,19 @@ public class TestGameState {
         tGameState.saveGameState();
         assertNotNull(new File("savedGameboard"));
     }
+
     @Test
     void testSaveGamestateSavesCurrentPlayerTracker(){
         tGameState.saveGameState();
         assertNotNull(new File("savedCurrentPlayerTracker"));
     }
+
     @Test
     void testSaveGamestateSavesCurrentBoughtStock(){
         tGameState.saveGameState();
         assertNotNull(new File("savedCurrentBoughtStock"));
     }
+
     @Test
     void testSaveGamestateSavesEndGameStatus(){
         Scoreboard testSboard = new Scoreboard(2);
@@ -363,6 +368,7 @@ public class TestGameState {
         tGameState.saveGameState();
         assertNotNull(new File("saveEndGame"));
     }
+
     @Test
     void testSaveGamestateSavesHasPlayedStatus(){
         tGameState.saveGameState();
@@ -372,40 +378,61 @@ public class TestGameState {
     //load tests
     @Test
     void testLoadGamestateLoadsScoreboard() throws FileNotFoundException {
-        tGameState.loadGameState(tGameState);
+        tGameState.loadGameState();
         assertNotNull(tGameState.getScoreboard());
     }
+
     @Test
     void testLoadGamestateLoadsGameboard() throws FileNotFoundException {
-        tGameState.loadGameState(tGameState);
+        tGameState.loadGameState();
         assertNotNull(tGameState.getGameboard());
     }
+
     @Test
     void testLoadGamestateLoadsCurrentPlayerTracker() throws FileNotFoundException {
         tGameState.setCurrentPlayerTracker(2);
         tGameState.saveGameState();
-        tGameState.loadGameState(tGameState);
+        tGameState.loadGameState();
         assertEquals(2,tGameState.getCurrentPlayerTracker());
     }
+
     @Test
     void testLoadGamestateLoadsCurrentBoughtStock() throws FileNotFoundException {
         tGameState.setCurrentBoughtStock(1);
         tGameState.saveGameState();
-        tGameState.loadGameState(tGameState);
+        tGameState.loadGameState();
         assertEquals(1, tGameState.getCurrentBoughtStock());
     }
+
     @Test
     void testLoadGamestateLoadsHasPlayedStatus() throws FileNotFoundException {
         tGameState.setHasPlayed(false);
         tGameState.saveGameState();
-        tGameState.loadGameState(tGameState);
+        tGameState.loadGameState();
         assertEquals(false,tGameState.getHasPlayed());
     }
+
     @Test
     void testLoadGamestateLoadsEndGameStatus() throws FileNotFoundException {
         tGameState.setEndGame(true);
         tGameState.saveGameState();
-        tGameState.loadGameState(tGameState);
+        tGameState.loadGameState();
         assertEquals(true, tGameState.getEndGame());
     }
+
+//    @Test
+//    void testGameboardTilesAreSaved() throws IOException {
+//        Tile testTile = new Tile(2, 3);
+//        testTile.activateTile();
+//        tGameState.getGameboard().recordTile(testTile);
+//        tGameState.getGameboard().getTile(2,3).setCorp("Worldwide");
+//        Gameboard testGameboard = tGameState.getGameboard();
+//        String jsonFile = "savedGameboard";
+//        tGameState.getGameboard().saveGameboard(jsonFile, testGameboard);
+//        tGameState.getGameboard().loadGameboard(jsonFile);
+//        assertAll("Test Load gets the tile info",
+//                () -> assertEquals("Worldwide", testGameboard.getTile(2,3).getCorp()),
+//                () -> assertTrue(testGameboard.getTile(2,3).isStatus())
+//        );
+//    }
 }

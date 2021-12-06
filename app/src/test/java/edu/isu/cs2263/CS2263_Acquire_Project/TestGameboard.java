@@ -226,9 +226,21 @@ public class TestGameboard {
         assertTrue(testGameboard.saveGameboard(nullFile,testGameboard) == null);
     }
 
+//    @Test
+//    void testLoadGameboard(){
+//        String jsonFile = "savedGameboard";
+//        assertNotNull(testGameboard.loadGameboard(jsonFile));
+//    }
+
     @Test
-    void testLoadGameboard(){
+    void testGameboardTilesAreSaved() throws IOException{
+        testGameboard.getTile(2,3).setCorp("Worldwide");
         String jsonFile = "savedGameboard";
-        assertNotNull(testGameboard.loadGameboard(jsonFile));
+        testGameboard.saveGameboard(jsonFile, testGameboard);
+        testGameboard.loadGameboard(jsonFile);
+        assertAll("Test Load gets the tile info",
+                () -> assertEquals("Worldwide", testGameboard.getTile(2,3).getCorp()),
+                () -> assertTrue(testGameboard.getTile(2,3).isStatus())
+                );
     }
 }

@@ -60,6 +60,7 @@ public class UIController {
         PlayerInfo playerInfo = gameState.getCurrentPlayer();
         Text playerLabel = (Text) scene.lookup("#turnLabel");
         playerLabel.setText(playerInfo.getPName());
+        gameState.checkPlayerHandForRefresh(gameState.getCurrentPlayer().getPName());
         int i = 0;
         for (Tile tile : playerInfo.getPHand().getPlayersTiles()){
             String id = "#Tile"+i;
@@ -258,6 +259,8 @@ public class UIController {
         Button button = (Button) event.getSource();
         if(gameState.checkIfGameCanEnd() == true){
             gameState.setEndGame();
+            button.setText("Game ends this turn!");
+            button.setStyle("-fx-fill: white");
         }
     }
 
@@ -319,7 +322,7 @@ public class UIController {
         scene = ((Node)event.getSource()).getScene();
         GameState gameState = GameState.getInstance(0);
         Button button = (Button) event.getSource();
-        gameState.loadGameState(gameState);
+        gameState.loadGameState();
         render(event);
     }
 
