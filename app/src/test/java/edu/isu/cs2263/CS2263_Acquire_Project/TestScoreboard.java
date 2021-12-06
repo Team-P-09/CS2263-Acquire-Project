@@ -27,7 +27,13 @@ package edu.isu.cs2263.CS2263_Acquire_Project;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
+
+import java.io.IOException;
 import java.util.*;
+
+import static edu.isu.cs2263.CS2263_Acquire_Project.Scoreboard.loadScoreboard;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -125,6 +131,23 @@ public class TestScoreboard extends ApplicationTest{
     }
 
     @Test
+    void testJsonFileCreated() throws IOException {
+        String jsonFile = "savedScoreboard";
+        assertNotNull(s.saveScoreboard(jsonFile,s)) ;
+    }
+
+    @Test
+    void testForNullSaveFile() throws IOException {
+        String nullFile = "";
+        assertTrue(s.saveScoreboard(nullFile,s) == null);
+    }
+
+    @Test
+    void testLoadScoreboard() {
+        String jsonFile = "savedScoreboard";
+        s = loadScoreboard(jsonFile);
+        assertNotNull(s);
+    }
     void testInitFoundingWorksOnStandardFounding(){
         //List<Tile> tiles, String playerName, String corpName
         Tile tileActive = new Tile(9,0);
