@@ -116,12 +116,6 @@ public class Gameboard {
 
         //Remove null entries
         outTiles.remove(null);
-        //above code does below code, testing to verify
-//        for(Tile nt : outTiles){
-//            if(nt == null){
-//                outTiles.remove(nt);
-//            }
-//        }
         return outTiles;
     }
 
