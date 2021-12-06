@@ -33,9 +33,9 @@ import java.util.HashMap;
 @Getter @Setter
 public class PlayerInfo {
     //instance variables
-    String pName;
-    Hand pHand;
-    Wallet pWallet;
+    private String pName;
+    private Hand pHand;
+    private Wallet pWallet;
 
     //constructor method
     public PlayerInfo(String name, ArrayList<String> corpNames, ArrayList<Tile> tArry){

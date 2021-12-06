@@ -31,19 +31,14 @@ import java.io.Reader;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
 import lombok.Getter;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 @Getter
 public class Gameboard {
-    public String infoCard;
-    Tile[][] gameboard;
+    private Tile[][] gameboard;
 
     public Gameboard(){
         gameboard = initGameboard();
@@ -64,6 +59,10 @@ public class Gameboard {
         return actionMap;
     }
 
+    /**
+     * Initialzies a new gameboard
+     * @return
+     */
     private Tile[][] initGameboard(){
         Tile[][] gboard = new Tile[9][12];
         for(int r = 0 ; r < gboard.length ; r++){
@@ -74,14 +73,46 @@ public class Gameboard {
         return gboard;
     }
 
-    //todo:handle outOfBounds response for tiles on the edge of the gameboard
+    /**
+     *Returns a list of adjacent tiles
+     * Wont return all corporations in a corporation tile chain
+     * Ran by getCorpsForRefreshTiles in GameState, getActionAndTiles in Gameboard
+     * @param t
+     * @return
+     */
     public List<Tile> getAdjacentTiles(Tile t){
-        int row = t.getRow();
-        int col = t.getCol();
-        List<Tile> adjTiles = new ArrayList<>();
-        adjTiles = checkAdj(row, col, adjTiles, true);
-        adjTiles = checkAdj(col, row, adjTiles, false);
-        return adjTiles;
+        //Variables for DFS algorithm
+        List<Tile> adjTiles;
+        Queue<Tile> tileQueue = new ArrayDeque<>();
+        HashMap<String, Tile> visitedTiles = new HashMap<>();
+        tileQueue.add(t);
+        Tile curTile;
+        String curTLoc;
+        //DFS algo to add all connected adjacent tiles
+        //does not add unactivated tiles
+        //does not search adjacent tiles for tiles with a corporation(they will all have the same corporation)
+        while(!tileQueue.isEmpty()){
+            curTile = tileQueue.remove();
+            adjTiles = checkAdj(curTile); //This wont retrieve tiles if the tile has a corporation
+            for(Tile adjT : adjTiles){
+                curTLoc = adjT.getLocation();
+                if(!visitedTiles.containsKey(curTLoc)){
+                    visitedTiles.put(curTLoc, adjT);
+                    tileQueue.add(adjT);
+                }
+            }
+        }
+
+        //Translate visited tile hashmap to list for further processing
+        List<Tile> outTiles = new ArrayList<>();
+        for(String loc : visitedTiles.keySet()){
+            outTiles.add(visitedTiles.get(loc));
+        }
+
+
+        //Remove null entries
+        outTiles.remove(null);
+        return outTiles;
     }
 
     /**
@@ -90,26 +121,47 @@ public class Gameboard {
      * @return
      */
     public List<String> getAdjTileCorpNames(List<Tile> tiles){
-        List<String> adjCorpNames = new ArrayList<>();
+        HashSet<String> uniqueCorpNames = new HashSet<>();
         String corpName;
         for(Tile t : tiles){
             corpName = t.getCorp();
-            if(t.isStatus() && corpName != null){
-                adjCorpNames.add(corpName);
+            if(t.isStatus() && corpName != null && !uniqueCorpNames.contains(corpName)){
+                uniqueCorpNames.add(corpName);
             }
         }
-        return adjCorpNames;
+        return new ArrayList<>(uniqueCorpNames);
+    }
+
+    /**
+     * Checks if the tile has a corporation, if not then adds adjacent tiles to a List of tiles to return
+     * Ran by getAdjacentTiles
+     * @param t input tile to check and find adjacents
+     * @return list of adjacent tiles max size 4
+     */
+    private List<Tile> checkAdj(Tile t){
+        Integer row = t.getRow();
+        Integer col = t.getCol();
+
+        List<Tile> adjTiles = new ArrayList<>();
+        Boolean isCorp = getTile(row, col).getCorp() != null;
+        if(!isCorp){
+            adjTiles = checkSides(row, col, adjTiles, true);
+            adjTiles = checkSides(col, row, adjTiles, false);
+        }
+
+        return adjTiles;
     }
 
     /**
      * Validates that the dimensions will not exceed the max gameboard size
+     * Ran by checkAdj
      * @param dimA
      * @param dimB
      * @param adjTList
      * @param isRow
      * @return
      */
-    private List<Tile> checkAdj(Integer dimA, Integer dimB, List<Tile> adjTList, Boolean isRow){
+    private List<Tile> checkSides(Integer dimA, Integer dimB, List<Tile> adjTList, Boolean isRow){
         int dimAMax;
         Integer newDim;
         List<Tile> outTiles = new ArrayList<>();
@@ -120,9 +172,10 @@ public class Gameboard {
         }
         for(Integer i = -1 ; i < 2 ; i+=2){
             newDim = dimA + i;
-            System.out.println(newDim);
+            //System.out.println(newDim);
             if(newDim <= dimAMax && newDim >=0){
                 if(isRow){
+
                     adjTList.add(getTile(newDim, dimB));
                 }
                 else{
@@ -141,20 +194,21 @@ public class Gameboard {
 
     /**
      * Decides the necissary action based on a list of adjacent tiles
+     * ran by getActionAndTiles
      * @param adjTileList
      * @return
      */
-    public String decideAction(List<Tile> adjTileList){
+    private String decideAction(List<Tile> adjTileList){
         String action;
         String corpNameForAdding;
         String cName;
+        Integer numberOfNonNullCorps;
 
         //Get data for all of the adjacent tiles
         HashMap<String, Integer> adjCorps = new HashMap<>(); //This will be a hashmap with <CorpName, Number Of Tiles>
         for(Tile t : adjTileList){
             cName = t.getCorp();
             if(t.isStatus()){
-                System.out.println(t.getLocation());
                 if(adjCorps.containsKey(cName)){
                     adjCorps.put(cName, adjCorps.get(cName) + 1);
                 }
@@ -164,17 +218,22 @@ public class Gameboard {
             }
         }
 
+        numberOfNonNullCorps = findNumberOfNonNullCorps(adjCorps);
         //decide which action to return
         if(adjCorps.size() > 1){
-            action = "Merge";
+            if(numberOfNonNullCorps > 1){
+                action = "Merge";
+            }else{
+                action = "Add to Corp";
+            }
         }else if(adjCorps.size() == 1){
             //ADD TO CORP OR FOUNDING
             corpNameForAdding = (new ArrayList<>(adjCorps.keySet())).get(0); //Name of the corporation for the adjacent tile(s)
-            System.out.println(corpNameForAdding);
+            //System.out.println(corpNameForAdding);
             if(corpNameForAdding != null){
                 action = "Add to Corp";
             }else{action = "Founding Tile";}
-        }else{ action = "Nothing";}
+        } else{ action = "Nothing";}
 
         return action;
     }
@@ -183,12 +242,21 @@ public class Gameboard {
         return getGameboard()[r][c];
     }
 
-    private void updateTileCorp(Tile t, String cName){
-        int row = t.getRow();
-        int col = t.getCol();
-        getGameboard()[row][col].setCorp(cName);
+    private Integer findNumberOfNonNullCorps(HashMap<String, Integer> corps){
+        List<String> adjCorps = new ArrayList<>(corps.keySet());
+        Integer corpCounter = 0;
+        for(String corpName : adjCorps){
+            if(corpName != null){
+                corpCounter++;
+            }
+        }
+        return corpCounter;
     }
 
+    /**
+     * Activates the tile on the gameboard
+     * @param t
+     */
     public void recordTile(Tile t){
         int row = t.getRow();
         int col = t.getCol();
@@ -211,15 +279,17 @@ public class Gameboard {
 
         try {
             //create the jsonFile
-            File file = new File(jsonFile);
+            File gboardFile = new File(jsonFile);
 
             //write the json string into the json file
-            FileWriter fileWriter = new FileWriter(file);
+            FileWriter fileWriter = new FileWriter(gboardFile);
             fileWriter.write(jsonString);
 
             //close the file
             fileWriter.flush();
             fileWriter.close();
+
+            return gboardFile;
 
         } catch(IOException e){
             e.printStackTrace();
@@ -231,7 +301,7 @@ public class Gameboard {
      * @param jsonFile (jsonFile string that was created in saveGameboard)
      * @return returns a Gameboard object that was previously saved
      */
-    public Gameboard loadGameboard(String jsonFile) {
+    public static Gameboard loadGameboard(String jsonFile) { //Gameboard static
         try {
             //create Gson instance
             Gson gson = new Gson();
@@ -244,6 +314,7 @@ public class Gameboard {
 
             //convert JSON string to gameboard object
             Gameboard gameboard_obj = gson.fromJson(reader, gameboardType);
+//            gameboard = gameboard_obj.getGameboard();
 
             //close reader
             reader.close();

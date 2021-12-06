@@ -30,10 +30,12 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class CorpInfoTest {
+public class TestCorpInfo {
     CorpInfo tcorp;
     HashMap<String, Tile> tHM;
 
@@ -56,12 +58,56 @@ public class CorpInfoTest {
 
 
     @Test void retrieveTilesTestRemoves(){
-        tHM = tcorp.retrieveTiles();
+        tHM = tcorp.popAllTiles();
         assertTrue(tcorp.getCorpSize() == 0);
     }
 
     @Test void retrieveTilesTestExtracts(){
-        tHM = tcorp.retrieveTiles();
+        tHM = tcorp.popAllTiles();
         assertTrue(tHM.size() == 1);
     }
+
+    @Test
+    void testAddCorpStock(){
+        Integer cStock = tcorp.getAvailableStocks();
+        tcorp.addCorpStock(5);
+        assertTrue(cStock + 5 == tcorp.getAvailableStocks());
+    }
+
+    @Test
+    void testRemoveCorpStock(){
+        Integer cStock = tcorp.getAvailableStocks();
+        tcorp.removeCorpStock(5);
+        assertTrue(cStock-5 == tcorp.getAvailableStocks());
+    }
+
+    @Test
+    void testAddCorpTiles(){
+        Tile t = new Tile(2,3);
+        Integer oldCorpSize = tcorp.getCorpSize();
+        tcorp.addCorpTile(t);
+        assertTrue(oldCorpSize +1 == tcorp.getCorpSize());
+    }
+
+    @Test
+    void testCorpTurnsSafeAfterEleven(){
+        List<Tile> tilesToAdd = new ArrayList<>();
+        for(int i = 0 ; i < 11 ; i++){
+            tilesToAdd.add(new Tile(0, i));
+        }
+        for(Tile t : tilesToAdd){
+            tcorp.addCorpTile(t);
+        }
+        assertTrue(tcorp.isSafe());
+    }
+
+    @Test
+    void testCorpIsntSafeUnderEleven(){
+        Tile t = new Tile(2,3);
+        Integer oldCorpSize = tcorp.getCorpSize();
+        tcorp.addCorpTile(t);
+        assertFalse(tcorp.isSafe());
+    }
+
+
 }

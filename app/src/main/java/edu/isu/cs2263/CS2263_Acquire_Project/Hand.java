@@ -34,7 +34,7 @@ import java.util.Random;
 @Getter @Setter
 public class Hand {
     //instance variables
-    ArrayList<Tile> playersTiles;
+    private ArrayList<Tile> playersTiles;
 
     //constructor method
     public Hand(ArrayList<Tile> pTiles){

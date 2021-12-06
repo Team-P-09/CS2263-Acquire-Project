@@ -58,13 +58,13 @@ public class CorpInfo {
      * Retrieves the corpTiles and empties the corpTiles
      * @return an ArrayList of the Tile class
      */
-    public HashMap<String, Tile> retrieveTiles(){
+    public HashMap<String, Tile> popAllTiles(){
         HashMap<String, Tile> outTiles = getCorpTiles();
         setCorpTiles(new HashMap<>());
         return outTiles;
     }
 
-    public void checkIfSafe(){
+    private void checkIfSafe(){
         if(getCorpSize() >= 11){
             setSafe(true);
         }
@@ -83,10 +83,6 @@ public class CorpInfo {
         getCorpTiles().put(t.getLocation(), t);
         checkIfSafe();
         //this.corpTiles.add(t);
-    }
-
-    public void addAllTiles(){
-
     }
 
     /**

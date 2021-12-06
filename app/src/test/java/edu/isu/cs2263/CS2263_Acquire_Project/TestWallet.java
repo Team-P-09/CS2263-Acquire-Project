@@ -24,30 +24,53 @@
 
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class GameStateTest {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+
+public class TestWallet {
+    ArrayList<String> corpNames = new ArrayList<>(Arrays.asList("Worldwide", "Sackson", "Festival", "Imperial", "American", "Tower", "Continental"));
+    Wallet wallet;
 
     @BeforeEach
-    private void setUp(){
-
+    void setUp(){
+        HashMap<String, Integer> stocks = new HashMap<>();
+        wallet = new Wallet(corpNames);
     }
 
-
-    @Test void testPlayTileNothing(){
-
+    @AfterEach
+    void teardown(){
+        HashMap<String, Integer> stocks = new HashMap<>();
+        wallet = new Wallet(corpNames);
     }
 
-    @Test void testPlayTileMerge(){
-
+    @Test
+    void testaddCash(){
+        wallet.addCash(50);
+        assertTrue(wallet.getCash() == 6050);
     }
 
-    @Test void testPlayTileFounding(){
-
+    @Test
+    void testRemoveCash(){
+        wallet.removeCash(50);
+        assertTrue(wallet.getCash() == 5950);
     }
 
-    @Test void testPlayTileAddTo(){
+    @Test
+    void testAddStock(){
+        wallet.addStock("Worldwide", 4);
+        assertTrue(wallet.getStocks().get("Worldwide") == 4);
+    }
 
+    @Test
+    void testRemoveStock(){
+        wallet.addStock("Worldwide", 4);
+        wallet.removeStock("Worldwide", 2);
+        assertTrue(wallet.getStocks().get("Worldwide") == 2);
     }
 }

@@ -24,67 +24,38 @@
 
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class PlayersTest {
-    ArrayList<String> corpNames;
-    Integer pNumb;
-    ArrayList<PlayerInfo> tPlayers;
+public class TestHand {
+    Hand thand;
 
     @BeforeEach
     void setUp(){
-        corpNames = new ArrayList<>(Arrays.asList("Worldwide", "Sackson", "Festival", "Imperial", "American", "Tower", "Continental"));
-        pNumb = 4;
+        Scoreboard s = new Scoreboard(2);
+        thand = s.getPlayers().getPlayerByName("Player 1").getPHand();
+    }
+
+    @AfterEach
+    void teardown(){
 
     }
 
     @Test
-    void setup(){
-        //  Player player = new Player("P1", , );
-    }
-
-    @Test
-    void testPlayTile(){
-
+    void testaddTile(){
+        Tile testT = new Tile(5,2);
+        thand.addTile(testT);
+        assertTrue(thand.getPlayersTiles().size() == 7);
     }
     @Test
-    void testStartTurn(){
-
-    }
-    @Test
-    void testEndTurn(){
-
-    }
-    @Test
-    void testDoTurn(){
-
-    }
-    @Test
-    void testMerge(){
-
-    }
-    @Test
-    void testOrderBuy(){
-
-    }
-    @Test
-    void testOrderSell(){
-
-    }
-    @Test
-    void testGetScore(){
-
+    void testRemoveTile(){
+        Tile testT = new Tile(5,2);
+        thand.addTile(testT);
+        thand.removeTile(testT);
+        assertTrue(thand.getPlayersTiles().size() == 6);
     }
 
-    @Test
-    void testInitPlayers(){
-        Players tPlayers = new Players(pNumb, corpNames);
-        int tstackSize = 9*12 - 6*pNumb;
-        assertTrue(tPlayers.getTStack().getTileStack().size() == tstackSize);
-    }
 }

@@ -42,11 +42,13 @@ import com.google.gson.reflect.TypeToken;
 
 @Getter @Setter
 public class Players {
-    ArrayList<PlayerInfo> activePlayers; //ORDER OF PLAYERS AND PLAYER NAMES
-    TileStack tStack;
+    private ArrayList<PlayerInfo> activePlayers; //ORDER OF PLAYERS AND PLAYER NAMES
+    private TileStack tStack;
+    private Integer num;
 
 
     public Players(Integer number, ArrayList<String> corpNames){
+        num = number;
         tStack = new TileStack();
         activePlayers = initPlayers(number, corpNames);
     }
@@ -57,7 +59,7 @@ public class Players {
      * @param corpNames
      * @return
      */
-    public ArrayList<PlayerInfo> initPlayers(Integer number, ArrayList<String> corpNames){
+    private ArrayList<PlayerInfo> initPlayers(Integer number, ArrayList<String> corpNames){
         ArrayList<PlayerInfo> newPlayers = new ArrayList<>();
         ArrayList<String> playerList = namePlayers(number);
         ArrayList<String> pNames = sortPlayers(playerList);
@@ -76,7 +78,7 @@ public class Players {
      * @param number
      * @return
      */
-    public ArrayList<String> namePlayers(Integer number){
+    private ArrayList<String> namePlayers(Integer number){
         ArrayList<String> pSet = new ArrayList<>();
         String p = "Player ";
         for(int i = 1 ; i < number +1 ; i++){
@@ -90,7 +92,7 @@ public class Players {
      * @param pSet
      * @return
      */
-    public ArrayList<String> sortPlayers(ArrayList<String> pSet){
+    private ArrayList<String> sortPlayers(ArrayList<String> pSet){
         HashMap<String, Integer> playerOrderTM = new HashMap<>();
         ArrayList<Tile> tilesForPosition = new ArrayList<>();
         Tile t;
@@ -131,66 +133,5 @@ public class Players {
     public void sellStock(String pName, String cName, Integer qty, Integer stockVal){
         getPlayerByName(pName).getPWallet().removeStock(cName, qty);
         getPlayerByName(pName).getPWallet().addCash(qty * stockVal);
-    }
-
-    /**
-     * @param jsonFile (string to become json file)
-     * @param players_obj (Players obj to save)
-     * @return File (jsonFile to later be deserialized)
-     * @throws IOException
-     */
-    public static File savePlayers(String jsonFile, Players players_obj) throws IOException {
-        //create Gson instance
-        Gson gson = new Gson();
-        //create json string to hold data
-        String jsonString = gson.toJson(players_obj);
-
-        try {
-            //create the jsonFile
-            File file = new File(jsonFile);
-            // file.createNewFile();
-
-            //write the json string into the json file
-            FileWriter fileWriter = new FileWriter(file);
-            fileWriter.write(jsonString);
-
-            //close the file
-            fileWriter.flush();
-            fileWriter.close();
-
-            return file;
-
-        } catch(IOException e){
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * @param jsonFile (jsonFile string that was created in savePlayers)
-     * @return returns a Players object that was previously saved
-     */
-    public Players loadPlayers(String jsonFile){
-        try {
-            //create Gson instance
-            Gson gson = new Gson();
-
-            //create a reader
-            Reader reader = Files.newBufferedReader(Paths.get(jsonFile));
-
-            //set type for players
-            Type playersType = new TypeToken<Players>(){}.getType();
-
-            //convert JSON string to players obj
-            Players players_obj = gson.fromJson(reader, playersType);
-
-            //close reader
-            reader.close();
-
-            return players_obj;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
     }
 }

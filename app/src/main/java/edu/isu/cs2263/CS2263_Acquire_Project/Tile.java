@@ -32,11 +32,11 @@ import java.util.List;
 
 @Getter @Setter
 public class Tile {
-    int row;
-    int col;
-    String corp;
-    String location;
-    boolean status;
+    private int row;
+    private int col;
+    private String corp;
+    private String location;
+    private boolean status;
 
     public Tile(int r, int c){
         row = r;
