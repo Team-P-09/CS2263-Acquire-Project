@@ -39,7 +39,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TestScoreboard extends ApplicationTest{
 
-    private HashMap<String, Integer[]> testDisplayInfo;
     private Scoreboard s;
     private String p1Name;
     private String p2Name;

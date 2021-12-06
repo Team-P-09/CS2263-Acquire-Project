@@ -81,8 +81,6 @@ public class UIController {
                 text.setText(tile.getLocation());
                 pane.getChildren().add(text);
                 String corpVal = tile.getCorp() != null ? tile.getCorp() : "empty";
-//                System.out.println(tile.status);
-//                System.out.println(tile.getCorp());
 
                 if(tile.isStatus() == true){
                     switch (corpVal){

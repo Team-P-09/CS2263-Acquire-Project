@@ -24,18 +24,11 @@
 
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import java.io.*;
-import java.lang.reflect.Type;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.io.File;
 import java.io.IOException;
 
 import javafx.scene.control.Alert;
-import javafx.scene.control.ChoiceDialog;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -51,10 +44,6 @@ public class GameState {
     public Boolean endGame = false;
     private static GameState instance = null; //making this static was causing tons of problems in testing
     private Integer currentBoughtStock = 0;
-
-  //  public File savedScoreB;
-    //public File savedGameB;
-   // public File savedNumOfPlayers;
 
     private GameState(Integer numberOfPlayers){
         gameboard = new Gameboard();
@@ -288,10 +277,7 @@ public class GameState {
     /**
      * @return returns a list of files that will need to be reloaded to get gamestate back
      */
-    public void saveGameState(){ //NEED TO BE ABLE TO SAVE NUMBER OF PLAYERS
-      //  File savedScoreB;
-      //  File savedGameB;
-      //  File savedNumOfPlayers;
+    public void saveGameState(){
 
         try {
             numOfPlayers = scoreboard.getNumofPlayers();
@@ -348,12 +334,6 @@ public class GameState {
         Boolean savedHasPlayed = null;
         Boolean savedEndGame = null;
         int savedCBS = 0;
-
-     //   File savedPlayerCount = new File("savedNumOfPlayers");
-     //   File savedCurrentPlayerTracker = new File("savedCurrentPlayerTracker");
-      //  File saveHasPlayed = new File("saveHasPlayed");
-      //  File saveEndGame = new File("saveEndGame");
-      //  File savedCurrentBoughtStock = new File("savedCurrentBoughtStock");
 
         int numPlayers = 0;
 

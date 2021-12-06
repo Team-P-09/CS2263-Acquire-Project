@@ -133,4 +133,21 @@ public class TestUIController extends ApplicationTest {
         clickOn("#Tile0");
         assertThat(gameState.getGameboard().getTile(testTile1.getRow(), testTile1.getCol()).isStatus() == true);
     }
+
+    @Test
+    public void  testGetQty() throws InterruptedException {
+        clickOn("#newGameButton");
+        clickOn("2");
+        clickOn("4");
+        clickOn("OK");
+
+        GameState gameState = GameState.getInstance(null);
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                Integer testQty = gameState.getScoreboard().getQty("American", 3, "Test");
+            }
+        });
+    }
 }

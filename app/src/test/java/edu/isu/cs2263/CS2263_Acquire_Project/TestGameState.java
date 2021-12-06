@@ -61,7 +61,6 @@ public class TestGameState {
         p3Name = tGameState.getScoreboard().getPlayers().getActivePlayers().get(2).getPName();
         p4Name = tGameState.getScoreboard().getPlayers().getActivePlayers().get(3).getPName();
         //we create a separate variable for GameState that will be accessed by each class
-//        tGameState = initGameState;
         gameStateCopy = tGameState;
     }
 
@@ -244,29 +243,6 @@ public class TestGameState {
         }
         assertTrue(tGameState.checkIfGameCanEnd());
     }
-
-//    @Test
-//    void endGameReturnsWinnersWhenNoTie(){
-//        //set up state where game can end
-//        for(String corpName : tGameState.getScoreboard().getCorporations().getCorps().keySet()){
-//            tGameState.getScoreboard().getCorporations().getCorp(corpName).setSafe(true);
-//            tGameState.getScoreboard().getCorporations().getCorp(corpName).setStatus(true);
-//        }
-//
-//        //will return p1 in 1st and p2 in second... etc
-//        tGameState.getScoreboard().getPlayers().getPlayerByName(p1Name).getPWallet().addCash(5000);
-//        tGameState.getScoreboard().getPlayers().getPlayerByName(p2Name).getPWallet().addCash(4000);
-//        tGameState.getScoreboard().getPlayers().getPlayerByName(p3Name).getPWallet().addCash(3000);
-//        tGameState.getScoreboard().getPlayers().getPlayerByName(p4Name).getPWallet().addCash(2000);
-//
-//        HashMap<String, Integer> places = tGameState.endGame();
-//        assertAll("Player places",
-//                () -> assertEquals(1,places.get(p1Name)),
-//                () -> assertEquals(2, places.get(p2Name)),
-//                () -> assertEquals(3, places.get(p3Name)),
-//                () -> assertEquals(4, places.get(p4Name))
-//                );
-//    }
 
     @Test
     void gameCannotEndIfConditionIsNotMet(){

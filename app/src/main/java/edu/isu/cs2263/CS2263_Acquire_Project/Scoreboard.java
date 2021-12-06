@@ -66,11 +66,6 @@ public class Scoreboard {
         String unfoundedCorps = getUnfoundedCorps();
 
         addUnassignedTilesToCorp(tiles, corpName);
-//        for(Tile t : tiles){
-//            if(t.isStatus() && t.getCorp() == null){
-//                getCorporations().addTileToCorp(corpName, t);
-//            }
-//        }
         getCorporations().getCorp(corpName).setStatus(true);
 
         if(unfoundedCorps.contains(corpName)){
@@ -415,8 +410,6 @@ public class Scoreboard {
      * @param corpName
      */
     public Integer initBuy(String playerName, String corpName, Integer qty){
-//        Integer maxQty = maxBuy(playerName, corpName, buyLimit);
-//        Integer qty = getQty(corpName, maxQty, "Buy");
         int stockVal = getCorporations().getCorp(corpName).getStockPrice();
         getPlayers().buyStock(playerName,corpName, qty, stockVal);
         getCorporations().getCorp(corpName).removeCorpStock(qty);
