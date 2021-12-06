@@ -24,6 +24,13 @@
 
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.*;
+import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.io.File;
 import java.io.IOException;
 
@@ -45,10 +52,9 @@ public class GameState {
     private static GameState instance = null; //making this static was causing tons of problems in testing
     private Integer currentBoughtStock = 0;
 
-    public File savedScoreB;
-    public File savedGameB;
-    public File savedGamePlayers;
-   // public Integer savedGamePlayers;
+  //  public File savedScoreB;
+    //public File savedGameB;
+   // public File savedNumOfPlayers;
 
     private GameState(Integer numberOfPlayers){
         gameboard = new Gameboard();
@@ -283,16 +289,50 @@ public class GameState {
      * @return returns a list of files that will need to be reloaded to get gamestate back
      */
     public void saveGameState(){ //NEED TO BE ABLE TO SAVE NUMBER OF PLAYERS
-        try {
+      //  File savedScoreB;
+      //  File savedGameB;
+      //  File savedNumOfPlayers;
 
+        try {
+            numOfPlayers = scoreboard.getNumofPlayers();
             //empty files that will be filled with saved data
             String jsonFileGameboard = "savedGameB";
             String jsonFileScoreboard = "savedScoreB";
 
+            //writing number of players to a file
+            Writer wr = new FileWriter("savedNumOfPlayers");
+            wr.write(Integer.toString(numOfPlayers));
+            wr.close();
+            //writing current player tracker
+            Writer wr2 = new FileWriter("savedCurrentPlayerTracker");
+            wr2.write(Integer.toString(currentPlayerTracker));
+            wr2.close();
+            //writing hasPlayed status
+            Writer wr3 = new FileWriter("saveHasPlayed");
+            if (hasPlayed == true){
+                wr3.write(Integer.toString(1));
+            }
+            if (hasPlayed == false){
+                wr3.write(Integer.toString(0));
+            }
+            wr3.close();
+            //writing end game status
+            Writer wr4 = new FileWriter("saveEndGame");
+            if (endGame == true){
+                wr4.write(Integer.toString(1));
+            }
+            if (endGame == false){
+                wr4.write(Integer.toString(0));
+            }
+            wr4.close();
+            //writing current bought stock status
+            Writer wr5 = new FileWriter("savedCurrentBoughtStock");
+            wr5.write(Integer.toString(currentBoughtStock));
+            wr5.close();
+
             //getting data from scoreboard and gameboard to be saved
-            savedScoreB = Scoreboard.saveScoreboard(jsonFileScoreboard, scoreboard);
-            savedGameB = Gameboard.saveGameboard(jsonFileGameboard, gameboard);
-         //   savedGamePlayers = Players.savePlayers(jsonFilePlayers, players);
+            Scoreboard.saveScoreboard(jsonFileScoreboard, scoreboard);
+            Gameboard.saveGameboard(jsonFileGameboard, gameboard);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -303,35 +343,68 @@ public class GameState {
      * //@param gameFiles list of files that need to be reloaded
      * @return returns gamestate object that will reload previous games
      */
-    public GameState loadGameState(){ //NEED TO BE ABLE TO SAVE NUMBER OF PLAYERS
+    public void loadGameState(GameState savedGame) throws FileNotFoundException {
+        int savedCPTracker = 0;
+        Boolean savedHasPlayed = null;
+        Boolean savedEndGame = null;
+        int savedCBS = 0;
 
-        ArrayList<File> savedGameFiles = new ArrayList<File>();
+     //   File savedPlayerCount = new File("savedNumOfPlayers");
+     //   File savedCurrentPlayerTracker = new File("savedCurrentPlayerTracker");
+      //  File saveHasPlayed = new File("saveHasPlayed");
+      //  File saveEndGame = new File("saveEndGame");
+      //  File savedCurrentBoughtStock = new File("savedCurrentBoughtStock");
 
-        savedGameFiles.add(savedScoreB);
-        savedGameFiles.add(savedGameB);
-      //  savedGameFiles.add(savedGamePlayers);
+        int numPlayers = 0;
 
         //create empty objects to hold saved data
-        Scoreboard scoreb = null;
-        Gameboard gameb = null;
-        //Players gameplayers = null;
-        GameState savedGame = new GameState(2);
-    //    Integer numberOfPs = 0;
+        int status = 0;
+
+        Scanner sc = new Scanner(new File("savedNumOfPlayers"));
+        while(sc.hasNextLine()) {
+            numPlayers = Integer.parseInt(sc.nextLine());
+        }
+
+        Scanner sc2 = new Scanner(new File("savedCurrentPlayerTracker"));
+        while(sc2.hasNextLine()) {
+             savedCPTracker = Integer.parseInt(sc2.nextLine());
+        }
+
+        Scanner sc3 = new Scanner(new File("saveHasPlayed"));
+        while(sc3.hasNextLine()) {
+            status = Integer.parseInt(sc3.nextLine());
+            if (status ==0){
+                savedHasPlayed = false;
+            }
+            if (status==1){
+                savedHasPlayed = true;
+            }
+        }
+
+        Scanner sc4 = new Scanner(new File("saveEndGame"));
+        while(sc4.hasNextLine()) {
+            status = Integer.parseInt(sc4.nextLine());
+            if (status ==0){
+                savedEndGame = false;
+            }
+            if (status ==1){
+                savedEndGame = true;
+            }
+        }
+
+        Scanner sc5 = new Scanner(new File("savedCurrentBoughtStock"));
+        while(sc5.hasNextLine()) {
+            savedCBS = Integer.parseInt(sc5.nextLine());
+        }
 
         //retrieving data from json files using load methods from each class
-        scoreb.loadScoreboard(savedGameFiles.get(0).toString());
-        gameb.loadGameboard(savedGameFiles.get(1).toString());
-    //    gameplayers.loadPlayers(savedGameFiles.get(2).toString());
-
-     //   numberOfPs = numOfPlayers;
-
-        //load up params into gamestate object
-        savedGame.scoreboard = scoreb;
-        savedGame.gameboard = gameb;
-      //  savedGame.players = gameplayers;
-
-        //return the loaded GameState object
-        return savedGame;
+        savedGame.numOfPlayers = numPlayers;
+        savedGame.scoreboard = Scoreboard.loadScoreboard("savedScoreboard");
+        savedGame.gameboard = Gameboard.loadGameboard("savedGameboard");
+        savedGame.hasPlayed = savedHasPlayed;
+        savedGame.currentPlayerTracker = savedCPTracker;
+        savedGame.endGame = savedEndGame;
+        savedGame.currentBoughtStock = savedCBS;
     }
 
     public PlayerInfo getCurrentPlayer(){
