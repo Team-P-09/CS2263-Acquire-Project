@@ -24,18 +24,11 @@
 
 package edu.isu.cs2263.CS2263_Acquire_Project;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import java.io.*;
-import java.lang.reflect.Type;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.io.File;
 import java.io.IOException;
 
 import javafx.scene.control.Alert;
-import javafx.scene.control.ChoiceDialog;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -45,18 +38,12 @@ import java.util.*;
 public class GameState {
     private Gameboard gameboard;
     private Scoreboard scoreboard;
-
     private Integer numOfPlayers;
-
     private int currentPlayerTracker = 0;
     public Boolean hasPlayed = false;
     public Boolean endGame = false;
     private static GameState instance = null; //making this static was causing tons of problems in testing
     private Integer currentBoughtStock = 0;
-
-  //  public File savedScoreB;
-    //public File savedGameB;
-   // public File savedNumOfPlayers;
 
     private GameState(Integer numberOfPlayers){
         gameboard = new Gameboard();
@@ -254,7 +241,6 @@ public class GameState {
     }
 
     /**
-<<<<<<< HEAD
      * Gets an ArrayList of available corp names then runs initializes the founding of a corporation
      * @param tList
      * @param playerName
@@ -263,7 +249,7 @@ public class GameState {
         ArrayList<String> availableCorps = scoreboard.getNonActiveCorps();
         String title = "Chose a corporation to start";
         String header = "Unfounded Corporations:";
-        String corpName = getDecision(availableCorps, title, header);
+        String corpName = scoreboard.getDecision(availableCorps, title, header);
         scoreboard.initFounding(tList, playerName, corpName);
     }
 
@@ -274,7 +260,7 @@ public class GameState {
     }
 
     public List<Tile> mergeController(List<Tile> tList){
-        ArrayList<String> mCorps = scoreboard.findCorps(tList); //We will be used to identify the players who will need to take a merge action
+        List<String> mCorps = scoreboard.findCorps(tList); //We will be used to identify the players who will need to take a merge action
         String domCorpName = scoreboard.getDomCorpName(mCorps);
         mCorps.remove(domCorpName);
         mCorps = scoreboard.removeSafeCorps(mCorps);
@@ -289,37 +275,9 @@ public class GameState {
     }
 
     /**
-     * Grabs a user input using a choice dialogue box
-     * @param choiceList
-     * @param title
-     * @param header
-     * @param <T>
-     * @return
-     */
-    private <T> T getDecision(List<T> choiceList, String title, String header){
-        ArrayList<T> choices = new ArrayList<>();
-        for(T choice : choiceList){
-            choices.add(choice);
-        }
-
-        ChoiceDialog<T> dialog = new ChoiceDialog<>(choiceList.get(0), choices);
-        dialog.setTitle(title);
-        dialog.setHeaderText(header);
-
-        Optional<T> pChoice = dialog.showAndWait();
-        while(!pChoice.isPresent()){
-            pChoice = dialog.showAndWait();
-        }
-        return dialog.getSelectedItem();
-    }
-
-    /**
      * @return returns a list of files that will need to be reloaded to get gamestate back
      */
-    public void saveGameState(){ //NEED TO BE ABLE TO SAVE NUMBER OF PLAYERS
-      //  File savedScoreB;
-      //  File savedGameB;
-      //  File savedNumOfPlayers;
+    public void saveGameState(){
 
         try {
             numOfPlayers = scoreboard.getNumofPlayers();
@@ -376,12 +334,6 @@ public class GameState {
         Boolean savedHasPlayed = null;
         Boolean savedEndGame = null;
         int savedCBS = 0;
-
-     //   File savedPlayerCount = new File("savedNumOfPlayers");
-     //   File savedCurrentPlayerTracker = new File("savedCurrentPlayerTracker");
-      //  File saveHasPlayed = new File("saveHasPlayed");
-      //  File saveEndGame = new File("saveEndGame");
-      //  File savedCurrentBoughtStock = new File("savedCurrentBoughtStock");
 
         int numPlayers = 0;
 

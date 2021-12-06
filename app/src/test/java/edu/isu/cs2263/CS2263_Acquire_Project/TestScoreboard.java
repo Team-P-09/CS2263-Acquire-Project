@@ -39,7 +39,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TestScoreboard extends ApplicationTest{
 
-    private HashMap<String, Integer[]> testDisplayInfo;
     private Scoreboard s;
     private String p1Name;
     private String p2Name;
@@ -375,5 +374,54 @@ public class TestScoreboard extends ApplicationTest{
                 () -> assertEquals(6000, s.getPlayers().getPlayerByName(p2Name).getPWallet().getCash()),
                 () -> assertEquals(6000, s.getPlayers().getPlayerByName(p3Name).getPWallet().getCash())
                 );
+    }
+
+    @Test
+    void testInitBuyCorrectlyRemovesCashAddsStock(){
+        Integer buyQty = 3;
+        Integer stockValue = s.getCorporations().getCorp("Imperial").getStockPrice();
+        Integer expectedWalletValue = 6000 - stockValue*buyQty;
+        s.initBuy(p1Name, "Imperial", buyQty);
+        assertAll("Cash removed, stocks added",
+                () -> assertEquals(3, s.getPlayers().getPlayerByName(p1Name).getPWallet().getStocks().get("Imperial")),
+                () -> assertEquals(expectedWalletValue, s.getPlayers().getPlayerByName(p1Name).getPWallet().getCash())
+                );
+    }
+
+    @Test
+    void testBuyLimitStockCashLimitsPurchase(){
+        s.getPlayers().getPlayerByName(p1Name).getPWallet().removeCash(5800);
+        Integer expectedBuyQty = s.getPlayers().getPlayerByName(p1Name).getPWallet().getCash()/s.getCorporations().getCorp("Worldwide").getStockPrice();
+        Integer actualBuyQty = s.maxBuy(p1Name,"Worldwide",3);
+        assertEquals(expectedBuyQty, actualBuyQty);
+    }
+
+    @Test
+    void testBuyLimitReturnsLimitWhenBoundingConstraint(){
+        Integer buyLimit = 3;
+        s.getPlayers().getPlayerByName(p1Name).getPWallet().removeCash(5500);
+        Integer expectedBuyQty = buyLimit;
+        Integer actualBuyQty = s.maxBuy(p1Name,"Worldwide",buyLimit);
+        assertEquals(expectedBuyQty, actualBuyQty);
+    }
+
+    @Test
+    void testBuyLimitWontOverSellStock(){
+        Integer buyLimit = 3;
+        s.getCorporations().getCorp("Worldwide").removeCorpStock(23);
+        Integer expectedBuyQty = s.getCorporations().getCorp("Worldwide").getAvailableStocks();
+        Integer actualBuyQty = s.maxBuy(p1Name,"Worldwide",buyLimit);
+        assertEquals(expectedBuyQty, actualBuyQty);
+    }
+
+    @Test
+    void testSafeCorpsAreRemoved(){
+        s.getCorporations().getCorp("Worldwide").setSafe(true);
+        List<String> corps = new ArrayList<>();
+        corps.add("Worldwide");
+        corps.add("Festival");
+        corps.add("Sackson");
+        List<String> unsafecorps = s.removeSafeCorps(corps);
+        assertFalse(unsafecorps.contains("Worldwide"));
     }
 }

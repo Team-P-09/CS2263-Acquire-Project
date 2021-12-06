@@ -67,6 +67,7 @@ public class TestUIController extends ApplicationTest {
         clickOn("OK");
         assertThat(lookup("turnLabel").equals("Player 1"));
     }
+
     @Test
     @Order(2)
     public void testCheckHandTiles() throws InterruptedException {
@@ -91,6 +92,7 @@ public class TestUIController extends ApplicationTest {
         assertThat("Tile4".equals(testTile5.getLocation()));
         assertThat("Tile5".equals(testTile6.getLocation()));
     }
+
     @Test
     @Order(3)
     public void testCheckScoreboard(){
@@ -103,6 +105,7 @@ public class TestUIController extends ApplicationTest {
         assertThat(gameState.getScoreboard().getPlayerScore("Player 1") == 6000);
         assertThat(gameState.getScoreboard().getPlayers().getPlayerByName("Player 1").getPWallet().getCash() == 6000);
     }
+
     @Test
     @Order(4)
     public void testShowRules(){
@@ -113,6 +116,7 @@ public class TestUIController extends ApplicationTest {
         clickOn("#showRulesButton");
         verifyThat("#showRulesButton", NodeMatchers.isVisible());
     }
+
     @Test
     @Order(5)
     public void testPlayTile() throws InterruptedException {
@@ -128,5 +132,22 @@ public class TestUIController extends ApplicationTest {
 
         clickOn("#Tile0");
         assertThat(gameState.getGameboard().getTile(testTile1.getRow(), testTile1.getCol()).isStatus() == true);
+    }
+
+    @Test
+    public void  testGetQty() throws InterruptedException {
+        clickOn("#newGameButton");
+        clickOn("2");
+        clickOn("4");
+        clickOn("OK");
+
+        GameState gameState = GameState.getInstance(null);
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                Integer testQty = gameState.getScoreboard().getQty("American", 3, "Test");
+            }
+        });
     }
 }
