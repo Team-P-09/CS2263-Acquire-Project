@@ -311,7 +311,7 @@ public class Gameboard {
      * @param jsonFile (jsonFile string that was created in saveGameboard)
      * @return returns a Gameboard object that was previously saved
      */
-    public Gameboard loadGameboard(String jsonFile) {
+    public static Gameboard loadGameboard(String jsonFile) {
         try {
             //create Gson instance
             Gson gson = new Gson();

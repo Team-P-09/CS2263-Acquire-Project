@@ -131,7 +131,6 @@ public class TestScoreboard extends ApplicationTest{
     }
 
     @Test
-<<<<<<< HEAD
     void testJsonFileCreated() throws IOException {
         String jsonFile = "savedScoreboard";
         assertNotNull(s.saveScoreboard(jsonFile,s)) ;
@@ -144,11 +143,11 @@ public class TestScoreboard extends ApplicationTest{
     }
 
     @Test
-    void testLoadScoreboard(){
+    void testLoadScoreboard() {
         String jsonFile = "savedScoreboard";
         s = loadScoreboard(jsonFile);
         assertNotNull(s);
-=======
+    }
     void testInitFoundingWorksOnStandardFounding(){
         //List<Tile> tiles, String playerName, String corpName
         Tile tileActive = new Tile(9,0);

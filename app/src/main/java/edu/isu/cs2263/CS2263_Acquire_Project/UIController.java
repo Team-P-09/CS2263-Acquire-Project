@@ -275,13 +275,12 @@ public class UIController {
         GameState gameState = GameState.getInstance(null);
         Button button = (Button) event.getSource();
         gameState.saveGameState();
-      //  gameState.saveGameState(gameState.getScoreboard(), gameState.getGameboard());
     }
 
     @FXML
     public void playTile(ActionEvent event) throws IOException{
         scene = ((Node)event.getSource()).getScene();
-        GameState gameState = GameState.getInstance(null);
+        GameState gameState = GameState.getInstance(0);
         Button button = (Button) event.getSource();
         if (gameState.hasPlayed == false){
             String id = button.getId();
@@ -320,9 +319,9 @@ public class UIController {
     @FXML
     public void handleLoadGameButton(ActionEvent event) throws IOException {
         scene = ((Node)event.getSource()).getScene();
-        GameState gameState = GameState.getInstance(null);
+        GameState gameState = GameState.getInstance(0);
         Button button = (Button) event.getSource();
-        gameState.loadGameState();
+        gameState.loadGameState(gameState);
         render(event);
     }
 
